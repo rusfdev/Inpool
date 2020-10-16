@@ -122,13 +122,13 @@ const Home = {
     }
 
     let textures = [
-      new THREE.TextureLoader().load('../img/roberto-nickson-so3wgJLwDxo-unsplash 4.jpg', function() {
+      new THREE.TextureLoader().load('./img/roberto-nickson-so3wgJLwDxo-unsplash 4.jpg', function() {
         init();
         animate();
       }),
-      new THREE.TextureLoader().load('../img/roberto-nickson-so3wgJLwDxo-unsplash 2.jpg'),
-      new THREE.TextureLoader().load('../img/roberto-nickson-so3wgJLwDxo-unsplash 3.jpg'),
-      new THREE.TextureLoader().load('../img/roberto-nickson-so3wgJLwDxo-unsplash 2 (1).jpg'),
+      new THREE.TextureLoader().load('./img/roberto-nickson-so3wgJLwDxo-unsplash 2.jpg'),
+      new THREE.TextureLoader().load('./img/roberto-nickson-so3wgJLwDxo-unsplash 3.jpg'),
+      new THREE.TextureLoader().load('./img/roberto-nickson-so3wgJLwDxo-unsplash 2 (1).jpg'),
     ]
     
     let init = ()=> {

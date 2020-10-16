@@ -1,0 +1,120 @@
+h1,h2,h3,h4,h5,h6 {
+  margin: 1.875rem 0 1rem 0;
+  line-height: 1.35;
+  &:not([class]) {
+    &:first-child {
+      margin-top: 0;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+    & + h2,
+    & + h3,
+    & + h4,
+    & + h5,
+    & + h6 {
+      margin-top: 1.375rem;
+    }
+  }
+}
+h1 {
+  font-size: 1.875rem;
+}
+h2 {
+  font-size: 1.375rem;
+}
+h3, h4 {
+  font-size: 1.125rem;
+}
+h5, h6 {
+  font-size: 0.875rem;
+}
+p {
+  margin: 0 0 1rem 0;
+  &:last-child {
+    margin: 0;
+  }
+}
+mark {
+  background-color: transparent;
+  color: var(--color-accent);
+}
+figure {
+  margin: 1.25rem 0;
+  &:first-child {
+    margin-top: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+figcaption {
+  display: block;
+  margin: 10px 0 0 0;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+img:not([class]) {
+  display: block;
+  width: auto;
+  max-width: 100%;
+}
+strong, b {
+  font-weight: 700;
+}
+blockquote {
+  padding: 20px 40px;
+  background-color: var(--color-muted);
+  margin: 1.25rem 0;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+ul:not([class]) {
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+  li:not([class]) {
+    position: relative;
+    padding-left: 22px;
+    &:not(:last-child) {
+      margin: 0 0 0.875rem 0;
+    }
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 10px;
+      height: 2px;
+      background-color: var(--color-text);
+    }
+  }
+}
+ol:not([class]) {
+  counter-reset: section;
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+  li:not([class]) {
+    &:not(:last-child) {
+      margin: 0 0 0.875rem 0;
+    }
+    &:before {
+      counter-increment: section;
+      content: counters(section, ".") ". ";
+    }
+  }
+}
+
+a {
+  color: var(--color-accent);
+  &.touch, &.hover {
+    text-decoration: none;
+  }
+}

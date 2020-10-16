@@ -1,0 +1,24 @@
+//bootsrtap v5
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  xxl: 1620px
+);
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1248px,
+  xxl: 1440px
+);
+$container-padding-x:        24px;
+$grid-gutter-width:          24px;
+$mobile-container-padding-x: 16px;
+$mobile-grid-gutter-width:   16px;
+
+$trs1: .25s ease-out;
+$trs2: .5s ease-out;
+$trs3: 1s ease-out;

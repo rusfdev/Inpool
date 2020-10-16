@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+.main {
+  flex: 1 1 100%;
+}
+.section {
+  
+}
+
+
+@include media-breakpoint-down(md) {
+  .container {
+    padding-right: $mobile-container-padding-x;
+    padding-left: $mobile-container-padding-x;
+  }
+  .row {
+    margin-left: calc(#{$mobile-grid-gutter-width} / -2);
+    margin-right: calc(#{$mobile-grid-gutter-width} / -2);
+  }
+  .row > * {
+    padding-left: calc(#{$mobile-grid-gutter-width} / 2);
+    padding-right: calc(#{$mobile-grid-gutter-width} / 2);
+  }
+}

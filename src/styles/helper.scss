@@ -1,0 +1,96 @@
+//vars
+$color-accent: #353535;
+$color-active: #ca2323;
+$color-hover: #000;
+$trs: .25s ease-in-out;
+
+.helper {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translate(-100%, -50%);
+  z-index: 1000;
+  transition: transform $trs;
+  width: 100%;
+  max-width: 280px;
+  color: #000;
+  &__trigger {
+    display: block;
+    position: absolute;
+    left: calc(100% - 1px);
+    width: 40px;
+    height: 40px;
+    border-radius: 0 2px 2px 0;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: #D9D9DE;
+    background-color: #fff;
+    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.05);
+    display: flex;
+    z-index: 2;
+    color: $color-accent;
+    .icon {
+      margin: auto;
+      width: 15px;
+      height: 15px;
+      color: inherit;
+      transition: transform $trs;
+    }
+  }
+  &__container {
+    position: relative;
+    z-index: 1;
+    padding: 20px 15px;
+    background-color: #fff;
+    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.05);
+    width: 100%;
+    border-radius: 0 0 2px 0;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: #D9D9DE;
+  }
+  &__section {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+    &-title {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      margin: 0 0 10px 0;
+    }
+    &-content {
+      margin: 0 -5px -5px 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &-button {
+      margin: 0 5px 5px 0;
+      font-size: 10px;
+      font-weight: 500;
+      text-align: center;
+      background-color: $color-accent;
+      color: #fff;
+      transition: background-color $trs;
+      line-height: 32px;
+      padding: 0 10px;
+      border-radius: 2px;
+      text-decoration: none;
+      &.touch, &.hover {
+        background-color: $color-hover;
+      }
+      &.active {
+        pointer-events: none;
+        background-color: $color-active;
+      }
+    }
+  }
+  &.active {
+    transform: translate(0, -50%);
+    .helper__trigger {
+      .icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

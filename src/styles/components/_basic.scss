@@ -1,0 +1,49 @@
+html {
+  font-size: 16px;
+}
+body {
+  font-family: 'Montserrat', sans-serif;
+  text-rendering: geometricPrecision;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-width: 320px;
+}
+* {
+  box-sizing: border-box;
+  min-height: 0px;
+  min-width: 0px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+  &:before, &:after {
+    box-sizing: border-box;
+  }
+}
+button, input, textarea {
+  outline: none;
+  display: block;
+  background-color: transparent;
+  box-shadow: none;
+  border: 0;
+  appearance: none;
+  padding: 0;
+  border-radius: 0;
+}
+a, button, label {
+  user-select: none;
+  -webkit-user-drag: none;
+  cursor: pointer;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+}
+
+@include media-breakpoint-up(xl) {
+  
+}

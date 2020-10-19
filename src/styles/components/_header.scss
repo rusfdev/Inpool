@@ -1,3 +1,45 @@
 .header {
   flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  &.fixed {
+    position: fixed;
+    top: -60px;
+    background-color: rgba(20, 20, 20, 0.5);
+    .header__container {
+      height: 60px;
+    }
+  }
+  &__container {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  @include media-breakpoint-down(xxl) {
+    &__container {
+      height: 100px;
+    }
+  } 
+}
+
+.nav-toggle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 9px 3px;
+  svg {
+    width: 100%;
+    fill: none;
+    color: var(--color-text);
+    path {
+      stroke-width: 2.5px;
+      transition: $trs1;
+    }
+  }
 }

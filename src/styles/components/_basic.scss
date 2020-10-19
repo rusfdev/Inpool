@@ -5,10 +5,13 @@ body {
   font-family: 'Montserrat', sans-serif;
   text-rendering: geometricPrecision;
   color: var(--color-text);
-  background-color: var(--color-bg);
   font-size: 1rem;
+  font-weight: 300;
   line-height: 1.5;
   min-width: 320px;
+  &.loaded {
+    background-color: var(--color-bg);
+  }
 }
 * {
   box-sizing: border-box;

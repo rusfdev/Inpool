@@ -1,6 +1,7 @@
 h1,h2,h3,h4,h5,h6 {
   margin: 1.875rem 0 1rem 0;
   line-height: 1.35;
+  color: var(--color-title);
   &:not([class]) {
     &:first-child {
       margin-top: 0;
@@ -113,8 +114,13 @@ ol:not([class]) {
 }
 
 a {
-  color: var(--color-accent);
+  color: inherit;
+  text-decoration: none;
+  transition: color $trs1;
   &.touch, &.hover {
-    text-decoration: none;
+    color: var(--color-light);
+  }
+  &.focus {
+    color: var(--color-accent);
   }
 }

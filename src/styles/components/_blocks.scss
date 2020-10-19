@@ -8,8 +8,18 @@
   height: 100%;
   top: 0;
   left: 0;
+  opacity: 0.8;
 }
 
 .home-about {
-  height: 500px;
+  height: 1000px;
+}
+
+.logo {
+  display: block;
+  width: 196px;
+  img {
+    display: block;
+    width: 100%;
+  }
 }

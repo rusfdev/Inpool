@@ -1,0 +1,58 @@
+.preloader {
+  background-color: var(--color-bg);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  display: flex;
+  font-size: 1vw;
+  transition: opacity .5s ease-in-out, visibility .5s ease-in-out; }
+  .preloader.active {
+    opacity: 1 !important; }
+  .preloader__char,
+  .preloader img {
+    opacity: 0;
+    transition: opacity 1s ease-in-out; }
+    .preloader__char.active,
+    .preloader img.active {
+      opacity: 1; }
+  .preloader__center {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    position: relative; }
+  .preloader__girl {
+    position: absolute;
+    display: block;
+    z-index: 2; }
+    .preloader__girl_1 {
+      width: 3.6em;
+      top: 3.6em;
+      left: 3.3em;
+      animation: girl 12s linear infinite; }
+    .preloader__girl_2 {
+      width: 3.1em;
+      left: 4.1em;
+      top: 0.8em;
+      animation: girl 14s linear infinite;
+      animation-direction: reverse; }
+  .preloader__img {
+    display: block;
+    width: 8.3em;
+    height: 8.3em; }
+  .preloader__text {
+    height: 4em;
+    margin-left: 0.5em;
+    margin-top: 0.15em; }
+
+@keyframes girl {
+  0% {
+    transform: rotate(0deg) translateX(2px) rotate(0deg); }
+  30% {
+    transform: rotate(30deg) translateX(2px); }
+  100% {
+    transform: rotate(360deg) translateX(2px) rotate(-360deg); } }
+
+/*# sourceMappingURL=maps/preloader.css.map */

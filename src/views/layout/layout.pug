@@ -25,28 +25,29 @@ html(lang='ru')
     link(rel="apple-touch-icon" sizes="167x167" href="img/favicons/apple-touch-icon-167x167.png")
     link(rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon-180x180.png")
     link(rel="apple-touch-icon" sizes="1024x1024" href="img/favicons/apple-touch-icon-1024x1024.png")
-    //fonts
-    link(href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap', rel='stylesheet')
-    
-    //preview
-    link(rel="stylesheet" href="./styles/helper.css")
-    link(rel="stylesheet" href="./styles/grid.css")
-    
-    //production
+    //theme
     link(rel="stylesheet" href="./styles/theme.css")
-    link(rel="stylesheet" href="./styles/common.css")
 
   body
-    .wrapper
+
+    include ../blocks/preloader
+    
+    .wrapper(style='visibility:hidden;opacity:0;')
       include ../blocks/header
+      include ../blocks/nav
       main.main
         block content
       include ../blocks/footer
 
-    //scripts
-    script(src="./scripts/common.js")
 
+    link(href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap', rel='stylesheet')
+    link(rel="stylesheet" href="./styles/common.css")
+    block styles
+    
+    script(src="./scripts/common.js")
+    block scripts
 
     //helper
     include ../blocks/helper
+    link(rel="stylesheet" href="./styles/helper.css")
     script(src="./scripts/helper.js")

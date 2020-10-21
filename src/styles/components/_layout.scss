@@ -3,12 +3,26 @@
   flex-direction: column;
   min-height: 100vh;
   overflow: hidden;
+  &.disabled {
+    pointer-events: none;
+  }
 }
 .main {
   flex: 1 1 100%;
+  opacity: 0;
+  visibility: hidden;
 }
 .section {
-  
+  margin-bottom: 120px;
+  &:first-child {
+    padding-top: 130px;
+  }
+  @include media-breakpoint-down(xxl) {
+    margin-bottom: 100px;
+    &:first-child {
+      padding-top: 100px;
+    }
+  }
 }
 
 

@@ -23,16 +23,7 @@ void main() {
   c/=200.;
   c = 1.8 - sqrt(c);
 
-  //vec4 img = sqrt( texture2D(img1, vUv) * texture2D(img1, vec2(vUv.x + cos(c)*mouse.y*0.1, vUv.y + cos(c)*mouse.x*0.1)) );
-  //vec4 ct = sqrt(c*img);
-  //gl_FragColor = (ct - vec4(img.rgb, vPosition.z));
-  //gl_FragColor = ct;
-
-  //gl_FragColor = img;
-
   vec4 img = texture2D(img1, vUv) * texture2D(img1, vec2(vUv.x + cos(c)*mouse.y*0.15, vUv.y + cos(c)*mouse.x*0.15));
-  vec4 b = c*img;
 
   gl_FragColor = sqrt((c*c*img - img*2.));
-  //gl_FragColor = ct;
 }

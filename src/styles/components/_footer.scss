@@ -1,3 +1,31 @@
 .footer {
   flex-shrink: 0;
+  padding: 120px 0 55px 0;
+  background-color: var(--color-bg-dark);
+  font-size: 0.875rem;
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__left {
+    display: flex;
+  }
+  &__logo {
+    margin-right: 150px;
+  }
+  @include media-breakpoint-down(xxl) {
+    padding: 100px 0 50px 0;
+  }
+}
+
+.dev-label {
+  &__link {
+    display: inline-block;
+    transform: translateY(5%);
+  }
+  svg {
+    height: 15px;
+    width: 73px;
+  }
 }

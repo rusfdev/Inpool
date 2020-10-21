@@ -1,6 +1,9 @@
 extends layout/layout
 block title
   title #{title} - Главная
+block variables
+  -var namespace = 'home';
 block content
   include blocks/home
   include blocks/home-about
+  include blocks/contacts

@@ -67,3 +67,121 @@
     }
   }
 }
+
+.splitting .char, 
+.splitting .word {
+  display: inline-block;
+}
+
+
+.pagination {
+  &__list {
+    display: flex;
+  }
+  &__item {
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+  &__button {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: -5px;
+    padding: 5px;
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      transition: background-color $trs1;
+    }
+    &.active {
+      pointer-events: none;
+    }
+    &_style-1 {
+      &::after {
+        background-color: var(--color-muted);
+      }
+      &.touch, &.hover {
+        &::after {
+          background-color: var(--color-text);
+        }
+      }
+      &.active {
+        &::after {
+          background-color: var(--color-light);
+        }
+      }
+    }
+  }
+}
+
+.trigger-round {
+  position: fixed;
+  z-index: 2000;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  margin-left: -22px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    background-color: var(--color-text);
+    top: 50%;
+    left: 50%;
+    transition: $trs2;
+    margin-top: -3px;
+    margin-left: -3px;
+  }
+  &-icon {
+    width: 100%;
+    height: 100%;
+    stroke-width: 1px;
+    fill: transparent;
+    stroke: var(--color-text);
+    transform: rotate(-90deg);
+    transition: $trs2;
+  }
+  &.hover {
+    &:after {
+      transform: scale(6);
+      opacity: 0.25;
+    }
+    &.focus {
+      &:after {
+        transform: scale(4);
+      }
+    }
+    .trigger-round-icon {
+      stroke: transparent;
+    }
+  }
+
+  &.focus,
+  &.move {
+    .trigger-round-icon {
+      transform: rotate(-90deg) scale(0.75);
+      stroke-width: 1.33px;
+    }
+  }
+  &.move {
+    .trigger-round-icon {
+      transition: $trs2;
+    }
+  }
+  &.hidden {
+    .trigger-round-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0);
+    }
+  }
+}

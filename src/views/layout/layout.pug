@@ -32,14 +32,19 @@ html(lang='ru')
 
     include ../blocks/preloader
     
-    .wrapper(style='visibility:hidden;opacity:0;')
+    .wrapper(data-barba="wrapper" style='visibility:hidden;opacity:0;')
+      //- курсор
+      .trigger-round
+        svg.trigger-round-icon
+          circle.trigger-round-circle
+          
       include ../blocks/header
       include ../blocks/nav
-      main.main
+      main.main(data-barba="container" data-barba-namespace=namespace)
         block content
       include ../blocks/footer
-
-
+  
+    link(href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap' rel='stylesheet')
     link(href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap', rel='stylesheet')
     link(rel="stylesheet" href="./styles/common.css")
     block styles

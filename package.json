@@ -36,10 +36,13 @@
 		"webpack-stream": "^6.1.0"
 	},
 	"dependencies": {
+		"@barba/core": "^2.9.7",
 		"bootstrap": "^5.0.0-alpha1",
 		"gsap": "^3.5.1",
 		"lazysizes": "^5.2.2",
 		"normalize.css": "^8.0.1",
+		"scroll-lock": "^2.1.4",
+		"splitting": "^1.0.6",
 		"three": "^0.121.1"
 	}
 }

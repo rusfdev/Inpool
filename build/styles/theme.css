@@ -1,11 +1,14 @@
 :root {
   --color-accent:   #7DBBFD;
+  --gradient-accent: linear-gradient(260deg, #009FE3 -54%, #386FC0 112%);
   --color-light:    #fff;
   --color-title:    #e8e8e8;
   --color-text:     #d9d9d9;
+  --color-darkened: #a8a8a8;
   --color-muted:    #8c8c8c;
   --color-bg:        #1A1A1A;
   --color-bg-darker: #141414;
-  --color-bg-dark:   #000; }
+  --color-bg-dark:   #000;
+  --color-bg-transparent: rgba(16, 16, 16, 0.75); }
 
 /*# sourceMappingURL=maps/theme.css.map */

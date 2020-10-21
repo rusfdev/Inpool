@@ -2,4 +2,14 @@ extends layout/layout
 block title
   title #{title} - Компоненты
 block content
+  section.section
+    .container
+      .row
+        .col-xl-3
+          a(href="javascript:void(0);").button 
+            span Кнопка
+        .col-xl-3
+          a(href="#").button-more Кнопка
+            svg.icon
+              use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
   

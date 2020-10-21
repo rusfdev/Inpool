@@ -1,0 +1,27 @@
+section.section.contacts  
+  .contacts__map
+    iframe.contacts__map(src='https://yandex.ru/map-widget/v1/?um=constructor%3A2118f98dcf29507ebe120d60483af08b746561e4ff1627b0980517ad66f8d2f7&source=constructor')
+  .container.contacts__container
+    .row.justify-content-center
+      .col-xl-6
+        .contacts-block 
+          .container  
+            h6.contacts-block__title Наши контакты
+            .contacts-block__values
+              h2.contacts-block__value Москва
+            .contacts-block__contents
+              //content
+              .contacts-block__content
+                .contacts-block__item WATER ELEMENTS
+                .contacts-block__item 
+                  a(href="tel:+74953746744")
+                    span +7 495 374 67 44
+                .contacts-block__item 115419, Москва, ул.Шаболовка, 34с5. БЦ Матрикс
+                .contacts-block__item 
+                  a(href="https://waterelements.ru/" rel='nofollow' target='_blank')
+                    span waterelements.ru
+    if contacts_page!==true
+      .contacts__button
+        a(href="javascript:void(0);").button
+          span Заказать обратный звонок
+

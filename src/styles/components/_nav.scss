@@ -8,6 +8,8 @@
     width: 440px;
     height: 100vh;
     padding: 160px 24px 100px 90px;
+    display: flex;
+    justify-content: space-between;
   }
   &__socials {
     margin-bottom: 30px;
@@ -38,22 +40,25 @@
   &__link {
     display: block;
     span {
-      transition: color $trs1, border-color $trs1;
+      transition: border-color $trs1;
       border-bottom: 1px solid transparent;
       font-size: 1.375rem;
       font-weight: 700;
-      color: var(--color-text);
     }
     &.touch, &.hover {
+      color: var(--color-text);
       span {
         border-color: var(--color-text);
       }
     }
     &.focus {
+      color: var(--color-accent);
       span {
         border-color: transparent;
-        color: var(--color-accent);
       }
+    }
+    &.active {
+      pointer-events: none;
     }
   }
   &__slogan {
@@ -61,14 +66,32 @@
   }
   @include media-breakpoint-down(xxl) {
     &__container {
-      padding: 130px 24px 60px 60px;
+      padding: 130px 24px 80px 60px;
     }
   }
-  @include media-breakpoint-up(xl) {
-    @media (max-height:660px) {
+  @include media-breakpoint-between(xl, xxl) {
+    @media (max-height:640px) {
       &__container {
-
+        padding-bottom: 60px;
       }
+    }
+  }
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+  &__link {
+    display: block;
+    color: var(--color-light);
+    &.active {
+      pointer-events: none;
     }
   }
 }

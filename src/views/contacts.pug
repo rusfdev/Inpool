@@ -1,0 +1,8 @@
+extends layout/layout
+block title
+  title #{title} - Контакты
+block variables
+  -var contacts_page = true
+  -var namespace = 'contacts';
+block content
+  include blocks/contacts

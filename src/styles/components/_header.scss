@@ -1,16 +1,21 @@
 .header {
   flex-shrink: 0;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
   width: 100%;
-  &.fixed {
-    position: fixed;
-    top: -60px;
-    background-color: rgba(20, 20, 20, 0.5);
+  transition: background-color $trs2;
+  &_fixed {
+    background-color: var(--color-bg-transparent);
     .header__container {
-      height: 60px;
+      height: 70px;
+    }
+  }
+  &_nav-opened {
+    background-color: transparent;
+    .header__container {
+      height: 130px;
     }
   }
   &__container {
@@ -18,10 +23,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: height $trs2;
   }
   @include media-breakpoint-down(xxl) {
     &__container {
       height: 100px;
+    }
+    &_nav-opened {
+      .header__container {
+        height: 100px;
+      }
     }
   } 
 }

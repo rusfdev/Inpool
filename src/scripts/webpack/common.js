@@ -29,15 +29,18 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import vertex from './shaders/vertex.glsl'
 import fragment from './shaders/fragment.glsl'
 import { PerspectiveCamera } from 'three';
-import { disablePageScroll, enablePageScroll } from 'scroll-lock';
-import Splitting from "splitting"
+import Splitting from "splitting";
+import Scrollbar from 'smooth-scrollbar';
 
 window.onload = function(){
   Preloader.finish();
+  Cursor.init();
+  TouchHoverEvents.init();
+  Header.init();
+  Nav.init();
 }
 
 const $wrapper = document.querySelector('.wrapper');
@@ -53,17 +56,17 @@ const brakepoints = {
 }
 const speed = 1; //s
 
+const PageScroll = Scrollbar.init($wrapper, {
+  damping: 0.2,
+});
+
 const App = {
   init: function() {
     this.$container = document.querySelector('[data-barba="container"]');
     this.namespace = this.$container.getAttribute('data-barba-namespace');
-
     transitions.enter(this.$container, this.namespace);
 
-    Cursor.init();
-    TouchHoverEvents.init();
-    Header.init();
-    Nav.init();
+    Cursor.show();
   }
 }
 
@@ -115,7 +118,6 @@ const transitions = {
   }
 }
 
-
 const Preloader = {
   min_loading_time: speed*2, 
   finish_speed: speed, 
@@ -144,9 +146,10 @@ const Preloader = {
   }
 }
 
+
 //hover/touch custom events
 const TouchHoverEvents = {
-  targets: 'a, button, label, tr, .jsTouchHover, .js-3d-object',
+  targets: 'a, button, label, tr, .jsTouchHover, .scrollbar-thumb',
   touched: false,
   touchEndDelay: 100, //ms
   init: function() {
@@ -232,6 +235,8 @@ const Home = {
 const Nav = {
   init: function() {
     this.$nav = document.querySelector('.nav');
+    this.$bg = document.querySelector('.nav__bg');
+    this.$container = document.querySelector('.nav__container');
     this.$toggle = document.querySelector('.nav-toggle');
     this.$toggle_lines = this.$toggle.querySelectorAll('svg');
     this.$toggle_items = this.$toggle.querySelectorAll('path');
@@ -257,18 +262,25 @@ const Nav = {
         })
       }
     })
+      .set(this.$nav, {autoAlpha:1})
       .to(this.$toggle_lines[1], {autoAlpha:0, duration:speed/2, ease:'power2.inOut'})
       .to(this.$toggle_lines[1], {xPercent:-100, duration:speed/2, ease:'power2.in'}, `-=${speed/2}`)
       .to(this.$toggle_lines[0], {rotate:45, y:8.5, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
       .to(this.$toggle_lines[2], {rotate:-45, y:-8.5, duration:speed, ease:'power2.out'}, `-=${speed}`)
       //
-      .fromTo(this.$nav, {xPercent:100}, {xPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
+      .fromTo(this.$bg, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.out'}, `-=${speed}`)
+      .fromTo(this.$container, {xPercent:100}, {xPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
       .fromTo(this.$nav_items, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2, from:'random'}}, `-=${speed}`)
 
     this.$toggle.addEventListener('mouseenter', (event)=>{this.checkToggleButton(event)})
     this.$toggle.addEventListener('mouseleave', (event)=>{this.checkToggleButton(event)})
     this.$toggle.addEventListener('touchstart', (event)=>{this.checkToggleButton(event)})
     this.$toggle.addEventListener('customTouchend', (event)=>{this.checkToggleButton(event)})
+    this.$bg.addEventListener('click', ()=>{
+      if(this.state) {
+        this.close();
+      }
+    })
     this.$toggle.addEventListener('click', ()=>{
       if(!this.state) {
         this.open();
@@ -278,8 +290,12 @@ const Nav = {
     })
 
     this.setSize();
-    window.addEventListener('resize', (event)=>{this.setSize()});
-
+    window.addEventListener('resize', (event)=>{
+      this.setSize()
+    });
+    PageScroll.addListener(()=>{
+      this.$nav.style.top = `${PageScroll.offset.y}px`;
+    })
   },
   checkToggleButton: function(event) {
     if(!this.opened) {
@@ -296,25 +312,25 @@ const Nav = {
     }
   },
   open: function() {
-    if(window.pageYOffset<Header.height) {
-      gsap.to(window, {duration:speed, scrollTo:0, ease:'power2.inOut'});
-    }
+    $header.classList.add('header_nav-opened');
     this.state=true;
     this.animation.timeScale(1).play();
-    disablePageScroll();
   },
   close: function() {
+    $header.classList.remove('header_nav-opened');
     this.state=false;
     this.animation.timeScale(2).reverse();
-    enablePageScroll();
   },
   setSize: function() {
     let w = window.innerWidth,
         cw = document.querySelector('.container').getBoundingClientRect().width,
         w2 = (w-cw)/2,
-        nw = this.$nav.querySelector('.nav__container').getBoundingClientRect().width;
+        nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
+
+        console.log(w2, nw)
         
-        this.$nav.style.width = `${nw+w2}px`
+        this.$container.style.width = `${nw+w2}px`;
+        this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
   }
 }
 
@@ -322,48 +338,39 @@ const Header = {
   init: function() {
     this.height = $header.getBoundingClientRect().height;
     this.scrollY = 0;
-    this.isFixed = false;
-    this.isVisible = false;
+    this.isVisible = true;
 
     this.animation = gsap.timeline({paused:true})
-      .to($header, {yPercent:100, duration:speed, ease:'power2.out'})
+      .to($header, {yPercent:-100, duration:speed, ease:'power2.in'})
 
     window.addEventListener('resize', ()=>{
       this.height = $header.getBoundingClientRect().height;
     })
-    window.addEventListener('scroll', ()=>{
+    PageScroll.addListener(()=>{
       this.check();
     })
     this.check();
   }, 
   check: function() {
-    let y = window.pageYOffset,
+    let y = PageScroll.offset.y,
         h = window.innerHeight/2,
         h2 = window.innerHeight;
-    
-    if(y>=h && !this.isFixed && !this.animation.isActive()) {
-      $header.classList.add('fixed');
-      this.isFixed = true;
-    } else if((y<h && this.isFixed && !this.isVisible && !this.animation.isActive()) || (y<=this.height && this.animation.isActive())) {
-      if(y<=this.height && this.animation.isActive()) {
-        this.animation.seek(0);
-      }
-      $header.classList.remove('fixed');
-      this.isFixed = false;
+
+    $header.style.top = `${y}px`;
+
+    if(y>0) {
+      $header.classList.add('header_fixed');
+    } else {
+      $header.classList.remove('header_fixed');
     }
 
-    if(this.scrollY<y && this.isVisible) {
+    if(this.scrollY<y && this.scrollY>h2 && this.isVisible && !Nav.opened) {
       this.isVisible = false;
-      this.animation.timeScale(2).reverse();
-    } else if(this.scrollY>y && this.isFixed) {
-      if(!this.isVisible && y>=h2) {
-        this.isVisible = true;
-        this.animation.timeScale(1).play();
-      } else if(y<h && this.isVisible) {
-        this.isVisible = false;
-        this.animation.timeScale(2).reverse();
-      }
-    } 
+      this.animation.timeScale(2).play();
+    } else if(this.scrollY>y && !this.isVisible) {
+      this.isVisible = true;
+      this.animation.timeScale(1).reverse();
+    }    
 
     this.scrollY = y;
   }
@@ -476,7 +483,7 @@ const Banner = {
         animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{
           inAnimation = false;
           if(!interval) {
-            interval = setInterval(autoslide ,interval_duration*1000);
+            //interval = setInterval(autoslide ,interval_duration*1000);
           }
         }})
           .set($slide, {autoAlpha:1})
@@ -578,8 +585,6 @@ const Cursor = {
     this.flag = true;
     let xStart, yStart;
 
-    gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-
     document.addEventListener('mousemove',(event)=>{
       let x = event.clientX,
           y = event.clientY,
@@ -588,15 +593,13 @@ const Cursor = {
       //move event
       moveSpeed = Math.sqrt((x-xStart)*(x-xStart)+(y-yStart)*(y-yStart));
       if(this.flag==true) {
-        if(moveSpeed>10) {
+        if(moveSpeed>5) {
           clearTimeout(timeout);
           this.$parent.classList.add('move');
           timeout = setTimeout(()=>{
             this.$parent.classList.remove('move');
-          },200)
-        } else {
-          this.$parent.classList.remove('move');
-        }
+          }, 250)
+        } 
         xStart = x;
         yStart = y;
       }
@@ -623,5 +626,8 @@ const Cursor = {
   },
   leave: function() {
     this.$parent.classList.remove('hover');
+  },
+  show: function() {
+    gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
   }
 }

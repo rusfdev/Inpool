@@ -1,6 +1,7 @@
 .home {
   height: 100vh;
   margin: 0 !important;
+  position: relative;
   &__category-list {
     position: absolute;
     padding-top: inherit;
@@ -49,21 +50,24 @@
   &__slide {
     opacity: 0;
     visibility: hidden;
-    padding-top: inherit;
     padding-bottom: inherit;
     position: absolute;
     width: 100%;
-    height: 100%;
-    top: 0;
+    height: 50%;
+    bottom: 0;
     left: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
+    justify-content: space-between;
     &-title {
       font-size: 4.375rem;
       text-transform: uppercase;
-      margin: 0 0 50px 0;
+      margin: -0.25em 0 50px 0;
+    }
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     &-text {
       max-width: 400px;
@@ -74,6 +78,14 @@
       margin-left: 48px;
       .button {
         min-width: 214px;
+      }
+    }
+  }
+  @include media-breakpoint-up(xxl) {
+    @media (max-height:760px) {
+      &__slide {
+        height: 100%;
+        justify-content: flex-end;
       }
     }
   }
@@ -90,6 +102,12 @@
     }
   }
   @include media-breakpoint-between(xl, xxl) {
+    @media (max-height:700px) {
+      &__slide {
+        height: 100%;
+        justify-content: flex-end;
+      }
+    }
     @media (max-height:640px) {
       &__container {
         padding-bottom: 60px;

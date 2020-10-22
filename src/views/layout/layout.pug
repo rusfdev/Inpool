@@ -31,14 +31,14 @@ html(lang='ru')
   body
 
     include ../blocks/preloader
-    
+    //- курсор
+    .trigger-round
+      svg.trigger-round-icon
+        circle.trigger-round-circle
     .wrapper(data-barba="wrapper" style='visibility:hidden;opacity:0;')
-      //- курсор
-      .trigger-round
-        svg.trigger-round-icon
-          circle.trigger-round-circle
-          
+      //- header
       include ../blocks/header
+      //- nav
       include ../blocks/nav
       main.main(data-barba="container" data-barba-namespace=namespace)
         block content

@@ -1,6 +1,7 @@
 let $prelaoder = document.querySelector('.preloader'),
     $images = $prelaoder.querySelectorAll('img'),
     $chars = $prelaoder.querySelectorAll('.preloader__char'),
+    $square = $prelaoder.querySelectorAll('.preloader__square'),
     timer,
     loading_duration = 0,
     loaded_images_count = 0,
@@ -29,5 +30,6 @@ timer = setInterval(() => {
 
 $images.forEach(($image)=>{
   $image.onload = ()=> {loaded_images_count++;}
+  $image.onerror = ()=> {loaded_images_count++;}
   $image.setAttribute('src', $image.getAttribute('data-src'));
 })

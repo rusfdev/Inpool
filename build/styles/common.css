@@ -3198,7 +3198,11 @@ table {
       width: 100%;
       height: 100%;
       border-radius: 4px;
-      background-color: rgba(255, 255, 255, 0.3); }
+      background-color: rgba(255, 255, 255, 0.3);
+      opacity: 0;
+      transition: opacity 0.25s ease-out; }
+    .wrapper > .scrollbar-track-y.touch:after, .wrapper > .scrollbar-track-y.hover:after {
+      opacity: 1; }
     .wrapper > .scrollbar-track-y .scrollbar-thumb {
       cursor: pointer;
       width: inherit;
@@ -3318,12 +3322,11 @@ table {
     transition: background-color 0.25s ease-out, transform 0.25s ease-out; }
   .pagination__button.active {
     pointer-events: none; }
-    .pagination__button.active::after {
-      transform: scale(1.3); }
   .pagination__button_style-1::after {
     background-color: var(--color-muted); }
   .pagination__button_style-1.touch::after, .pagination__button_style-1.hover::after {
-    background-color: var(--color-text); }
+    background-color: var(--color-text);
+    transform: scale(1.3); }
   .pagination__button_style-1.active::after {
     background-color: var(--color-light); }
 
@@ -3361,7 +3364,7 @@ table {
   .trigger-round.hover:after {
     transition: opacity 0.25s ease-out, transform 0.5s ease-out;
     transform: scale(7);
-    opacity: 0.25; }
+    opacity: 0.15; }
   .trigger-round.hover.focus:after {
     transform: scale(5.25); }
   .trigger-round.hover .trigger-round-icon {

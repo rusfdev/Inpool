@@ -128,7 +128,9 @@ const Preloader = {
 
     this.animation = gsap.timeline({paused:true})
       .set([$prelaoder, $images, $chars], {css:{transition:'none'}})
+      .set($square, {autoAlpha:1}) 
       .to($images, {autoAlpha:0, duration:this.finish_speed, ease:'power2.inOut'})
+      .to($square, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut'})
       .to($chars, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut', stagger:{amount:this.finish_speed*0.25, from:'random'}}, `-=${this.finish_speed}`)
       .set($prelaoder, {autoAlpha:0})
 
@@ -149,7 +151,7 @@ const Preloader = {
 
 //hover/touch custom events
 const TouchHoverEvents = {
-  targets: 'a, button, label, tr, .jsTouchHover, .scrollbar-thumb',
+  targets: 'a, button, label, tr, .jsTouchHover, .scrollbar-thumb, .scrollbar-track',
   touched: false,
   touchEndDelay: 100, //ms
   init: function() {
@@ -412,7 +414,7 @@ const Banner = {
         side: THREE.DoubleSide,
         uniforms: {
           time: {type:'f', value:0},
-          waveLength: {type:'f', value:3},
+          waveLength: {type:'f', value:2},
           mouse: {type:'v2', value: new THREE.Vector2()},
           resolution: {type:'v2', value: new THREE.Vector2($scene.getBoundingClientRect().width, $scene.getBoundingClientRect().height)},
           img1: {type:'t', value:textures[slide_current]},
@@ -483,14 +485,14 @@ const Banner = {
         animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{
           inAnimation = false;
           if(!interval) {
-            //interval = setInterval(autoslide ,interval_duration*1000);
+            interval = setInterval(autoslide ,interval_duration*1000);
           }
         }})
           .set($slide, {autoAlpha:1})
           .set([$title_chars, $text_chars, $button], {y:20, autoAlpha:0})
           //scene
           .fromTo($scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-          .fromTo(material.uniforms.waveLength, {value:20}, {value:3, duration:speed, ease:'power2.out'}, `-=${speed}`)
+          .fromTo(material.uniforms.waveLength, {value:20}, {value:2, duration:speed, ease:'power2.out'}, `-=${speed}`)
           //elements
           .to($title_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed/2}`)
           .to($text_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*0.9}`)
@@ -501,12 +503,15 @@ const Banner = {
           inAnimation = true;
         }})
           //scene
-          .fromTo(material.uniforms.waveLength, {value:3}, {immediateRender:false, value:15, duration:speed*0.75, ease:'power2.out'})
+          .fromTo(material.uniforms.waveLength, {value:2}, {immediateRender:false, value:20, duration:speed*0.75, ease:'power2.out'})
           .fromTo($scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed*0.75, ease:'power2.out'}, `-=${speed*0.75}`) 
           //elements
-          .to($title_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.out', stagger:{amount:speed*0.25, from:'random'}}, `-=${speed*0.75}`)
-          .to($text_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.out', stagger:{amount:speed*0.25, from:'random'}}, `-=${speed*0.75}`)
-          .to($button, {autoAlpha:0, duration:speed*0.75, ease:'power2.out'}, `-=${speed*0.75}`)
+          .to($title_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+          .to($title_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+          .to($text_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+          .to($text_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+          .to($button, {y:-20, duration:speed*0.75, ease:'power2.in'}, `-=${speed*0.75}`)
+          .to($button, {autoAlpha:0, duration:speed*0.75, ease:'power2.inOut'}, `-=${speed*0.75}`)
           .set($slide, {autoAlpha:0})
       })
 

@@ -99,9 +99,6 @@
     }
     &.active {
       pointer-events: none;
-      &::after {
-        transform: scale(1.3);
-      }
     }
     &_style-1 {
       &::after {
@@ -110,6 +107,7 @@
       &.touch, &.hover {
         &::after {
           background-color: var(--color-text);
+          transform: scale(1.3);
         }
       }
       &.active {
@@ -158,7 +156,7 @@
     &:after {
       transition: opacity $trs1, transform $trs2;
       transform: scale(7);
-      opacity: 0.25;
+      opacity: 0.15;
     }
     &.focus {
       &:after {

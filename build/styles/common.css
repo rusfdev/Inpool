@@ -3154,7 +3154,7 @@ body {
   *:before, *:after {
     box-sizing: border-box; }
 
-button, input, textarea {
+button, input:not([type='range']), textarea {
   outline: none;
   display: block;
   background-color: transparent;
@@ -3384,6 +3384,10 @@ table {
   .trigger-round.hidden .trigger-round-icon {
     opacity: 0;
     transform: rotate(-90deg) scale(0); }
+
+.background-text {
+  color: var(--color-bg-text);
+  position: absolute; }
 
 /*========== Typography ==========*/
 h1, h2, h3, h4, h5, h6 {
@@ -3853,6 +3857,83 @@ a {
   @media (min-width: 576px) {
     .contacts-block .container {
       padding: 0; } }
+
+/*========== Conceptions ==========*/
+.conceptions {
+  background: var(--color-bg-darker);
+  position: relative; }
+  .conceptions input {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    width: 400px; }
+  .conceptions .dur {
+    position: absolute;
+    bottom: 27px;
+    left: 460px;
+    display: block;
+    font-weight: 500; }
+  .conceptions__slider {
+    padding: 100px 0;
+    position: relative;
+    z-index: 1; }
+  .conceptions__slides {
+    position: relative;
+    height: 100%; }
+
+.conceptions-slide {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0; }
+  .conceptions-slide__container {
+    height: 100%; }
+  .conceptions-slide__content {
+    position: relative;
+    height: 100%; }
+  .conceptions-slide__index {
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    font-family: "Open Sans", sans-serif; }
+    .conceptions-slide__index_1 {
+      top: -30px;
+      left: 320px; }
+    .conceptions-slide__index_2 {
+      top: -50px;
+      left: 245px; }
+    .conceptions-slide__index_3 {
+      bottom: 35px;
+      left: 0; }
+    .conceptions-slide__index_4 {
+      top: -50px;
+      right: 195px; }
+  .conceptions-slide__value {
+    font-size: 314px;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    color: #7f7f7f;
+    display: flex; }
+  .conceptions-slide__value-index {
+    position: relative; }
+  .conceptions-slide__value-index-prev, .conceptions-slide__value-index-next, .conceptions-slide__value-index-current {
+    display: block; }
+  .conceptions-slide__value-index-prev, .conceptions-slide__value-index-next {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden; }
+  .conceptions-slide__value-index-prev {
+    bottom: 100%; }
+  .conceptions-slide__value-index-next {
+    top: 100%; }
+  .conceptions-slide__count {
+    color: #474747;
+    font-size: 62px;
+    line-height: 1;
+    transform: translateY(25px); }
 
 /*========== Header ==========*/
 .header {

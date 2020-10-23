@@ -29,7 +29,7 @@ body {
     box-sizing: border-box;
   }
 }
-button, input, textarea {
+button, input:not([type='range']), textarea {
   outline: none;
   display: block;
   background-color: transparent;

@@ -13,7 +13,6 @@ document.addEventListener('lazybeforeunveil', function(e){
 import barba from '@barba/core';
 barba.init({
   debug: true,
-  //cacheIgnore: true,
   preventRunning: true,
   transitions: [{
     leave(data) {
@@ -34,6 +33,8 @@ import fragment from './shaders/fragment.glsl'
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
+
+const dev = false;
 
 window.onload = function(){
   Preloader.finish();
@@ -56,17 +57,26 @@ const brakepoints = {
 }
 const speed = 1; //s
 
+//scroll
 const PageScroll = Scrollbar.init($wrapper, {
   damping: 0.2,
 });
+PageScroll.addListener(()=>{
+  localStorage.setItem('scroll', PageScroll.offset.y);
+})
+if(+localStorage.getItem('scroll')>0) {
+  PageScroll.setPosition(0, +localStorage.getItem('scroll'));
+}
 
 const App = {
   init: function() {
     this.$container = document.querySelector('[data-barba="container"]');
     this.namespace = this.$container.getAttribute('data-barba-namespace');
     transitions.enter(this.$container, this.namespace);
-
-    Cursor.show();
+    
+    if(!dev) {
+      Cursor.show();
+    }
   }
 }
 
@@ -122,8 +132,10 @@ const Preloader = {
   min_loading_time: speed*2, 
   finish_speed: speed, 
   finish: function() {
-    //this.min_loading_time = 0;
-    //this.finish_speed = 0;
+    if(dev) {
+      this.min_loading_time = 0;
+      this.finish_speed = 0;
+    }
     let delay = Math.max(this.min_loading_time-loading_duration/1000, 0);
 
     this.animation = gsap.timeline({paused:true})
@@ -228,6 +240,7 @@ const Home = {
   init: function() {
     Splitting();
     Banner.init();
+    ConceptionsSlider.init();
   },
   destroy: function() {
     Banner.destroy();
@@ -388,7 +401,7 @@ const Banner = {
     let inAnimation = false,
         slide_current = 0,
         slide_old,
-        interval_duration = 5,
+        interval_duration = 7,
         interval,
         animations_enter = [],
         animations_exit = [];
@@ -570,6 +583,63 @@ const Banner = {
     this.initialized = false;
     window.removeEventListener('resize', this.resize);
     window.removeEventListener('mousemove', this.mousemove);
+  }
+}
+
+const ConceptionsSlider = {
+  init: function() {
+    this.$container = document.querySelector('.conceptions__slider');
+    this.$slide = document.querySelectorAll('.conceptions-slide');
+
+    this.animation = gsap.timeline({paused:true});
+
+    this.$slide.forEach(($slide, index)=>{
+
+      let $index = $slide.querySelector('.conceptions-slide__index'),
+          $num = $slide.querySelector('.conceptions-slide__value-index-current'),
+          $prevNum = $slide.querySelector('.conceptions-slide__value-index-prev'),
+          $nextNum = $slide.querySelector('.conceptions-slide__value-index-next');
+
+      let timeline = gsap.timeline()
+        .set($slide, {autoAlpha:1})
+        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
+        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:speed, ease:'power2.out'},`-=${speed}`)
+      
+      if(index!==3) {
+        let timelineEnd = gsap.timeline()
+          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:speed, ease:'power2.inOut'})
+          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:speed, ease:'power2.in'}, `-=${speed}`)
+          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:speed, ease:'power2.in'},`-=${speed}`)
+
+
+        timeline.add(timelineEnd, '>')
+      }
+        
+
+      this.animation.add(timeline, '>');
+    })
+
+    this.animation.play()
+    setTimeout(()=>{
+      this.animation.pause()
+    },1000)
+
+    let $range = this.$container.querySelector('input'),
+        dur = this.animation.totalDuration();
+    $range.setAttribute('min', speed);
+    $range.setAttribute('max', dur);
+    $range.addEventListener('input', ()=>{
+      this.animation.seek($range.value);
+      document.querySelector('.dur').textContent = `time: ${$range.value} s`;
+    })
+
+    this.setSize();
+    window.addEventListener('resize', ()=>{this.setSize()});
+  },
+  setSize: function() {
+    let h = $wrapper.getBoundingClientRect().height;
+    this.$container.style.height = `${h}px`;
   }
 }
 

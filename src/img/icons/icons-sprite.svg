@@ -3,4 +3,7 @@
     <path d="M10.4 6.7l6.1 5.8-6.1 5.8"></path>
     <circle cx="12.5" cy="12.5" r="11.8"></circle>
   </symbol>
+  <symbol fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.9 27" id="bottom-arrow">
+    <path d="M.5.9l47 25 47-25" stroke-width="2"></path>
+  </symbol>
 </svg>

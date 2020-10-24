@@ -4,6 +4,11 @@
   position: relative;
   &.disabled {
     pointer-events: none;
+    & > .scrollbar-track-y {
+      &.show {
+        opacity: 0;
+      }
+    }
   }
   .scroll-content {
     min-height: 100%;

@@ -1,5 +1,5 @@
 uniform float time;
-uniform sampler2D img1;
+uniform sampler2D img;
 uniform float waveLength;
 uniform vec2 resolution;
 uniform vec2 mouse;
@@ -23,7 +23,7 @@ void main() {
   c/=200.;
   c = 1.8 - sqrt(c);
 
-  vec4 img = texture2D(img1, vUv) * texture2D(img1, vec2(vUv.x + cos(c)*mouse.y*0.15, vUv.y + cos(c)*mouse.x*0.15));
+  vec4 img = texture2D(img, vUv) * texture2D(img, vec2(vUv.x + cos(c)*mouse.x*0.15, vUv.y + cos(c)*mouse.y*0.15));
 
-  gl_FragColor = sqrt((c*c*img - img*1.5));
+  gl_FragColor = sqrt((c*c*img - img*1.75));
 }

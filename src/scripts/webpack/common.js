@@ -1,6 +1,7 @@
 //lazylaod
 import 'lazysizes';
-lazySizes.cfg.preloadAfterLoad = true;
+//lazySizes.cfg.preloadAfterLoad = true;
+lazySizes.cfg.expand = 50;
 document.addEventListener('lazybeforeunveil', function(e){
   let el = e.target.tagName,
       bg = e.target.getAttribute('data-src');
@@ -28,8 +29,13 @@ import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 gsap.registerPlugin(ScrollToPlugin);
 import * as THREE from 'three';
-import vertex from './shaders/vertex.glsl'
-import fragment from './shaders/fragment.glsl'
+//waves
+import vertex_waves from './shaders/waves/vertex.glsl'
+import fragment_waves from './shaders/waves/fragment.glsl'
+//distortion
+import vertex_distortion from './shaders/distortion/vertex.glsl'
+import fragment_distortion from './shaders/distortion/fragment.glsl'
+//
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
@@ -42,6 +48,7 @@ window.onload = function(){
   TouchHoverEvents.init();
   Header.init();
   Nav.init();
+  Distortion.init();
 }
 
 const $wrapper = document.querySelector('.wrapper');
@@ -85,46 +92,46 @@ const transitions = {
   enter: function($container, namespace) {
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
-    $wrapper.classList.remove('disabled');
+    PageScroll.track.yAxis.element.classList.remove('show')
+    setTimeout(()=>{
+      if(namespace=='home') {
+        Home.init();
+      } 
+      else if(namespace=='equipment') {
+        WaveScene.init();
+      }
 
-    /*==== Home =====*/
-    if(namespace=='home') {
-      Home.init();
-    }
-
-    this.animation = gsap.to($container, {duration:speed ,autoAlpha:1, ease:'power2.inOut'});
+      this.animation = gsap.to($container, {duration:speed ,autoAlpha:1, ease:'power2.inOut'});
+      this.animation.eventCallback('onComplete', ()=>{
+        $wrapper.classList.remove('disabled');
+      })
+    }, 250)
     
   },
   /* EXIT */
   exit: function($container, namespace) {
     $wrapper.classList.add('disabled');
-
+    $header.classList.remove('header_fixed');
     if(Nav.state) {
       Nav.close();
     }
+    this.animation = gsap.timeline()
+      .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
+      .to(PageScroll, {scrollTop:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
 
-    this.animation = gsap.to($container, {duration:speed/2 ,autoAlpha:0, ease:'power2.inOut'});
-    
     this.animation.eventCallback('onComplete', ()=>{
+      Header.fixed = false;
       /*==== Home =====*/
       if(namespace=='home') {
         Home.destroy();
       }
-
+      else if(namespace=='equipment') {
+        WaveScene.destroy();
+      }
 
       barba.done();
     })
 
-  },
-  preventСyclicity: function() {
-    document.querySelectorAll('a').forEach(($link)=>{
-      let href = $link.getAttribute('href').split('?')[0].split('#')[0];
-      if(href==window.location.pathname) {
-        $link.setAttribute('data-barba-prevent', '');
-      } else {
-        $link.removeAttribute('data-barba-prevent');
-      }
-    })
   }
 }
 
@@ -239,10 +246,13 @@ const TouchHoverEvents = {
 const Home = {
   init: function() {
     Splitting();
-    Banner.init();
+    WaveScene.init(()=>{
+      Banner.init();
+    });
     ConceptionsSlider.init();
   },
   destroy: function() {
+    WaveScene.destroy();
     Banner.destroy();
   }
 }
@@ -341,8 +351,6 @@ const Nav = {
         cw = document.querySelector('.container').getBoundingClientRect().width,
         w2 = (w-cw)/2,
         nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
-
-        console.log(w2, nw)
         
         this.$container.style.width = `${nw+w2}px`;
         this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
@@ -354,6 +362,7 @@ const Header = {
     this.height = $header.getBoundingClientRect().height;
     this.scrollY = 0;
     this.isVisible = true;
+    this.fixed = false;
 
     this.animation = gsap.timeline({paused:true})
       .to($header, {yPercent:-100, duration:speed, ease:'power2.in'})
@@ -368,18 +377,19 @@ const Header = {
   }, 
   check: function() {
     let y = PageScroll.offset.y,
-        h = window.innerHeight/2,
-        h2 = window.innerHeight;
+        h = window.innerHeight/2;
 
     $header.style.top = `${y}px`;
 
-    if(y>0) {
+    if(y>0 && !this.fixed) {
+      this.fixed = true;
       $header.classList.add('header_fixed');
-    } else {
+    } else if(y==0 && this.fixed) {
+      this.fixed = false;
       $header.classList.remove('header_fixed');
     }
 
-    if(this.scrollY<y && this.scrollY>h2 && this.isVisible && !Nav.opened) {
+    if(this.scrollY<y && this.scrollY>h && this.isVisible && !Nav.opened) {
       this.isVisible = false;
       this.animation.timeScale(2).play();
     } else if(this.scrollY>y && !this.isVisible) {
@@ -391,198 +401,216 @@ const Header = {
   }
 }
 
-const Banner = {
-  init: function() {
-    let $block = document.querySelector('.home'),
-        $scene = document.querySelector('.home-scene'),
-        $slides = $block.querySelectorAll('.home-banner__slide'),
-        $paginations = $block.querySelectorAll('.pagination__button');
+const WaveScene = {
+  init: function(callback) {
+    this.$scene = document.querySelector('.wave-scene');
+    this.images = this.$scene.getAttribute('data-images').split(', ');
+    this.textures = [];
+    this.index = 0;
+    this.h = this.$scene.getBoundingClientRect().height;
+    this.w = this.$scene.getBoundingClientRect().width;
+    this.time = 0;
+    this.minWave = 2;
+    this.maxWave = 20;
+    this.destination = {x:0, y:0}
 
-    let inAnimation = false,
-        slide_current = 0,
-        slide_old,
-        interval_duration = 7,
-        interval,
-        animations_enter = [],
-        animations_exit = [];
-
-    let textures = [];
-        
-    let camera, scene, renderer, material, plane, time = 0;
-    let destination = {x:0, y:0};
-
-    let initScene = (callback)=> {
-      scene = new THREE.Scene();
-      renderer = new THREE.WebGL1Renderer();
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      $scene.insertAdjacentElement('afterbegin', renderer.domElement);
-      camera = new PerspectiveCamera(
-        70, 
-        $scene.getBoundingClientRect().width/$scene.getBoundingClientRect().height,
-        0.001,100
-      )
-      camera.position.set(0, 0, 1);
-      material = new THREE.ShaderMaterial({
-        side: THREE.DoubleSide,
-        uniforms: {
-          time: {type:'f', value:0},
-          waveLength: {type:'f', value:2},
-          mouse: {type:'v2', value: new THREE.Vector2()},
-          resolution: {type:'v2', value: new THREE.Vector2($scene.getBoundingClientRect().width, $scene.getBoundingClientRect().height)},
-          img1: {type:'t', value:textures[slide_current]},
-        },
-        vertexShader: vertex,
-        fragmentShader: fragment
-      })
-      plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), material);
-      scene.add(plane);
-
-      window.addEventListener('resize', this.resize);
-      window.addEventListener('mousemove', this.mousemove);
-      this.resize();
-
-      this.initialized = true;
-      if(callback!==undefined) {
-        callback();
-      }
+    this.scroll = ()=> {
+      let y = PageScroll.offset.y;
+      gsap.set(this.$scene, {y:y/3})
     }
-
-    let renderScene = ()=> {
-      if(this.initialized) {
-        time+=0.04;
-        material.uniforms.time.value = time;
-        material.uniforms.mouse.value.x += (destination.x - material.uniforms.mouse.value.x)*0.025;
-        material.uniforms.mouse.value.y += (destination.y - material.uniforms.mouse.value.y)*0.025;
-        renderer.render(scene, camera);
-        requestAnimationFrame(renderScene);
-      }
-    }
+    this.scroll();
+    PageScroll.addListener(this.scroll);
 
     this.mousemove = (event)=> {
-      let ww = window.innerWidth;
-      let wh = window.innerHeight;
-      let x = (event.clientX - ww/2)/(ww/2);
-      let y = (event.clientY - wh/2)/(wh/2);
-      destination.x = y;
-      destination.y = x;
+      this.destination.x = (event.clientX - window.innerWidth/2)/(window.innerWidth/2);
+      this.destination.y = (event.clientY - window.innerHeight/2)/(window.innerHeight/2);
     }
-
     this.resize = ()=> {
-      let w = $scene.getBoundingClientRect().width,
-          h = $scene.getBoundingClientRect().height,
-          fov;
-
-      renderer.setSize(w,h);
-      camera.aspect = w/h;
-      plane.scale.x = (textures[slide_current].image.width/textures[slide_current].image.height);
-
-      if(w/h > plane.scale.x) {
-        fov = 2*(180/Math.PI)* (Math.atan((plane.scale.x/2)/(camera.position.z - plane.position.z)/camera.aspect));
+      this.w = this.$scene.getBoundingClientRect().width;
+      this.h = this.$scene.getBoundingClientRect().height;
+      this.renderer.setSize(this.w, this.h);
+      this.camera.aspect = this.w/this.h;
+      this.plane.scale.x = (this.textures[this.index].image.width/this.textures[this.index].image.height);
+          
+      let fov;
+      if(this.w/this.h > this.plane.scale.x) {
+        fov = 2*(180/Math.PI)* (Math.atan((this.plane.scale.x/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
       } else {
-        fov = 2*(180/Math.PI)*Math.atan((plane.scale.y/2)/(camera.position.z - plane.position.z));
+        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
       }   
-      camera.fov = fov*0.9; 
+      this.camera.fov = fov*0.9; 
 
-      camera.updateProjectionMatrix();
+      this.camera.updateProjectionMatrix();
     }
-
-    let initSlider = ()=> {
-      //animations
-      
-      $slides.forEach(($slide, index)=>{
-        let $title_chars = $slide.querySelectorAll('.home-banner__slide-title .char'),
-            $text_chars = $slide.querySelectorAll('.home-banner__slide-text .word'),
-            $button = $slide.querySelector('.button');
-
-        animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{
-          inAnimation = false;
-          if(!interval) {
-            interval = setInterval(autoslide ,interval_duration*1000);
-          }
-        }})
-          .set($slide, {autoAlpha:1})
-          .set([$title_chars, $text_chars, $button], {y:20, autoAlpha:0})
-          //scene
-          .fromTo($scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-          .fromTo(material.uniforms.waveLength, {value:20}, {value:2, duration:speed, ease:'power2.out'}, `-=${speed}`)
-          //elements
-          .to($title_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed/2}`)
-          .to($text_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*0.9}`)
-          .to($button, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out'}, `-=${speed*0.9}`)
-
-
-        animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{
-          inAnimation = true;
-        }})
-          //scene
-          .fromTo(material.uniforms.waveLength, {value:2}, {immediateRender:false, value:20, duration:speed*0.75, ease:'power2.out'})
-          .fromTo($scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed*0.75, ease:'power2.out'}, `-=${speed*0.75}`) 
-          //elements
-          .to($title_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-          .to($title_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-          .to($text_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-          .to($text_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-          .to($button, {y:-20, duration:speed*0.75, ease:'power2.in'}, `-=${speed*0.75}`)
-          .to($button, {autoAlpha:0, duration:speed*0.75, ease:'power2.inOut'}, `-=${speed*0.75}`)
-          .set($slide, {autoAlpha:0})
-      })
-
-      let change = ()=> {
-        if(slide_old!==undefined) {
-          $paginations[slide_old].classList.remove('active');
-          animations_exit[slide_old].play(0);
-          animations_exit[slide_old].eventCallback('onComplete', ()=>{
-            material.uniforms.img1.value = textures[slide_current];
-            animations_enter[slide_current].play(0);
+    this.images.forEach(($image, index)=>{
+      this.textures[index] = new THREE.TextureLoader().load($image, ()=>{
+        if(index==0) {
+          this.initScene(()=>{
+            this.render();
+            if(callback!==undefined) {
+              callback();
+            }
           })
-        } else {
-          animations_enter[slide_current].play(0);
-        }
-        $paginations[slide_current].classList.add('active');
-        slide_old = slide_current;
-      }
-
-      let autoslide = ()=> {
-        slide_current++;
-        if(slide_current>$slides.length-1) {
-          slide_current=0;
-        }
-        change();
-      }
-
-      $paginations.forEach(($button, index)=>{
-        $button.addEventListener('click', ()=>{
-          if(!inAnimation) {
-            clearInterval(interval);
-            interval=false;
-            slide_current = index;
-            change();
-          }
-        })
-      })
-      
-      change();
-    }
-
-    $slides.forEach(($slide, index)=>{
-      let path = $slide.getAttribute('data-image');
-      textures[index] = new THREE.TextureLoader().load(path, ()=>{
-        //loaded first image event
-        if(index==slide_current) {
-          initScene(()=>{
-            renderScene();
-            initSlider();
-          });
         }
       });
     })
+  },
+  initScene: function(callback) {
+    this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGL1Renderer();
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.w, this.h);
+    this.$scene.insertAdjacentElement('afterbegin', this.renderer.domElement);
+    this.fadeAnimation = gsap.timeline({paused:true}).to(this.$scene, {autoAlpha:1, duration:speed, ease:'power2.inOut'});
 
+    this.camera = new PerspectiveCamera(
+      70, 
+      this.w/this.h,
+      0.001,100
+    )
+    this.camera.position.set(0, 0, 1);
+    this.material = new THREE.ShaderMaterial({
+      side: THREE.DoubleSide,
+      uniforms: {
+        time: {type:'f', value:0},
+        waveLength: {type:'f', value:this.minWave},
+        mouse: {type:'v2', value: new THREE.Vector2()},
+        resolution: {type:'v2', value: new THREE.Vector2(this.w, this.h)},
+        img: {type:'t', value:this.textures[this.index]},
+      },
+      vertexShader: vertex_waves,
+      fragmentShader: fragment_waves
+    })
+    this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
+    this.scene.add(this.plane);
+
+    this.resize();
+
+    window.addEventListener('resize', this.resize);
+    window.addEventListener('mousemove', this.mousemove);
+
+    this.fadeAnimation.play();
+    this.initialized = true;
+    if(callback!==undefined) {
+      callback();
+    }
+  },
+  render: function() {
+    if(this.initialized) {
+      this.time+=0.04;
+      this.material.uniforms.time.value = this.time;
+      this.material.uniforms.mouse.value.x += (this.destination.x - this.material.uniforms.mouse.value.x)*0.025;
+      this.material.uniforms.mouse.value.y += (this.destination.y - this.material.uniforms.mouse.value.y)*0.025;
+      this.renderer.render(this.scene, this.camera);
+      requestAnimationFrame(()=>{this.render()});
+    }
   },
   destroy: function() {
     this.initialized = false;
     window.removeEventListener('resize', this.resize);
     window.removeEventListener('mousemove', this.mousemove);
+    PageScroll.removeListener(this.scroll);
+  }
+}
+
+const Banner = {
+  init: function() {
+    let $block = document.querySelector('.home'),
+        $slides = $block.querySelectorAll('.home-banner__slide'),
+        $paginations = $block.querySelectorAll('.pagination__button');
+
+    this.animations_enter = [];
+    this.animations_exit = [];
+    this.inAnimation = false;
+    
+    let slide_current = 0,
+        slide_old,
+        interval_duration = 7;
+
+    $slides.forEach(($slide, index)=>{
+      let $title_chars = $slide.querySelectorAll('.home-banner__slide-title .char'),
+          $text_chars = $slide.querySelectorAll('.home-banner__slide-text .word'),
+          $button = $slide.querySelector('.button');
+
+      this.animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{
+        this.inAnimation = false;
+        if(!this.interval) {
+          this.interval = setInterval(autoslide ,interval_duration*1000);
+        }
+      }})
+        .set($slide, {autoAlpha:1})
+        .set([$title_chars, $text_chars, $button], {y:20, autoAlpha:0})
+        //scene
+        .fromTo(WaveScene.$scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.maxWave}, {value:WaveScene.minWave, duration:speed, ease:'power2.out'}, `-=${speed}`)
+        //elements
+        .to($title_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed/2}`)
+        .to($text_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*0.9}`)
+        .to($button, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out'}, `-=${speed*0.9}`)
+
+
+      this.animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{
+        this.inAnimation = true;
+      }})
+        //scene
+        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.minWave}, {immediateRender:false, value:WaveScene.maxWave, duration:speed*0.75, ease:'power2.out'})
+        .fromTo(WaveScene.$scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed*0.75, ease:'power2.out'}, `-=${speed*0.75}`) 
+        //elements
+        .to($title_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+        .to($title_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+        .to($text_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+        .to($text_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
+        .to($button, {y:-20, duration:speed*0.75, ease:'power2.in'}, `-=${speed*0.75}`)
+        .to($button, {autoAlpha:0, duration:speed*0.75, ease:'power2.inOut'}, `-=${speed*0.75}`)
+        .set($slide, {autoAlpha:0})
+    })
+
+    let change = ()=> {
+      if(slide_old!==undefined) {
+        $paginations[slide_old].classList.remove('active');
+        this.animations_exit[slide_old].play(0);
+        this.animations_exit[slide_old].eventCallback('onComplete', ()=>{
+          WaveScene.material.uniforms.img.value = WaveScene.textures[slide_current];
+          this.animations_enter[slide_current].play(0);
+        })
+      } else {
+        this.animations_enter[slide_current].play(0);
+      }
+      $paginations[slide_current].classList.add('active');
+      slide_old = slide_current;
+    }
+
+    let autoslide = ()=> {
+      slide_current++;
+      if(slide_current>$slides.length-1) {
+        slide_current=0;
+      }
+      change();
+    }
+
+    $paginations.forEach(($button, index)=>{
+      $button.addEventListener('click', ()=>{
+        if(!this.inAnimation) {
+          clearInterval(this.interval);
+          this.interval=false;
+          slide_current = index;
+          change();
+        }
+      })
+    })
+    
+    change();
+
+  },
+  destroy: function() {
+    this.animations_enter.forEach(($this)=>{
+      $this.clear();
+    })
+    this.animations_exit.forEach(($this)=>{
+      $this.clear();
+    })
+    this.inAnimation = false;
+    clearInterval(this.interval);
   }
 }
 
@@ -704,5 +732,85 @@ const Cursor = {
   },
   show: function() {
     gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+  }
+}
+
+const Distortion = {
+  init: function() {
+    document.addEventListener('lazybeforeunveil', function(event){
+      let $image = event.target,
+          $parent = $image.parentNode;
+
+      if($parent.classList.contains('js-distortion')) {
+        event.preventDefault();
+        let path = $image.getAttribute('data-src');
+        $image.remove();
+
+        //scene
+        let camera, scene, renderer, material, plane,
+            w = $parent.getBoundingClientRect().width,
+            h = $parent.getBoundingClientRect().height,
+            texture = new THREE.TextureLoader().load(path, ()=>{
+              initScene();
+            }),
+            displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
+
+        let initScene = ()=> {
+          scene = new THREE.Scene();
+          renderer = new THREE.WebGL1Renderer();
+          renderer.setPixelRatio(window.devicePixelRatio);
+          $parent.insertAdjacentElement('afterbegin', renderer.domElement);
+          camera = new PerspectiveCamera(
+            70, 
+            w/h,
+            0.001,100
+          )
+          camera.position.set(0, 0, 1);
+          material = new THREE.ShaderMaterial({
+            side: THREE.DoubleSide,
+            uniforms: {
+              img: {type:'t', value:texture},
+              displacement: {type:'t', value:displacement},
+              progress: {type:'f', value:1}
+            },
+            vertexShader: vertex_distortion,
+            fragmentShader: fragment_distortion
+          })
+          plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), material);
+          scene.add(plane);
+          resize();
+          window.addEventListener('resize', resize);
+          render();
+
+          gsap.timeline()
+            .to(renderer.domElement, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'})
+            .to(material.uniforms.progress, {value:0, duration:speed*1.5, ease:'power2.out'}, `-=${speed*1.5}`)
+          
+          console.log(material.uniforms.progress)
+        }
+
+        let render = ()=> {
+          renderer.render(scene, camera);
+          requestAnimationFrame(render);
+        }
+
+        let resize = ()=> {
+          w = $parent.getBoundingClientRect().width;
+          h = $parent.getBoundingClientRect().height;
+          let fov;
+          renderer.setSize(w,h);
+          camera.aspect = w/h;
+          plane.scale.x = (texture.image.width/texture.image.height);
+          if(w/h > plane.scale.x) {
+            fov = 2*(180/Math.PI)* (Math.atan((plane.scale.x/2)/(camera.position.z - plane.position.z)/camera.aspect));
+          } else {
+            fov = 2*(180/Math.PI)*Math.atan((plane.scale.y/2)/(camera.position.z - plane.position.z));
+          }   
+          camera.fov = fov*0.99; 
+          camera.updateProjectionMatrix();
+        }
+      
+      }
+    });
   }
 }

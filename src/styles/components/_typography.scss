@@ -117,7 +117,7 @@ ol:not([class]) {
     }
     &:before {
       counter-increment: section;
-      content: counters(section, ".") ". ";
+      content: counter(section) '. ';
     }
   }
 }
@@ -135,6 +135,9 @@ a {
     span:not([class]) {
       border-color: var(--color-light);
     }
+  }
+  &.active {
+    pointer-events: none;
   }
   &.focus {
     color: var(--color-accent);

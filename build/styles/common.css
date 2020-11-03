@@ -3224,7 +3224,8 @@ table {
 .main {
   flex: 1 1 100%;
   opacity: 0;
-  visibility: hidden; }
+  visibility: hidden;
+  overflow: hidden; }
 
 .section {
   margin-bottom: 120px; }
@@ -3512,7 +3513,7 @@ ol:not([class]) {
     margin: 0 0 0.875rem 0; }
   ol:not([class]) li:not([class]):before {
     counter-increment: section;
-    content: counters(section, ".") ". "; }
+    content: counter(section) ". "; }
 
 a {
   color: inherit;
@@ -3525,6 +3526,8 @@ a {
     color: var(--color-light); }
     a.touch span:not([class]), a.hover span:not([class]) {
       border-color: var(--color-light); }
+  a.active {
+    pointer-events: none; }
   a.focus {
     color: var(--color-accent); }
     a.focus span:not([class]) {
@@ -3653,7 +3656,7 @@ a {
       .nav__link.focus span {
         border-color: transparent; }
     .nav__link.active {
-      pointer-events: none; }
+      color: var(--color-accent); }
   .nav__slogan {
     color: var(--color-muted); }
   @media (max-width: 1619.98px) {
@@ -3674,7 +3677,8 @@ a {
     display: block;
     color: var(--color-light); }
     .category-list__link.active {
-      pointer-events: none; }
+      color: var(--color-accent);
+      font-weight: 400; }
 
 .socials {
   display: flex; }
@@ -3867,6 +3871,22 @@ a {
     .contacts-block .container {
       padding: 0; } }
 
+.video-scene {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  opacity: 0.8; }
+  .video-scene__player {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden; }
+
 .wave-scene {
   height: 100%;
   width: 100%;
@@ -3877,6 +3897,7 @@ a {
   visibility: hidden; }
 
 .home-screen {
+  background: var(--color-bg-darker);
   height: 100vh;
   position: relative;
   overflow: hidden; }
@@ -3907,7 +3928,7 @@ a {
     z-index: 2;
     width: 100%;
     height: 70%;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%); }
 
@@ -3931,6 +3952,10 @@ a {
   content: '';
   display: block;
   padding-top: 68.5%; }
+
+.equipment-section__image_size-4 .image {
+  height: 600px;
+  width: calc(50vw - 12px); }
 
 /*========== Conceptions ==========*/
 .conceptions {

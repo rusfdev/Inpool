@@ -79,7 +79,7 @@
       }
     }
     &.active {
-      pointer-events: none;
+      color: var(--color-accent);
     }
   }
   &__slogan {
@@ -112,7 +112,8 @@
     display: block;
     color: var(--color-light);
     &.active {
-      pointer-events: none;
+      color: var(--color-accent);
+      font-weight: 400;
     }
   }
 }

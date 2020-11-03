@@ -1,13 +1,12 @@
 //lazylaod
 import 'lazysizes';
-//lazySizes.cfg.preloadAfterLoad = true;
 lazySizes.cfg.expand = 50;
 document.addEventListener('lazybeforeunveil', function(e){
   let el = e.target.tagName,
       bg = e.target.getAttribute('data-src');
   if(el!=='IMG') {
     let bg = e.target.getAttribute('data-src');
-    e.target.style.backgroundImage = 'url(' + bg + ')';
+    e.target.style.backgroundImage = `url('${bg}')`;
   }
 });
 //barba
@@ -26,8 +25,6 @@ barba.init({
   }]
 });
 import { gsap } from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-gsap.registerPlugin(ScrollToPlugin);
 import * as THREE from 'three';
 //waves
 import vertex_waves from './shaders/waves/vertex.glsl'
@@ -40,21 +37,6 @@ import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
 
-const dev = false;
-
-window.onload = function(){
-  Preloader.finish();
-  Cursor.init();
-  TouchHoverEvents.init();
-  Header.init();
-  Nav.init();
-  Distortion.init();
-}
-
-const $wrapper = document.querySelector('.wrapper');
-const $header = document.querySelector('.header');
-const $body = document.body;
-
 const brakepoints = {
   sm: 576,
   md: 768,
@@ -62,7 +44,23 @@ const brakepoints = {
   xl: 1280,
   xxl: 1620
 }
-const speed = 1; //s
+const dev = false;
+const speed = 1;
+
+const $wrapper = document.querySelector('.wrapper');
+const $header = document.querySelector('.header');
+const $body = document.body;
+const namespaces = [
+  'home',
+  'power',
+  'energy',
+  'family',
+  'balance',
+  'technology',
+  'equipment',
+  'portfolio',
+  'contacts'
+]
 
 //scroll
 const PageScroll = Scrollbar.init($wrapper, {
@@ -74,13 +72,30 @@ PageScroll.addListener(()=>{
 if(+localStorage.getItem('scroll')>0) {
   PageScroll.setPosition(0, +localStorage.getItem('scroll'));
 }
+document.addEventListener('click', (event)=>{
+  let $target = event.target!==document?event.target.closest('.scroll-bottom'):null;
+  if($target) {
+    let y = $target.closest('section').getBoundingClientRect().height;
+    gsap.to(PageScroll, {scrollTop:y, duration:speed, ease:'power2.inOut'})
+  }
+});
+
+
+window.onload = function(){
+  Preloader.finish();
+  Cursor.init();
+  TouchHoverEvents.init();
+  Header.init();
+  Nav.init();
+  Distortion.init();
+  Parralax.init();
+}
 
 const App = {
   init: function() {
     this.$container = document.querySelector('[data-barba="container"]');
     this.namespace = this.$container.getAttribute('data-barba-namespace');
     transitions.enter(this.$container, this.namespace);
-    
     if(!dev) {
       Cursor.show();
     }
@@ -92,12 +107,19 @@ const transitions = {
   enter: function($container, namespace) {
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
-    PageScroll.track.yAxis.element.classList.remove('show')
+    PageScroll.track.yAxis.element.classList.remove('show');
+    Nav.change(namespace);
     setTimeout(()=>{
-      if(namespace=='home') {
-        Home.init();
+      if(namespace==namespaces[0]) {
+        HomePage.init();
       } 
-      else if(namespace=='equipment') {
+      else if(namespace==namespaces[1] ||
+              namespace==namespaces[2] || 
+              namespace==namespaces[3] ||
+              namespace==namespaces[4]) {
+        ConceptPage.init();
+      } 
+      else if(namespace==namespaces[6]) {
         WaveScene.init();
       }
 
@@ -105,6 +127,7 @@ const transitions = {
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
+      Parralax.check();
     }, 250)
     
   },
@@ -122,10 +145,16 @@ const transitions = {
     this.animation.eventCallback('onComplete', ()=>{
       Header.fixed = false;
       /*==== Home =====*/
-      if(namespace=='home') {
-        Home.destroy();
+      if(namespace==namespaces[0]) {
+        HomePage.destroy();
       }
-      else if(namespace=='equipment') {
+      else if(namespace==namespaces[1] ||
+              namespace==namespaces[2] || 
+              namespace==namespaces[3] ||
+              namespace==namespaces[4]) {
+        ConceptPage.destroy();
+      } 
+      else if(namespace==namespaces[6]) {
         WaveScene.destroy();
       }
 
@@ -166,7 +195,6 @@ const Preloader = {
 
   }
 }
-
 
 //hover/touch custom events
 const TouchHoverEvents = {
@@ -243,7 +271,7 @@ const TouchHoverEvents = {
   }
 }
 
-const Home = {
+const HomePage = {
   init: function() {
     Splitting();
     WaveScene.init(()=>{
@@ -254,6 +282,20 @@ const Home = {
   destroy: function() {
     WaveScene.destroy();
     Banner.destroy();
+  }
+}
+
+const ConceptPage = {
+  init: function() {
+    this.video = new BackgroundVideo(document.querySelector('.video-scene'));
+    this.video.init();
+
+    
+
+
+  },
+  destroy: function() {
+    this.video.destroy();
   }
 }
 
@@ -354,6 +396,17 @@ const Nav = {
         
         this.$container.style.width = `${nw+w2}px`;
         this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
+  },
+  change: function(namespace) {
+    if(this.$active_links) {
+      this.$active_links.forEach(($link)=>{
+        $link.classList.remove('active');
+      })
+    }
+    this.$active_links = document.querySelectorAll(`[data-namespace='${namespace}']`);
+    this.$active_links.forEach(($link)=>{
+      $link.classList.add('active');
+    })
   }
 }
 
@@ -401,6 +454,28 @@ const Header = {
   }
 }
 
+const Parralax = {
+  init: function() {
+    this.check();
+    PageScroll.addListener(()=>{
+      this.check();
+    })
+  },
+  check: function() {
+    let $items = document.querySelectorAll('[data-parralax]');
+    $items.forEach(($this)=>{
+      let y = $this.getBoundingClientRect().y,
+          h1 = window.innerHeight,
+          h2 = $this.getBoundingClientRect().height,
+          scroll = PageScroll.offset.y,
+          factor = $this.getAttribute('data-parralax');
+      
+      let val = ((scroll+h1/2)-(y+scroll+h2/2))*factor;
+      gsap.set($this, {y:val})
+    })
+  }
+}
+
 const WaveScene = {
   init: function(callback) {
     this.$scene = document.querySelector('.wave-scene');
@@ -411,15 +486,8 @@ const WaveScene = {
     this.w = this.$scene.getBoundingClientRect().width;
     this.time = 0;
     this.minWave = 2;
-    this.maxWave = 20;
-    this.destination = {x:0, y:0}
-
-    this.scroll = ()=> {
-      let y = PageScroll.offset.y;
-      gsap.set(this.$scene, {y:y/3})
-    }
-    this.scroll();
-    PageScroll.addListener(this.scroll);
+    this.maxWave = 15;
+    this.destination = {x:0, y:0};
 
     this.mousemove = (event)=> {
       this.destination.x = (event.clientX - window.innerWidth/2)/(window.innerWidth/2);
@@ -490,26 +558,23 @@ const WaveScene = {
     window.addEventListener('mousemove', this.mousemove);
 
     this.fadeAnimation.play();
-    this.initialized = true;
     if(callback!==undefined) {
       callback();
     }
   },
   render: function() {
-    if(this.initialized) {
-      this.time+=0.04;
-      this.material.uniforms.time.value = this.time;
-      this.material.uniforms.mouse.value.x += (this.destination.x - this.material.uniforms.mouse.value.x)*0.025;
-      this.material.uniforms.mouse.value.y += (this.destination.y - this.material.uniforms.mouse.value.y)*0.025;
-      this.renderer.render(this.scene, this.camera);
-      requestAnimationFrame(()=>{this.render()});
-    }
+    this.time+=0.04;
+    this.material.uniforms.time.value = this.time;
+    this.material.uniforms.mouse.value.x += (this.destination.x - this.material.uniforms.mouse.value.x)*0.025;
+    this.material.uniforms.mouse.value.y += (this.destination.y - this.material.uniforms.mouse.value.y)*0.025;
+    this.renderer.render(this.scene, this.camera);
+    this.animationFrame = requestAnimationFrame(()=>{this.render()});
   },
   destroy: function() {
-    this.initialized = false;
+    cancelAnimationFrame(this.animationFrame);
+    this.scene.remove.apply(this.scene, this.scene.children);
     window.removeEventListener('resize', this.resize);
     window.removeEventListener('mousemove', this.mousemove);
-    PageScroll.removeListener(this.scroll);
   }
 }
 
@@ -541,27 +606,30 @@ const Banner = {
         .set($slide, {autoAlpha:1})
         .set([$title_chars, $text_chars, $button], {y:20, autoAlpha:0})
         //scene
-        .fromTo(WaveScene.$scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.maxWave}, {value:WaveScene.minWave, duration:speed, ease:'power2.out'}, `-=${speed}`)
+        .fromTo(WaveScene.$scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power1.inOut'}) //1
+        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.maxWave}, {value:WaveScene.minWave, duration:speed, ease:'power1.out'}, `-=${speed}`) //1.5
         //elements
-        .to($title_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed/2}`)
-        .to($text_chars, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*0.9}`)
-        .to($button, {y:0, autoAlpha:1, duration:speed*0.8, ease:'power2.out'}, `-=${speed*0.9}`)
+        .to($title_chars, {y:0, duration:speed, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed}`) // 1.5
+        .to($title_chars, {autoAlpha:1, duration:speed, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed*1.2}`) // 1.7
+        .to($text_chars, {y:0, duration:speed, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*1.1}`) 
+        .to($text_chars, {autoAlpha:1, duration:speed, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed*1.2}`) 
+        .to($button, {y:0, duration:speed*1.2, ease:'power2.out'}, `-=${speed*1}`)
+        .to($button, {autoAlpha:1, duration:speed*1.2, ease:'power2.inOut'}, `-=${speed*1.2}`)
 
 
       this.animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{
         this.inAnimation = true;
       }})
         //scene
-        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.minWave}, {immediateRender:false, value:WaveScene.maxWave, duration:speed*0.75, ease:'power2.out'})
-        .fromTo(WaveScene.$scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed*0.75, ease:'power2.out'}, `-=${speed*0.75}`) 
+        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.minWave}, {immediateRender:false, value:WaveScene.maxWave, duration:speed, ease:'power1.out'})
+        .fromTo(WaveScene.$scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed, ease:'power2.out'}, `-=${speed}`) 
         //elements
-        .to($title_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-        .to($title_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-        .to($text_chars, {y:-20, duration:speed*0.5, ease:'power2.in', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-        .to($text_chars, {autoAlpha:0, duration:speed*0.5, ease:'power2.inOut', stagger:{amount:speed*0.25}}, `-=${speed*0.75}`)
-        .to($button, {y:-20, duration:speed*0.75, ease:'power2.in'}, `-=${speed*0.75}`)
-        .to($button, {autoAlpha:0, duration:speed*0.75, ease:'power2.inOut'}, `-=${speed*0.75}`)
+        .to($title_chars, {y:-20, duration:speed*0.75, ease:'power1.in', stagger:{amount:speed*0.25}}, `-=${speed}`)
+        .to($title_chars, {autoAlpha:0, duration:speed*0.75, ease:'power2.out', stagger:{amount:speed*0.25}}, `-=${speed}`)
+        .to($text_chars, {y:-20, duration:speed*0.75, ease:'power1.in', stagger:{amount:speed*0.25}}, `-=${speed}`)
+        .to($text_chars, {autoAlpha:0, duration:speed*0.75, ease:'power2.out', stagger:{amount:speed*0.25}}, `-=${speed}`)
+        .to($button, {y:-20, duration:speed, ease:'power1.in'}, `-=${speed}`)
+        .to($button, {autoAlpha:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
         .set($slide, {autoAlpha:0})
     })
 
@@ -616,8 +684,11 @@ const Banner = {
 
 const ConceptionsSlider = {
   init: function() {
+    this.speed = speed;
+
     this.$container = document.querySelector('.conceptions__slider');
     this.$slide = document.querySelectorAll('.conceptions-slide');
+    
 
     this.animation = gsap.timeline({paused:true});
 
@@ -630,15 +701,15 @@ const ConceptionsSlider = {
 
       let timeline = gsap.timeline()
         .set($slide, {autoAlpha:1})
-        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:speed, ease:'power2.out'},`-=${speed}`)
+        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
+        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:this.speed, ease:'power2.out'},`-=${this.speed}`)
       
       if(index!==3) {
         let timelineEnd = gsap.timeline()
-          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:speed, ease:'power2.inOut'})
-          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:speed, ease:'power2.in'}, `-=${speed}`)
-          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:speed, ease:'power2.in'},`-=${speed}`)
+          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'})
+          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:this.speed, ease:'power2.in'},`-=${this.speed}`)
 
 
         timeline.add(timelineEnd, '>')
@@ -742,9 +813,8 @@ const Distortion = {
           $parent = $image.parentNode;
 
       if($parent.classList.contains('js-distortion')) {
-        event.preventDefault();
+        $image.style.display = 'none';
         let path = $image.getAttribute('data-src');
-        $image.remove();
 
         //scene
         let camera, scene, renderer, material, plane,
@@ -753,13 +823,14 @@ const Distortion = {
             texture = new THREE.TextureLoader().load(path, ()=>{
               initScene();
             }),
-            displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
+            displacement = new THREE.TextureLoader().load('./img/displacement.jpg'),
+            animationFrame;
 
         let initScene = ()=> {
           scene = new THREE.Scene();
           renderer = new THREE.WebGL1Renderer();
           renderer.setPixelRatio(window.devicePixelRatio);
-          $parent.insertAdjacentElement('afterbegin', renderer.domElement);
+          $parent.insertAdjacentElement('beforeend', renderer.domElement);
           camera = new PerspectiveCamera(
             70, 
             w/h,
@@ -771,7 +842,7 @@ const Distortion = {
             uniforms: {
               img: {type:'t', value:texture},
               displacement: {type:'t', value:displacement},
-              progress: {type:'f', value:1}
+              progress: {type:'f', value:0.75}
             },
             vertexShader: vertex_distortion,
             fragmentShader: fragment_distortion
@@ -783,15 +854,20 @@ const Distortion = {
           render();
 
           gsap.timeline()
-            .to(renderer.domElement, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'})
-            .to(material.uniforms.progress, {value:0, duration:speed*1.5, ease:'power2.out'}, `-=${speed*1.5}`)
-          
-          console.log(material.uniforms.progress)
+            .to(renderer.domElement, {autoAlpha:1, duration:speed*2, ease:'power2.inOut'})
+            .to(material.uniforms.progress, {value:0, duration:speed*2, ease:'power2.out'}, `-=${speed*2}`)
+            .eventCallback('onComplete', ()=>{
+              $image.style.display = 'block';
+              renderer.domElement.remove();
+              scene.remove.apply(scene, scene.children);
+              cancelAnimationFrame(animationFrame);
+              window.removeEventListener('resize', resize);
+            })
         }
 
         let render = ()=> {
           renderer.render(scene, camera);
-          requestAnimationFrame(render);
+          animationFrame = requestAnimationFrame(render);
         }
 
         let resize = ()=> {
@@ -806,11 +882,74 @@ const Distortion = {
           } else {
             fov = 2*(180/Math.PI)*Math.atan((plane.scale.y/2)/(camera.position.z - plane.position.z));
           }   
-          camera.fov = fov*0.99; 
+          camera.fov = fov; 
           camera.updateProjectionMatrix();
         }
       
       }
     });
   }
+}
+
+class BackgroundVideo {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+
+  init() {
+    this.$video = this.$parent.querySelector('video');
+    this.$video.loop = true;
+    this.$video.muted = true;
+    this.resizeEvent = ()=> {
+      this.resize();
+    }
+    this.checkPauseEvent = ()=> {
+      this.checkPause();
+    }
+
+    this.resizeEvent();
+    this.checkPauseEvent();
+
+    window.addEventListener('resize', this.resizeEvent);
+    PageScroll.addListener(this.checkPauseEvent)
+    document.addEventListener("visibilitychange", this.checkPauseEvent);
+    
+    this.$video.addEventListener('play', ()=>{
+      gsap.fromTo(this.$video, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+    })
+    
+  }
+
+  checkPause() {
+    let position = this.$parent.getBoundingClientRect().y + this.$parent.getBoundingClientRect().height;
+    if((position<=0 || document.visibilityState=='hidden') && this.flag) {
+      this.flag = false;
+      this.$video.pause();
+    } else if(position>0 && document.visibilityState=='visible' && !this.flag) {
+      this.flag = true;
+      this.$video.play();
+    }
+  }
+
+  resize() {
+    let h = this.$parent.getBoundingClientRect().height,
+        w = this.$parent.getBoundingClientRect().width,
+        value = h/w,
+        ratio = 0.5625;
+
+    if(value<ratio) {
+      this.$video.style.width = `${w}px`;
+      this.$video.style.height = `${w*ratio}px`;
+    } else {
+      this.$video.style.height = `${h}px`;
+      this.$video.style.width = `${h/ratio}px`;
+    }
+  }
+
+  destroy() {
+    window.removeEventListener('resize', this.resizeEvent);
+    PageScroll.removeListener(this.checkPauseEvent)
+    document.removeEventListener("visibilitychange", this.checkPauseEvent);
+  }
+
 }

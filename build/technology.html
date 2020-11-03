@@ -62,7 +62,7 @@
     </div>
     <div class="wrapper" data-barba="wrapper" style="visibility:hidden;opacity:0;">
       <header class="header">
-        <div class="container header__container"><a class="logo" href="./index.html"><img src="./img/logos/logo.svg" alt="logo"></a>
+        <div class="container header__container"><a class="logo" href="./index.html" data-namespace="home"><img src="./img/logos/logo.svg" alt="logo"></a>
           <button class="nav-toggle">
             <svg stroke="currentColor" viewBox="0 0 34.8 5.5">
               <path d="M0.3,2.8c0,0,5.5-1.2,9.8-1.2c4.4,0,8.6,2.5,13.4,2.5s11-1.2,11-1.2"></path>
@@ -82,10 +82,10 @@
           <div class="nav__block">
             <div class="nav__content">
               <ul class="nav__list">
-                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./portfolio.html"> <span>Наши работы</span></a></li>
-                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./equipment.html"> <span>Дополнительное оборудование</span></a></li>
-                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./technology.html"> <span>Технологии</span></a></li>
-                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./contacts.html"> <span>Контакты</span></a></li>
+                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./portfolio.html" data-namespace="portfolio"> <span>Наши работы</span></a></li>
+                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./equipment.html" data-namespace="equipment"> <span>Дополнительное оборудование</span></a></li>
+                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./technology.html" data-namespace="technology"> <span>Технологии</span></a></li>
+                <li class="nav__item nav__animate no-flickr"><a class="nav__link" href="./contacts.html" data-namespace="contacts"> <span>Контакты</span></a></li>
               </ul>
               <div class="nav__content-bottom">
                 <ul class="socials nav__socials">
@@ -110,19 +110,19 @@
               </div>
             </div>
             <ul class="category-list">
-              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html"><span>Inpool<br> power</span></a></li>
-              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./energy.html"><span>Inpool<br> energy</span></a></li>
-              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html"><span>Inpool<br> family</span></a></li>
-              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html"><span>Inpool<br> balance</span></a></li>
+              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html" data-namespace="power"><span>Inpool<br> power</span></a></li>
+              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./energy.html" data-namespace="energy"><span>Inpool<br> energy</span></a></li>
+              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./family.html" data-namespace="family"><span>Inpool<br> family</span></a></li>
+              <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./balance.html" data-namespace="balance"><span>Inpool<br> balance</span></a></li>
             </ul>
           </div>
         </div>
       </nav>
-      <main class="main" data-barba="container">
+      <main class="main" data-barba="container" data-barba-namespace="technology">
       </main>
       <footer class="footer">
         <div class="container footer__container">
-          <div class="footer__left"><a class="logo footer__logo" href="./index.html"><img src="./img/logos/logo.svg" alt="logo"></a><span class="footer__copyright">© Все права защищены. 2020</span></div>
+          <div class="footer__left"><a class="logo footer__logo" href="./index.html" data-namespace="home"><img src="./img/logos/logo.svg" alt="logo"></a><span class="footer__copyright">© Все права защищены. 2020</span></div>
           <div class="dev-label"><span>Разработка и поддержка сайта – </span><a class="dev-label__link" href="https://artica.art/" rel="nofollow" target="_blank">
               <svg viewBox="0 0 74 15" fill="currentColor">
                 <path d="M42.4491 5.10225L40.8535 5.1062L40.8776 14.8511L42.4733 14.8471L42.4491 5.10225Z"></path>
@@ -147,7 +147,7 @@
       <div class="helper__container">
         <!--section-->
         <div class="helper__section"><span class="helper__section-title">Страницы:</span>
-          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./contacts.html">Контакты</a><a class="helper__section-button disabled" href="./power.html">Inpool power</a><a class="helper__section-button disabled" href="./energy.html">Inpool energy</a><a class="helper__section-button disabled" href="./family.html">Inpool family</a><a class="helper__section-button disabled" href="./balance.html">Inpool balance</a><a class="helper__section-button disabled" href="./technology.html">Технологии</a><a class="helper__section-button disabled" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="components.html">Компоненты</a><a class="helper__section-button" href="grid.html">Сетка</a></div>
+          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./contacts.html">Контакты</a><a class="helper__section-button" href="./power.html">Inpool power</a><a class="helper__section-button disabled" href="./energy.html">Inpool energy</a><a class="helper__section-button disabled" href="./family.html">Inpool family</a><a class="helper__section-button disabled" href="./balance.html">Inpool balance</a><a class="helper__section-button disabled" href="./technology.html">Технологии</a><a class="helper__section-button disabled" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="components.html">Компоненты</a><a class="helper__section-button" href="grid.html">Сетка</a></div>
         </div>
       </div>
     </div>

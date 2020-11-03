@@ -1,4 +1,25 @@
 extends layout/layout
 block title
   title #{title} - Power
+block variables
+  -var namespace = power_namespace;
 block content
+  section.section.home-screen
+    .video-scene.image.image_cover(data-parralax='0.35')
+      img(data-src="../img/video.jpg", alt="bg").lazyload
+      video.video-scene__player
+        source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium.mp4" type="video/mp4")
+    .home-screen__gradient
+    .container.home-screen__container
+      .row.home-screen__content
+        .home-screen__left.col-xl-6
+          h1 Inpool power
+        .home-screen__right.offset-xl-2.col-xl-4
+          p Создавайте индивидуальные сценарии использования бассейна с передовой системой управления INPOOL ASM Control.
+      button.home-screen__scroll-bottom.scroll-bottom
+        svg.icon
+          use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
+  
+  section.section(style='height:1000px')
+
+    

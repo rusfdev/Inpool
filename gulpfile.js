@@ -27,7 +27,7 @@ let $images = ["./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,
 
     $scripts = ["./src/scripts/**/*.js", "!./src/scripts/webpack/**/*"],
     $scripts_watch = $scripts,
-    $webpack_scripts = "./src/scripts/webpack/**/*.js",
+    $webpack_scripts = "./src/scripts/webpack/common.js",
     $webpack_scripts_watch = "./src/scripts/webpack/**/*",
 
     $styles = ["./src/styles/**/*.scss", "!./src/styles/components/**/*.scss"],

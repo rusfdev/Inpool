@@ -4021,12 +4021,14 @@ a {
     .home-screen__play-btn.focus .icon {
       border-color: var(--color-accent);
       color: var(--color-accent); }
+  .home-screen__left {
+    margin-bottom: -8px; }
   .home-screen__scroll-bottom {
     width: 94px;
     height: 25px;
     position: absolute;
     left: 50%;
-    bottom: 100px;
+    bottom: 95px;
     transform: translateX(-50%);
     color: var(--color-light);
     z-index: 3; }

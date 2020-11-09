@@ -393,12 +393,15 @@
       }
     }
   }
+  &__left {
+    margin-bottom: -8px;
+  }
   &__scroll-bottom {
     width: 94px;
     height: 25px;
     position: absolute;
     left: 50%;
-    bottom: 100px;
+    bottom: 95px;
     transform: translateX(-50%);
     color: var(--color-light);
     z-index: 3;

@@ -894,7 +894,7 @@ class BackgroundVideo {
   }
   init() {
     this.$video = this.$parent.querySelector('video');
-    this.$video.volume = '0.5';
+    this.$video.volume = 1;
     this.$video.muted = true;
     this.resizeEvent = ()=> {
       this.resize();
@@ -1004,6 +1004,12 @@ const HomeScreenVideo = {
         ctime = this.video.$video.currentTime;
         console.log(ctime/time*100)
         gsap.to(this.timeline, {css:{width:`${ctime/time*100}%`}, duration:0.1, ease:'linear'})
+        if(time-ctime<2 && !this.volFlag) {
+          this.volFlag = true;
+          gsap.to(this.video.$video, {volume:0, duration:2, ease:'linear', onComplete:()=>{
+            this.volFlag = false;
+          }})
+        }
       }
     }, 100)
 
@@ -1021,8 +1027,8 @@ const HomeScreenVideo = {
       .to(PageScroll, {scrollTop:0, duration:speed, ease:'power2.inOut'})
       .to(this.$player, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .to(this.$player, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
-    
     setTimeout(()=>{
+      this.video.$video.volume = 1;
       this.video.$video.muted = false;
       this.video.$video.currentTime = 0;
     }, speed*1000)
@@ -1030,7 +1036,9 @@ const HomeScreenVideo = {
   },
   close: function() {
     this.state = false;
-    this.video.$video.muted = true;
+    gsap.to(this.video.$video, {volume:0, duration:2, ease:'power2.linear', onComplete:()=>{
+      this.video.$video.muted = true;
+    }})
     this.openAnimation.reverse();
   },
   destroy: function() {

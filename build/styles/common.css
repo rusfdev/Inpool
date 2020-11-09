@@ -3262,7 +3262,7 @@ table {
   background-repeat: no-repeat;
   opacity: 0;
   visibility: hidden;
-  transition: 1s ease-out; }
+  transition: opacity 1s ease-out, visibility 1s ease-out; }
   .background.lazyloaded {
     opacity: 1;
     visibility: visible; }
@@ -3282,7 +3282,7 @@ table {
     display: block;
     opacity: 0;
     visibility: hidden;
-    transition: 1s ease-out; }
+    transition: opacity 1s ease-out, visibility 1s ease-out; }
     .image img.lazyloaded {
       opacity: 1;
       visibility: visible; }
@@ -3538,6 +3538,9 @@ a {
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden; }
+
+.text-uppercase {
+  text-transform: uppercase; }
 
 /*========== Buttons ==========*/
 .button {
@@ -3886,6 +3889,54 @@ a {
     z-index: 2;
     opacity: 0;
     visibility: hidden; }
+  .video-scene__controls {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3; }
+  .video-scene__timeline {
+    width: 100%;
+    max-width: 680px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--color-darkened);
+    bottom: 34px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%); }
+    .video-scene__timeline span {
+      display: block;
+      position: absolute;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-color: var(--color-light); }
+  .video-scene__close {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 140px;
+    right: 36px; }
+    .video-scene__close::before, .video-scene__close:after {
+      content: '';
+      display: block;
+      width: 35px;
+      height: 2.4px;
+      background-color: var(--color-light);
+      position: absolute;
+      top: 50%;
+      left: 50%; }
+    .video-scene__close::before {
+      transform: translate(-50%, -50%) rotate(-45deg); }
+    .video-scene__close::after {
+      transform: translate(-50%, -50%) rotate(45deg); }
+  @media (max-width: 1619.98px) {
+    .video-scene__close {
+      top: 120px; } }
 
 .wave-scene {
   height: 100%;
@@ -3908,6 +3959,68 @@ a {
     padding-bottom: 90px;
     display: flex;
     align-items: flex-end; }
+  .home-screen__idx {
+    font-size: 314px;
+    line-height: 1;
+    letter-spacing: -0.1em;
+    color: rgba(133, 133, 133, 0.38);
+    position: absolute;
+    left: 0;
+    bottom: 155px;
+    font-family: "Open Sans", sans-serif;
+    display: block;
+    pointer-events: none; }
+  .home-screen__title {
+    margin: 0;
+    position: relative;
+    z-index: 2; }
+  .home-screen__slogan {
+    z-index: 2;
+    font-family: "Open Sans", sans-serif;
+    font-size: 2.5rem;
+    display: block;
+    position: relative;
+    text-indent: 2.8em; }
+    .home-screen__slogan::before {
+      content: '';
+      display: block;
+      width: 2.2em;
+      height: 2px;
+      background-color: #fff;
+      position: absolute;
+      top: 0.85em;
+      left: 0; }
+  .home-screen__play {
+    position: absolute;
+    right: 0;
+    top: calc(50% - 65px);
+    transform: translateY(-50%);
+    display: flex; }
+  .home-screen__play-btn {
+    display: flex;
+    color: var(--color-light);
+    text-align: left;
+    align-items: center;
+    line-height: inherit;
+    cursor: pointer; }
+    .home-screen__play-btn .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 46px;
+      overflow: visible;
+      border: 1px solid var(--color-darkened);
+      color: var(--color-darkened);
+      padding: 12px 12px 12px 15px;
+      margin-right: 22px;
+      transition: border-color 0.25s ease-out, color 0.25s ease-out; }
+    .home-screen__play-btn span {
+      border: none !important; }
+    .home-screen__play-btn.touch .icon, .home-screen__play-btn.hover .icon {
+      border-color: var(--color-text);
+      color: var(--color-text); }
+    .home-screen__play-btn.focus .icon {
+      border-color: var(--color-accent);
+      color: var(--color-accent); }
   .home-screen__scroll-bottom {
     width: 94px;
     height: 25px;
@@ -3915,7 +4028,8 @@ a {
     left: 50%;
     bottom: 100px;
     transform: translateX(-50%);
-    color: var(--color-light); }
+    color: var(--color-light);
+    z-index: 3; }
     .home-screen__scroll-bottom .icon {
       display: block;
       width: 100%;
@@ -3931,6 +4045,9 @@ a {
     bottom: -2px;
     left: 0;
     background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%); }
+  @media (max-width: 1619.98px) {
+    .home-screen__play {
+      top: calc(50% - 50px); } }
 
 .equipment-section__row {
   align-items: center; }

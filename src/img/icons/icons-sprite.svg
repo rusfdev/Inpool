@@ -3,7 +3,18 @@
     <path d="M10.4 6.7l6.1 5.8-6.1 5.8"></path>
     <circle cx="12.5" cy="12.5" r="11.8"></circle>
   </symbol>
-  <symbol fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.9 27" id="bottom-arrow">
+  <symbol fill='none' stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.9 27" id="bottom-arrow">
     <path d="M.5.9l47 25 47-25" stroke-width="2"></path>
+  </symbol>
+   <symbol fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.2 19.1" id="play">
+    <path d="M17.2 9.6L0 19.1V0l17.2 9.6z"></path>
+  </symbol>
+  <symbol fill="currentColor" stroke='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 26" id="volume0">
+    <path stroke='none' fill-rule="evenodd" clip-rule="evenodd" d="M9.389 8.833a2 2 0 00-2 2v4.334a2 2 0 002 2h2.276c.105 0 .21.008.314.024l5.41-5.635V6.802a1 1 0 00-1.64-.769L12.944 8.37a2 2 0 01-1.28.463H9.389zm8 5.61l-3.675 3.828 2.034 1.695a1 1 0 001.64-.768v-4.754z"></path>
+    <path fill='none' d="M21.389 6.75l-14 14.583" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
+  <symbol fill="currentColor" stroke='currentColor' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" id="volume1">
+    <path stroke='none' d="M2.389 10.167a2 2 0 012-2h2.298a2 2 0 001.25-.438l2.827-2.262a1 1 0 011.625.78v11.84a1 1 0 01-1.625.78l-2.827-2.262a2 2 0 00-1.25-.438H4.39a2 2 0 01-2-2v-4z"></path>
+    <path fill='none' d="M15.389 8.167s1.5 1.5 1.5 4-1.5 4-1.5 4m3-12s3.2 3 3.2 8-3.2 8-3.2 8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
   </symbol>
 </svg>

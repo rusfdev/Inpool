@@ -287,15 +287,12 @@ const HomePage = {
 
 const ConceptPage = {
   init: function() {
-    this.video = new BackgroundVideo(document.querySelector('.video-scene'));
-    this.video.init();
-
-    
+    HomeScreenVideo.init();
 
 
   },
   destroy: function() {
-    this.video.destroy();
+    HomeScreenVideo.destroy();
   }
 }
 
@@ -895,10 +892,9 @@ class BackgroundVideo {
   constructor($parent) {
     this.$parent = $parent;
   }
-
   init() {
     this.$video = this.$parent.querySelector('video');
-    this.$video.loop = true;
+    this.$video.volume = '0.5';
     this.$video.muted = true;
     this.resizeEvent = ()=> {
       this.resize();
@@ -906,17 +902,34 @@ class BackgroundVideo {
     this.checkPauseEvent = ()=> {
       this.checkPause();
     }
+    this.endedEvent = ()=> {
+      this.$video.currentTime = 0;
+      this.$video.play();
+      if(this.onEnd) {
+        this.onEnd();
+      }
+    }
+    this.pauseEvent = ()=> {
+      if(this.onEnd) {
+        this.onEnd();
+      }
+    }
+    this.playEvent = ()=> {
+      if(!this.initialized) {
+        this.initialized = true;
+        gsap.fromTo(this.$video, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+      }
+    }
 
     this.resizeEvent();
     this.checkPauseEvent();
-
     window.addEventListener('resize', this.resizeEvent);
     PageScroll.addListener(this.checkPauseEvent)
     document.addEventListener("visibilitychange", this.checkPauseEvent);
     
-    this.$video.addEventListener('play', ()=>{
-      gsap.fromTo(this.$video, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-    })
+    this.$video.addEventListener('play', this.playEvent)
+    this.$video.addEventListener('pause', this.pauseEvent)
+    this.$video.addEventListener('ended', this.endedEvent)
     
   }
 
@@ -947,9 +960,80 @@ class BackgroundVideo {
   }
 
   destroy() {
+    this.$video.removeEventListener('play', this.playEvent);
+    this.$video.removeEventListener('pause', this.pauseEvent)
+    this.$video.removeEventListener('ended', this.endedEvent);
     window.removeEventListener('resize', this.resizeEvent);
     PageScroll.removeListener(this.checkPauseEvent)
     document.removeEventListener("visibilitychange", this.checkPauseEvent);
   }
 
+}
+
+const HomeScreenVideo = {
+  init: function() {
+    this.state = false;
+    this.$scene = document.querySelector('.video-scene');
+    this.$player = document.querySelector('.video-scene__player');
+    this.$open = document.querySelector('.home-screen__play');
+    this.$close = document.querySelector('.video-scene__close');
+    this.$container = document.querySelector('.home-screen__container');
+    this.$gradient = document.querySelector('.home-screen__gradient');
+    this.controls = document.querySelector('.video-scene__controls');
+    this.timeline = document.querySelector('.video-scene__timeline span');
+
+    this.openAnimation = gsap.timeline({paused:true})
+      .to([this.$container, this.$gradient], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
+      .to(this.controls, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+
+    this.openEvent = ()=> {
+      this.open();
+    }
+    this.closeEvent = ()=> {
+      this.close();
+    }
+    
+    this.$open.addEventListener('click', this.openEvent);
+    this.$close.addEventListener('click', this.closeEvent);
+    
+    this.video = new BackgroundVideo(this.$scene);
+    this.video.init()
+    this.interval = setInterval(()=> {
+      let time = this.video.$video.duration,
+          ctime = this.video.$video.currentTime;
+      gsap.to(this.timeline, {css:{width:`${ctime/time*100}%`}, duration:0.1, ease:'linear'})
+    }, 100)
+
+    this.video.onEnd = ()=> {
+      if(this.state) {
+        this.close();
+      }
+    }
+
+  },
+  open: function() {
+    this.state = true;
+    this.openAnimation.play();
+    gsap.timeline()
+      .to(PageScroll, {scrollTop:0, duration:speed, ease:'power2.inOut'})
+      .to(this.$player, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .to(this.$player, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+    
+    setTimeout(()=>{
+      this.video.$video.muted = false;
+      this.video.$video.currentTime = 0;
+    }, speed*1000)
+  
+  },
+  close: function() {
+    this.state = false;
+    this.video.$video.muted = true;
+    this.openAnimation.reverse();
+  },
+  destroy: function() {
+    this.video.destroy();
+    clearInterval(this.interval)
+    this.$open.removeEventListener('click', this.openEvent);
+    this.$close.removeEventListener('click', this.closeEvent);
+  }
 }

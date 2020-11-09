@@ -999,9 +999,12 @@ const HomeScreenVideo = {
     this.video = new BackgroundVideo(this.$scene);
     this.video.init()
     this.interval = setInterval(()=> {
-      let time = this.video.$video.duration,
-          ctime = this.video.$video.currentTime;
-      gsap.to(this.timeline, {css:{width:`${ctime/time*100}%`}, duration:0.1, ease:'linear'})
+      if(this.state) {
+        let time = this.video.$video.duration,
+        ctime = this.video.$video.currentTime;
+        console.log(ctime/time*100)
+        gsap.to(this.timeline, {css:{width:`${ctime/time*100}%`}, duration:0.1, ease:'linear'})
+      }
     }, 100)
 
     this.video.onEnd = ()=> {

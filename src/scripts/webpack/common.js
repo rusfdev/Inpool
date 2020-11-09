@@ -36,6 +36,7 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
+import Splide from '@splidejs/splide'
 
 const brakepoints = {
   sm: 576,
@@ -288,11 +289,13 @@ const HomePage = {
 const ConceptPage = {
   init: function() {
     HomeScreenVideo.init();
-
+    this.slider = new CSlider(document.querySelector('.conceptions-slider'));
+    this.slider.init();
 
   },
   destroy: function() {
     HomeScreenVideo.destroy();
+    this.slider.destroy();
   }
 }
 
@@ -1047,4 +1050,129 @@ const HomeScreenVideo = {
     this.$open.removeEventListener('click', this.openEvent);
     this.$close.removeEventListener('click', this.closeEvent);
   }
+}
+
+class CSlider {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+
+  init() {
+    this.index = 0;
+    this.initScene(()=>{
+      this.initSlider();
+    });
+  }
+
+  initSlider() {
+    this.slider = new Splide(this.$parent.querySelector('.splide'), {
+      type: 'loop',
+      perPage: 1,
+      drag: false,
+      arrows: false,
+      pagination: true,
+      easing: 'ease-in-out',
+      speed: speed*1000,
+      autoplay: true,
+      perMove: 1,
+      interval: 10000
+    })
+    this.slider.mount();
+
+    this.slider.on('move', (newIndex)=> {
+      this.index = newIndex;
+      this.changeScene();
+    });
+    this.changeScene();
+  }
+
+  initScene(callback) {
+    this.textures = [];
+    this.$scene = this.$parent.querySelector('.conceptions-slider__d-images-container');
+
+    let $images = this.$scene.getAttribute('data-images').split(', '),
+        w = this.$scene.getBoundingClientRect().width,
+        h = this.$scene.getBoundingClientRect().height,
+        displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
+
+    $images.forEach(($image, index)=>{
+      this.textures[index] = new THREE.TextureLoader().load($image, ()=>{
+        if(index==this.index) {
+          init();
+        }
+      });
+    })
+    let init = ()=> {
+      this.scene = new THREE.Scene();
+      this.renderer = new THREE.WebGL1Renderer();
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.$scene.insertAdjacentElement('beforeend', this.renderer.domElement);
+      this.camera = new PerspectiveCamera(
+        70, 
+        w/h,
+        0.001,100
+      )
+      this.camera.position.set(0, 0, 1);
+      this.material = new THREE.ShaderMaterial({
+        side: THREE.DoubleSide,
+        uniforms: {
+          img: {type:'t', value:this.textures[this.index]},
+          displacement: {type:'t', value:displacement},
+          progress: {type:'f', value:0}
+        },
+        vertexShader: vertex_distortion,
+        fragmentShader: fragment_distortion
+      })
+      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
+      this.scene.add(this.plane);
+      render();
+      resize();
+      window.addEventListener('resize', this.resizeEvent);
+      if(callback) {
+        callback();
+      }
+    }
+
+    let render = ()=> {
+      this.renderer.render(this.scene, this.camera);
+      this.animationFrame = requestAnimationFrame(render);
+    }
+
+    let resize = ()=> {
+      w = this.$scene.getBoundingClientRect().width;
+      h = this.$scene.getBoundingClientRect().height;
+      let fov;
+      this.renderer.setSize(w,h);
+      this.camera.aspect = w/h;
+      this.plane.scale.x = (this.textures[this.index].image.width/this.textures[this.index].image.height);
+      if(w/h > this.plane.scale.x) {
+        fov = 2*(180/Math.PI)* (Math.atan((this.plane.scale.x/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
+      } else {
+        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
+      }   
+      this.camera.fov = fov; 
+      this.camera.updateProjectionMatrix();
+    }
+    this.resizeEvent = ()=> {
+      resize();
+    }
+
+  }
+
+  changeScene() {
+    gsap.timeline()
+      .to(this.$scene, {autoAlpha:0, duration:speed*0.35, ease:'power2.inOut'})
+      .to(this.material.uniforms.progress, {value:1, duration:speed*0.35, ease:'power2.in', onComplete:()=>{
+        this.material.uniforms.img.value = this.textures[this.index];
+      }}, `-=${speed*0.35}`)
+      .to(this.$scene, {autoAlpha:1, duration:speed*0.65, ease:'power2.inOut'})
+      .to(this.material.uniforms.progress, {value:0, duration:speed*0.65, ease:'power2.out'}, `-=${speed*0.65}`)
+  }
+
+  destroy() {
+    this.scene.remove.apply(this.scene, this.scene.children);
+    cancelAnimationFrame(this.animationFrame);
+    window.removeEventListener('resize', this.resizeEvent);
+  }
+
 }

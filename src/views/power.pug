@@ -34,6 +34,84 @@ block content
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
   
-  section.section(style='height:1000px')
+  section.section.conception-items
+    .container
+      .row.conception-items__container
+        .conception-item.col-xl-2
+          img(src="./img/icons/1.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Фильтр с самым<br> высоким КПД
+        .conception-item.col-xl-2
+          img(src="./img/icons/2.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Система управления<br> ASM Control
+        .conception-item.col-xl-2
+          img(src="./img/icons/3.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Стандартный<br> противоток
+        .conception-item.col-xl-2
+          img(src="./img/icons/4.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Водопад 
+        .conception-item.col-xl-2
+          img(src="./img/icons/5.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Гидромассаж
+        .conception-item.col-xl-2
+          img(src="./img/icons/6.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Аэромассаж
 
-    
+  section.section.conceptions-slider
+    .container
+      .row
+        .conceptions-slider__d-images.col-xxl-7.col-xl-6
+          .conceptions-slider__d-images-container(data-images='./img/9r0jNz.jpg, ./img/9r0jNss.jpg, ./img/9r0jNa.jpg, ./img/9r0jNw.jpg, ./img/9r0jNss.jpg, ./img/9r0jNa.jpg')
+
+        .conceptions-slider__slides.col-xxl-4.col-xl-5.offset-xl-1
+          .splide
+            .splide__track
+              .splide__list
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL ASM Control
+                  .conceptions-slider__slide-text
+                    p Система интеллектуального управления бассейном.
+                    p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
+                    a(href="javascript:void(0);").button 
+                      span Подробнее
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL ASM Connect
+                  .conceptions-slider__slide-text
+                    p Система удаленного доступа и диспетчеризации.
+                    p Позволяет сервисным службам дистанционно наблюдать за основными параметрами и оперативно реагировать на изменения в системе водоподготовки.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL Premium
+                  .conceptions-slider__slide-text
+                    p Технология усиленной фильтрации.
+                    p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL EVO
+                  .conceptions-slider__slide-text
+                    p Технология нагрева бассейна. 
+                    p Позволяет достичь самых низких эксплуатационных расходов.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL JET
+                  .conceptions-slider__slide-text
+                    p Технология активного противотока 
+                    p Уникальная система противотоков с эффектом плавания в открытом море.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                  h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
+                  .conceptions-slider__slide-text
+                    p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 

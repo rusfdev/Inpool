@@ -1,6 +1,7 @@
 .grid {
   position: relative;
-  background-color: #e0ffdc; }
+  background-color: #fafff9;
+  height: 1000px; }
   .grid__background {
     position: absolute;
     z-index: 1;
@@ -13,44 +14,49 @@
     position: relative;
     z-index: 2;
     height: 100%; }
-    .grid__row::before {
+    .grid__row::before, .grid__row:after {
       content: '';
       display: block;
-      position: absolute;
-      width: calc(100% - 24px);
+      width: 24px;
+      background-color: #dfffd6;
       height: 100%;
-      left: 12px;
-      background-color: #d5ddff; }
+      position: absolute;
+      top: 0;
+      z-index: 4; }
+    .grid__row::before {
+      left: -12px; }
+    .grid__row::after {
+      right: -12px; }
   .grid__col {
-    position: relative;
-    z-index: 2; }
+    position: relative; }
+    .grid__col:not(:last-child):after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 100%;
+      background-color: #eff1ff;
+      position: absolute;
+      top: 0;
+      right: -12px;
+      z-index: 2; }
     .grid__col::before {
       content: '';
       display: block;
       width: 100%;
       height: 100%;
-      background-color: #ffd7d7; }
-  .grid__content {
-    position: relative;
-    z-index: 2;
-    padding: 24px 0 0 0; }
-
-.grid-block {
-  margin-bottom: 24px; }
-  .grid-block__container {
-    background-color: rgba(0, 0, 0, 0.5); }
-    .grid-block__container::before {
-      content: '';
-      display: block;
-      padding-top: 100%; }
-
-@media (max-width: 767.98px) {
-  .grid-block {
-    margin-bottom: 16px; }
-  .grid__content {
-    padding: 16px 0 0 0; }
-  .grid__row::before {
-    width: calc(100% - 16px);
-    left: 8px; } }
+      background-color: #ffd7d7;
+      z-index: 2; }
+  @media (max-width: 767.98px) {
+    .grid__row::before, .grid__row:after {
+      width: 16px; }
+    .grid__row::before {
+      left: -8px; }
+    .grid__row::after {
+      right: -8px; }
+    .grid__col {
+      position: relative; }
+      .grid__col:not(:last-child):after {
+        width: 16px;
+        right: -8px; } }
 
 /*# sourceMappingURL=maps/grid.css.map */

@@ -5,7 +5,8 @@
 
 .grid {
   position: relative;
-  background-color: #e0ffdc;
+  background-color: #fafff9;
+  height: 1000px;
   &__background {
     position: absolute;
     z-index: 1;
@@ -20,57 +21,66 @@
     position: relative;
     z-index: 2;
     height: 100%;
-    &::before {
+    &::before, &:after {
       content: '';
       display: block;
-      position: absolute;
-      width: calc(100% - #{$container-padding-x});
+      width: $container-padding-x;
+      background-color: #dfffd6;
       height: 100%;
-      left: $grid-gutter-width / 2;
-      background-color: rgb(213, 221, 255);
+      position: absolute;
+      top: 0;
+      z-index: 4;
+    }
+    &::before {
+      left: -$grid-gutter-width/2;
+    }
+    &::after {
+      right: -$grid-gutter-width/2;
     }
   }
   &__col {
     position: relative;
-    z-index: 2;
+    &:not(:last-child) {
+      &:after {
+        content: '';
+        display: block;
+        width: $grid-gutter-width;
+        height: 100%;
+        background-color: #eff1ff;
+        position: absolute;
+        top: 0;
+        right: -$grid-gutter-width/2;
+        z-index: 2;
+      }
+    }
     &::before {
       content: '';
       display: block;
       width: 100%;
       height: 100%;
       background-color: #ffd7d7;
+      z-index: 2;
     }
   }
-  &__content {
-    position: relative;
-    z-index: 2;
-    padding: $grid-gutter-width 0 0 0;
-  }
-}
-.grid-block {
-  margin-bottom: $grid-gutter-width;
-  &__container {
-    background-color: rgba(0, 0, 0, 0.5);
-    &::before {
-      content: '';
-      display: block;
-      padding-top: 100%;
-    }
-  }
-}
-
-@include media-breakpoint-down(md) {
-  .grid {
-    &-block {
-      margin-bottom: $mobile-grid-gutter-width;
-    }
-    &__content {
-      padding: $mobile-grid-gutter-width 0 0 0;
-    }
+  @include media-breakpoint-down(md) {
     &__row {
+      &::before, &:after {
+        width: $mobile-container-padding-x;
+      }
       &::before {
-        width: calc(100% - #{$mobile-container-padding-x});
-        left: $mobile-grid-gutter-width / 2;
+        left: -$mobile-grid-gutter-width/2;
+      }
+      &::after {
+        right: -$mobile-grid-gutter-width/2;
+      }
+    }
+    &__col {
+      position: relative;
+      &:not(:last-child) {
+        &:after {
+          width: $mobile-grid-gutter-width;
+          right: -$mobile-grid-gutter-width/2;
+        }
       }
     }
   }

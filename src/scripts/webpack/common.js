@@ -145,9 +145,11 @@ const transitions = {
     if(Nav.state) {
       Nav.close();
     }
+    let y = Math.max(PageScroll.offset.y-window.innerHeight, 0);
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
-      .to(PageScroll, {scrollTop:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .to(PageScroll, {scrollTop:y, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .set(PageScroll, {scrollTop:0})
 
     this.animation.eventCallback('onComplete', ()=>{
       Header.fixed = false;

@@ -10,12 +10,16 @@
   }
   &__left {
     display: flex;
+    align-items: center;
   }
   &__logo {
     margin-right: 150px;
   }
   @include media-breakpoint-down(xxl) {
     padding: 100px 0 50px 0;
+    &__logo {
+      margin-right: 100px;
+    }
   }
 }
 

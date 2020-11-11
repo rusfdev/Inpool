@@ -29,7 +29,7 @@ body {
     box-sizing: border-box;
   }
 }
-button, input:not([type='range']), textarea {
+button, input, textarea {
   outline: none;
   display: block;
   background-color: transparent;
@@ -44,7 +44,7 @@ a, button, label {
   -webkit-user-drag: none;
   cursor: pointer;
 }
-ul {
+ul, ol {
   margin: 0;
   padding: 0;
   list-style: none;

@@ -40,11 +40,13 @@
 		"@splidejs/splide": "^2.4.14",
 		"bootstrap": "^5.0.0-alpha1",
 		"gsap": "^3.5.1",
+		"inputmask": "^5.0.5",
 		"lazysizes": "^5.2.2",
 		"normalize.css": "^8.0.1",
 		"scroll-lock": "^2.1.4",
 		"smooth-scrollbar": "^8.5.3",
 		"splitting": "^1.0.6",
-		"three": "^0.121.1"
+		"three": "^0.121.1",
+		"validate.js": "^0.13.1"
 	}
 }

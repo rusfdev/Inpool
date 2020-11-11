@@ -273,6 +273,24 @@
       <footer class="footer">
         <div class="container footer__container">
           <div class="footer__left"><a class="logo footer__logo" href="./index.html" data-namespace="home"><img src="./img/logos/logo.svg" alt="logo"></a><span class="footer__copyright">© Все права защищены. 2020</span></div>
+          <ul class="socials footer__socials">
+            <li class="socials__item no-flickr"><a class="socials__link" href="#">
+                <svg class="icon">
+                  <use xlink:href="./img/icons/socials-sprite.svg#vkontakte"></use>
+                </svg></a></li>
+            <li class="socials__item no-flickr"><a class="socials__link" href="#">
+                <svg class="icon">
+                  <use xlink:href="./img/icons/socials-sprite.svg#instagram"></use>
+                </svg></a></li>
+            <li class="socials__item no-flickr"><a class="socials__link" href="#">
+                <svg class="icon">
+                  <use xlink:href="./img/icons/socials-sprite.svg#odnoklassniki"></use>
+                </svg></a></li>
+            <li class="socials__item no-flickr"><a class="socials__link" href="#">
+                <svg class="icon">
+                  <use xlink:href="./img/icons/socials-sprite.svg#facebook"></use>
+                </svg></a></li>
+          </ul>
           <div class="dev-label"><span>Разработка и поддержка сайта – </span><a class="dev-label__link" href="https://artica.art/" rel="nofollow" target="_blank">
               <svg viewBox="0 0 74 15" fill="currentColor">
                 <path d="M42.4491 5.10225L40.8535 5.1062L40.8776 14.8511L42.4733 14.8471L42.4491 5.10225Z"></path>
@@ -285,6 +303,69 @@
         </div>
       </footer>
     </div>
+    <div class="popup popup-succes" id="succes">
+      <div class="popup__overlay" data-popup="close"></div>
+      <div class="popup-block">
+        <div class="popup-block__container"><a class="popup-block__close" href="javascript:void(0);" data-popup="close"></a>
+          <div class="popup-block__content popup-succes__content">
+            <h2 class="popup-succes__title popup__title">Спасибо!</h2>
+            <svg class="popup-succes__icon" width="65" height="59" viewBox="0 0 65 59" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 36.8079L20.1349 56.7611L63.4635 1.23926" stroke-width="2"></path>
+            </svg>
+            <p>Ваша заявка успешно отправлена. На указанный номер скоро позвонит наш менеджер и расскажет подробнее об iNPOOL Concept</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-message" id="asm-info">
+      <div class="popup__overlay" data-popup="close"></div>
+      <div class="popup-block">
+        <div class="popup-block__container"><a class="popup-block__close" href="javascript:void(0);" data-popup="close"></a>
+          <div class="popup-block__content">
+            <p>Принципиальное отличие INPOOL ASM Control от других систем управления бассейном: </p>
+            <ol>
+              <li>Вся система управления бассейном в одном месте. Конфигурируется под каждый проект индивидуально.</li>
+              <li>Управление температурой воды.</li>
+              <li>Управление освещением, которое понятно ребенку.</li>
+              <li>Функция PARTY - включает музыку и освещение в бассейне одновременно по вашему сценарию.</li>
+              <li>Вывод параметров станции дезинфекции (активный кислород, содержание хлора, PH и температура).</li>
+              <li>Управление автоматическим покрытием жалюзи.</li>
+              <li>Доступ к информации по аварийным ситуациям.</li>
+              <li>Ночной режим энергосбережения.</li>
+              <li>Аттракционы</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-form" id="form-popup">
+      <div class="popup__overlay" data-popup="close"></div>
+      <div class="popup-block">
+        <div class="popup-block__container"><a class="popup-block__close" href="javascript:void(0);" data-popup="close"></a>
+          <div class="popup-block__content popup-form__content">
+            <h2 class="popup__title popup-form__title">Получите персональное предложение!</h2>
+            <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
+            <form class="form popup-form__form js-validation">
+              <div class="form__group">
+                <div class="form__item">
+                  <div class="input contacts__animate-item">
+                    <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                  </div>
+                </div>
+                <div class="form__item">
+                  <div class="input contacts__animate-item">
+                    <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                  </div>
+                </div>
+              </div>
+              <div class="form__submit">
+                <button class="button" type="submit"><span>Отправить</span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/common.css">
@@ -296,8 +377,12 @@
         </svg></a>
       <div class="helper__container">
         <!--section-->
+        <div class="helper__section"><span class="helper__section-title">Всплывающие окна:</span>
+          <div class="helper__section-content"><a class="helper__section-button" href="#succes" data-popup="open">Успешная отправка формы</a><a class="helper__section-button" href="#asm-info" data-popup="open">Текстовое окно</a><a class="helper__section-button" href="#form-popup" data-popup="open">Всплывающая форма</a></div>
+        </div>
+        <!--section-->
         <div class="helper__section"><span class="helper__section-title">Страницы:</span>
-          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./contacts.html">Контакты</a><a class="helper__section-button" href="./power.html">Inpool power</a><a class="helper__section-button disabled" href="./energy.html">Inpool energy</a><a class="helper__section-button disabled" href="./family.html">Inpool family</a><a class="helper__section-button disabled" href="./balance.html">Inpool balance</a><a class="helper__section-button disabled" href="./technology.html">Технологии</a><a class="helper__section-button disabled" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="components.html">Компоненты</a><a class="helper__section-button" href="grid.html">Сетка</a></div>
+          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./contacts.html">Контакты</a><a class="helper__section-button" href="./power.html">Inpool power</a><a class="helper__section-button" href="./energy.html">Inpool energy</a><a class="helper__section-button disabled" href="./family.html">Inpool family</a><a class="helper__section-button disabled" href="./balance.html">Inpool balance</a><a class="helper__section-button disabled" href="./technology.html">Технологии</a><a class="helper__section-button disabled" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="components.html">Компоненты</a><a class="helper__section-button" href="grid.html">Сетка</a></div>
         </div>
       </div>
     </div>

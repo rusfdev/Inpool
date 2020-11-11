@@ -36,14 +36,16 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
-import Splide from '@splidejs/splide'
+import Splide from '@splidejs/splide';
+import Inputmask from "inputmask";
+const validate = require("validate.js");
 
 const brakepoints = {
   sm: 576,
   md: 768,
   lg: 1024,
   xl: 1280,
-  xxl: 1620
+  xxl: 1600
 }
 const dev = false;
 const speed = 1;
@@ -89,6 +91,8 @@ window.onload = function(){
   Header.init();
   Nav.init();
   Distortion.init();
+  Validation.init();
+  Popup.init();
   Parralax.init();
 }
 
@@ -128,7 +132,9 @@ const transitions = {
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
-      Parralax.check();
+      setTimeout(()=>{
+        Parralax.check();
+      }, 250)
     }, 250)
     
   },
@@ -456,20 +462,19 @@ const Header = {
 
 const Parralax = {
   init: function() {
-    this.check();
     PageScroll.addListener(()=>{
       this.check();
     })
   },
   check: function() {
     let $items = document.querySelectorAll('[data-parralax]');
-    $items.forEach(($this)=>{
+    $items.forEach(($this, index)=>{
       let y = $this.getBoundingClientRect().y,
           h1 = window.innerHeight,
           h2 = $this.getBoundingClientRect().height,
           scroll = PageScroll.offset.y,
-          factor = $this.getAttribute('data-parralax');
-      
+          factor = +$this.getAttribute('data-parralax');
+  
       let val = ((scroll+h1/2)-(y+scroll+h2/2))*factor;
       gsap.set($this, {y:val})
     })
@@ -1175,4 +1180,204 @@ class CSlider {
     window.removeEventListener('resize', this.resizeEvent);
   }
 
+}
+
+const Validation = {
+  init: function() {
+    //validation
+    this.namspaces = {
+      name: 'name',
+      phone: 'phone'
+    }
+    this.constraints = {
+      name: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваше имя'
+        },
+        format: {
+          pattern: /[A-zА-яЁё ]+/,
+          message: '^Введите корректное имя'
+        },
+        length: {
+          minimum: 2,
+          tooShort: "^Имя слишком короткое (минимум %{count} символа)",
+          maximum: 20,
+          tooLong: "^Имя слишком длинное (максимум %{count} символов)"
+        }
+      },
+      phone: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваш номер телефона'
+        },
+        format: {
+          pattern: /^\+7 \d{3}\ \d{3}\-\d{4}$/,
+          message: '^Введите корректный номер телефона'
+        }
+      }
+    };
+    this.mask = Inputmask({
+      mask: "+7 999 999-9999",
+      showMaskOnHover: false,
+      clearIncomplete: false
+    }).mask('[name="phone"]');
+
+    document.addEventListener('submit', (event)=>{
+      event.preventDefault();
+      let $form = event.target;
+      if($form.classList.contains('js-validation') && this.checkValid($form)) {
+        //submit
+      }
+    })
+    document.addEventListener('input', (event)=>{
+      let $input = event.target,
+          $form = $input.closest('form');
+      if($form.classList.contains('js-validation')) {
+        this.checkValid($form, $input);
+      }
+    })
+
+  },
+  checkValid: function($form, $input) {
+    let $inputs = $form.querySelectorAll('input, textarea'),
+        values = {},
+        constraints = {},
+        resault;
+
+    $inputs.forEach(($input)=>{
+      let name = $input.getAttribute('name');
+      for(let key in this.namspaces) {
+        if($input.getAttribute('data-validate')==this.namspaces[key]) {
+          values[name] = $input.value;
+          constraints[name] = this.constraints[key];
+        }
+      }
+    })
+
+    resault = validate(values, constraints);
+
+    if(resault!==undefined) {
+      if($input!==undefined) {
+        let flag = true,
+            name = $input.getAttribute('name');
+        for(let key in resault) {
+          if(name==key) {
+            flag=false;
+          }
+        }
+        if(flag && $input.parentNode.classList.contains('error')) {
+          $input.parentNode.classList.remove('error');
+          $input.parentNode.querySelector('.input__message').remove();
+        }
+      } 
+      else {
+        $inputs.forEach(($input)=>{
+          let name = $input.getAttribute('name');
+          for(let key in resault) {
+            if(name==key) {
+              if(!$input.parentNode.classList.contains('error')) {
+                $input.parentNode.classList.add('error');
+                $input.parentNode.insertAdjacentHTML('beforeend', `<span class="input__message">${resault[key][0]}</span>`);
+                gsap.to($input.parentNode.querySelector('.input__message'), {autoAlpha:1, duration:0.25, ease:'power2.out'})
+              } else {
+                $input.parentNode.querySelector('.input__message').textContent = `${resault[key][0]}`;
+              }
+            }
+          }
+        })
+      }
+      return false;
+    } else {
+      $inputs.forEach(($input)=>{
+        $input.parentNode.classList.remove('error');
+        let $message = $input.parentNode.querySelector('.input__message');
+        if($message) $message.remove();
+      })
+      return true;
+    }
+  },
+  reset: function($form) {
+    let $inputs = $form.querySelectorAll('input, textarea');
+    $inputs.forEach(($input)=>{
+      $input.value = '';
+      if($input.parentNode.classList.contains('error')) {
+        $input.parentNode.classList.remove('error');
+        $input.parentNode.querySelector('.input__message').remove();
+      }
+    })
+  }
+}
+
+const Popup = {
+  init: function() {
+    
+    document.addEventListener('click', (event)=>{
+      let $button = event.target!==document?event.target.closest('[data-popup]'):null;
+      if($button && $button.getAttribute('data-popup')=='open') {
+        event.preventDefault();
+        let href = $button.getAttribute('href'), 
+            $popup = document.querySelector(`${href}`);
+        //popup is
+        if($popup) {
+          let $content = $popup.querySelector('.popup-block__container');
+          this.newAnimation = gsap.timeline({paused:true})
+            .fromTo($popup, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+            .fromTo($content, {y:20}, {y:0, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
+          
+          if($popup.classList.contains('popup-succes')) {
+            console.log('{{')
+            let $icon = $popup.querySelector('path'),
+                w = $icon.getTotalLength();
+            let timeline = gsap.timeline()
+              .set($icon, {css:{'stroke-dasharray':w}})
+              .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
+            this.newAnimation.add(timeline, `-=${speed}`)
+          }
+
+          if(this.oldAnimation) {
+            this.oldAnimation.timeScale(2).reverse().eventCallback('onReverseComplete', ()=>{
+              this.newAnimation.play();
+            });
+          } else {
+            this.newAnimation.play();
+          }
+          
+          this.oldAnimation = this.newAnimation;
+        }
+      } 
+      else if($button && $button.getAttribute('data-popup')=='close') {
+        let $popup = $button.closest('.popup'),
+            $form = $popup.querySelector('form');
+        this.oldAnimation.timeScale(2).reverse();
+        this.oldAnimation = false;
+        if($form) Validation.reset($form);
+      }
+    })
+
+  }, 
+  open: function($popup) {
+    let event = () => {
+      this.active = $popup;
+      scrollLock.disablePageScroll();
+      $popup.addClass('active');
+    }
+
+    if(this.active) {
+      popup.close(this.active, function() {
+        event();
+      });
+    } else {
+      event();
+    }
+
+  }, 
+  close: function($popup, callback) {
+    scrollLock.enablePageScroll();
+    $popup.removeClass('active');
+    setTimeout(()=>{
+      this.active = undefined;
+      typeof callback === 'function' && callback();
+    }, 250)
+  }
 }

@@ -1,7 +1,6 @@
 h1,h2,h3,h4,h5,h6 {
   margin: 1.875rem 0 1rem 0;
   line-height: 1.4;
-  color: var(--color-title);
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   &:not([class]) {
@@ -84,37 +83,38 @@ blockquote {
   }
 }
 
-ul:not([class]) {
+ul:not([class]), ol:not([class]) {
   &:not(:last-child) {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
   li:not([class]) {
-    position: relative;
-    padding-left: 22px;
     &:not(:last-child) {
-      margin: 0 0 0.875rem 0;
+      margin: 0 0 0.75rem 0;
     }
+  }
+}
+
+ul:not([class]) {
+  li:not([class]) {
+    position: relative;
+    padding-left: 30px;
     &::before {
       content: '';
       display: block;
       position: absolute;
       left: 0;
-      top: 0.55rem;
+      top: 9px;
       width: 10px;
-      height: 2px;
-      background-color: var(--color-text);
+      height: 10px;
+      background-color: var(--color-accent);
+      transform: rotate(45deg);
     }
   }
 }
+
 ol:not([class]) {
   counter-reset: section;
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
   li:not([class]) {
-    &:not(:last-child) {
-      margin: 0 0 0.875rem 0;
-    }
     &:before {
       counter-increment: section;
       content: counter(section) '. ';

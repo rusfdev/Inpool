@@ -63,6 +63,9 @@
   visibility: hidden;
   overflow: hidden;
 }
+.container {
+  position: relative;
+}
 .section {
   margin-bottom: 120px;
   &:first-child {

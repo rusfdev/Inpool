@@ -5,8 +5,9 @@ block variables
   -var namespace = power_namespace;
 block content
   section.section.home-screen
-    .video-scene.image.image_cover
-      //img(data-src="./img/9r0jNz.png", alt="bg").lazyload(data-parralax='0.35')
+    .video-scene
+      .image.image_cover.video-scene__image
+        img(data-src="#", alt="bg").lazyload(data-parralax='0.35')
       //contols
       .video-scene__controls.container
         a(href="javascript:void(0);").video-scene__close
@@ -74,7 +75,7 @@ block content
                   .conceptions-slider__slide-text
                     p Система интеллектуального управления бассейном.
                     p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
-                    a(href="javascript:void(0);").button 
+                    a(href="#asm-info" data-popup='open').button 
                       span Подробнее
                 //slide
                 .splide__slide.conceptions-slider__slide
@@ -115,3 +116,58 @@ block content
                   h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
                   .conceptions-slider__slide-text
                     p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 
+
+  section.section.conceptions-about
+    .container
+      .row
+        h6.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='0.2') Вам подойдёт INPOOL<br> POWER, если вы 
+      .row.conceptions-about__container
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/asfsfa.jpg", alt="image").lazyload
+          .conceptions-about__item-index 1
+          .conceptions-about__item-text
+            p Хотите создать собственное пространство для поддержания здоровья и хорошей физической формы
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/ddsds.jpg", alt="image").lazyload
+          .conceptions-about__item-index 2
+          .conceptions-about__item-text
+            p Иметь источник энергии, помогающий достигать более амбициозных целей 
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/lldls.jpg", alt="image").lazyload
+          .conceptions-about__item-index 3
+          .conceptions-about__item-text
+            p Цените свое время и готовы доверить профессионалам заботу о вашем бассейне
+
+  section.section.conceptions-final
+    .container
+      span.conceptions-final__slogan.conceptions-final__slogan_style-1 INPOOL POWER – максимально<br> оснащенный бассейн
+      .row
+        h6.bg-title.offset-xl-1.col-11(data-parralax='0.2') INPOOL POWER  – <br> сила вашей власти
+      .row
+        .conceptions-final__content.col-xl-4.offset-xl-1
+          h2.conceptions-final__title От 100 000 €
+          p Пришло время создать свое место силы
+          a(href="#form-popup" data-popup='open').button.conceptions-final__button
+            span Это мой выбор
+        .conceptions-final__m-image.col-xxl-5.col-xl-6
+          .image.image_cover.js-distortion
+            img(data-src="./img/ssas.jpg", alt="image").lazyload
+        .conceptions-final__s-image.conceptions-final__s-image_style-1.col-xl-3
+          .image.image_cover.js-distortion
+            img(data-src="./img/photo-1558239041-c5fc98b811a7 1.jpg", alt="image").lazyload
+        .conceptions-final__text.col-xl-3
+          p Искусственный интеллект и лучшие мировые технологии позволили создать по-настоящему инновационный бассейн
+
+  include blocks/form-section

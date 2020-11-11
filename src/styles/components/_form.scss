@@ -1,0 +1,80 @@
+.input {
+  position: relative;
+  &__element {
+    line-height: 24px;
+    padding: 10px 0 10px 10px;
+    display: block;
+    width: 100%;
+    height: 45px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--color-light);
+    border-bottom: 1px solid var(--color-light);
+    transition: border-color $trs1;
+    font-weight: 300;
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--color-light);
+      box-shadow: 0 0 0px 1000px var(--color-bg-dark) inset;
+    }
+    &::placeholder {
+      color: var(--color-muted);
+      transition: opacity $trs1;
+    }
+    &:focus {
+      &::placeholder {
+        opacity: 0;
+      }
+    }
+  }
+  &__message {
+    font-size: 0.75rem;
+    line-height: 24px;
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    color: var(--color-error);
+    opacity: 0;
+    font-weight: 400;
+    padding-left: 10px;
+  }
+  &.error {
+    .input__element {
+      border-color: var(--color-error);
+    }
+  }
+  &.js-valid {
+    background-color: rgba(46, 230, 0, 0.2);
+  }
+  &.js-invalid {
+    background-color: rgba(221, 0, 0, 0.2);
+  }
+}
+
+.form {
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 35px;
+    }
+  }
+  &__submit {
+    margin-top: 65px;
+    .button {
+      max-width: 168px;
+      margin: 0 auto;
+    }
+  }
+  @include media-breakpoint-down(xxl) {
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
+    }
+    &__submit {
+      margin-top: 50px;
+    }
+  }
+}

@@ -3705,8 +3705,6 @@ a {
   left: 0;
   background: var(--color-bg-transparent);
   display: flex;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
   opacity: 0;
   visibility: hidden; }
   .popup__overlay {

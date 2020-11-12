@@ -818,6 +818,7 @@ const Cursor = {
       .to(this.$parent, {rotation:720, duration:speed*1.25, ease:'power2.out'})
       .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.8}, duration:speed*0.75, ease:'power2.in'}, `-=${speed*2}`)
       .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed*0.5, ease:'power2.out'}, `-=${speed*0.5}`)
+      .set(this.$parent, {rotation:0})
       .eventCallback('onComplete', ()=>{
         this.$parent.classList.remove('loading');
       })
@@ -1099,7 +1100,6 @@ class CSlider {
       interval: 10000
     })
     this.slider.mount();
-
     this.slider.on('move', (newIndex)=> {
       this.index = newIndex;
       this.changeScene();
@@ -1186,6 +1186,7 @@ class CSlider {
       .to(this.$scene, {autoAlpha:0, duration:speed*0.35, ease:'power2.inOut'})
       .to(this.material.uniforms.progress, {value:1, duration:speed*0.35, ease:'power2.in', onComplete:()=>{
         this.material.uniforms.img.value = this.textures[this.index];
+        this.resizeEvent();
       }}, `-=${speed*0.35}`)
       .to(this.$scene, {autoAlpha:1, duration:speed*0.65, ease:'power2.inOut'})
       .to(this.material.uniforms.progress, {value:0, duration:speed*0.65, ease:'power2.out'}, `-=${speed*0.65}`)

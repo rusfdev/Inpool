@@ -125,7 +125,10 @@ const transitions = {
         ConceptPage.init();
       } 
       else if(namespace==namespaces[6]) {
-        WaveScene.init();
+        EquipmentPage.init();
+      } 
+      else if(namespace==namespaces[5]) {
+        TechnologyPage.init();
       }
 
       this.animation = gsap.to($container, {duration:speed ,autoAlpha:1, ease:'power2.inOut'});
@@ -165,7 +168,10 @@ const transitions = {
         ConceptPage.destroy();
       } 
       else if(namespace==namespaces[6]) {
-        WaveScene.destroy();
+        EquipmentPage.destroy();
+      } 
+      else if(namespace==namespaces[5]) {
+        TechnologyPage.destroy();
       }
 
       barba.done();
@@ -281,6 +287,7 @@ const TouchHoverEvents = {
   }
 }
 
+//pages
 const HomePage = {
   init: function() {
     Splitting();
@@ -294,7 +301,6 @@ const HomePage = {
     Banner.destroy();
   }
 }
-
 const ConceptPage = {
   init: function() {
     HomeScreenVideo.init();
@@ -305,6 +311,22 @@ const ConceptPage = {
   destroy: function() {
     HomeScreenVideo.destroy();
     this.slider.destroy();
+  }
+}
+const EquipmentPage = {
+  init: function() {
+    WaveScene.init();
+  },
+  destroy: function() {
+    WaveScene.destroy();
+  }
+}
+const TechnologyPage = {
+  init: function() {
+    WaveScene.init();
+  },
+  destroy: function() {
+    WaveScene.destroy();
   }
 }
 

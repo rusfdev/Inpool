@@ -1,6 +1,6 @@
 section.section.home
   .home-banner
-    .wave-scene(data-parralax='0.35' data-images='./img/roberto-nickson-so3wgJLwDxo-unsplash 2.jpg, ./img/roberto-nickson-so3wgJLwDxo-unsplash 3.jpg, ./img/roberto-nickson-so3wgJLwDxo-unsplash 2 (1).jpg, ./img/roberto-nickson-so3wgJLwDxo-unsplash 5.jpg')
+    .wave-scene(data-parralax='0.35' data-images='./img/home1.jpg, ./img/home2.jpg, ./img/home3.jpg, ./img/home4.jpg')
     .container.home-banner__container
       .home-banner__slogan.no-flickr Бассейны<br> высочайшего<br> уровня
       //slide
@@ -9,7 +9,7 @@ section.section.home
         .home-banner__slide-content
           p.home-banner__slide-text(data-splitting) INPOOL CONCEPT - это совокупность лучших технологий мировых производителей, сгрупированных соответствено.
           .home-banner__slide-button
-            a(href="javascript:void(0);").button
+            a(href="#form-popup" data-popup='open').button
               span Оставить заявку
       //slide
       .home-banner__slide.container
@@ -17,7 +17,7 @@ section.section.home
         .home-banner__slide-content
           p.home-banner__slide-text(data-splitting) Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
           .home-banner__slide-button
-            a(href="javascript:void(0);").button
+            a(href="#form-popup" data-popup='open').button
               span Оставить заявку
       //slide
       .home-banner__slide.container
@@ -33,7 +33,7 @@ section.section.home
         .home-banner__slide-content
           p.home-banner__slide-text(data-splitting) В INPOOL CONCEPT используются самые современные интеллектуальные инструменты
           .home-banner__slide-button
-            a(href="javascript:void(0);").button
+            a(href="#form-popup" data-popup='open').button
               span Оставить заявку
 
       //pagination
@@ -57,8 +57,8 @@ section.section.home
           a(href=energy).category-list__link
             span Inpool<br> energy
         li.category-list__item.no-flickr
-          a(href=power).category-list__link
-            span Inpool<br> family
-        li.category-list__item.no-flickr
-          a(href=power).category-list__link
+          a(href=balance).category-list__link
             span Inpool<br> balance
+        li.category-list__item.no-flickr
+          a(href=family).category-list__link
+            span Inpool<br> family

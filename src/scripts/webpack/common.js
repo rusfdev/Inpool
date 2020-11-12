@@ -142,6 +142,7 @@ const transitions = {
   exit: function($container, namespace) {
     $wrapper.classList.add('disabled');
     $header.classList.remove('header_fixed');
+    Cursor.loading();
     if(Nav.state) {
       Nav.close();
     }
@@ -762,9 +763,11 @@ const Cursor = {
     this.$element.setAttribute('cy', this.c);
     this.$element.setAttribute('r', this.r);
     this.circumference = 2*Math.PI*this.r;
-    this.$element.setAttribute("style", `stroke-dasharray:${this.circumference} ${this.circumference};stroke-dashoffset:0;`);
+    this.$element.setAttribute("style", `stroke-dasharray:${this.circumference};stroke-dashoffset:0;`);
     this.flag = true;
     let xStart, yStart;
+
+    console.log(this.circumference)
 
     document.addEventListener('mousemove',(event)=>{
       let x = event.clientX,
@@ -807,6 +810,17 @@ const Cursor = {
   },
   leave: function() {
     this.$parent.classList.remove('hover');
+  },
+  loading: function() {
+    this.$parent.classList.add('loading');
+    gsap.timeline()
+      .fromTo(this.$parent, {rotation:0}, {rotation:320, duration:speed*0.75, ease:'power2.in'})
+      .to(this.$parent, {rotation:720, duration:speed*1.25, ease:'power2.out'})
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.8}, duration:speed*0.75, ease:'power2.in'}, `-=${speed*2}`)
+      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed*0.5, ease:'power2.out'}, `-=${speed*0.5}`)
+      .eventCallback('onComplete', ()=>{
+        this.$parent.classList.remove('loading');
+      })
   },
   show: function() {
     gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
@@ -1097,13 +1111,14 @@ class CSlider {
     this.textures = [];
     this.$scene = this.$parent.querySelector('.conceptions-slider__d-images-container');
 
-    let $images = this.$scene.getAttribute('data-images').split(', '),
+    let $images = this.$parent.querySelectorAll('img'),
         w = this.$scene.getBoundingClientRect().width,
         h = this.$scene.getBoundingClientRect().height,
         displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
-
+    console.log($images)
     $images.forEach(($image, index)=>{
-      this.textures[index] = new THREE.TextureLoader().load($image, ()=>{
+      let href = $image.getAttribute('data-src');
+      this.textures[index] = new THREE.TextureLoader().load(href, ()=>{
         if(index==this.index) {
           init();
         }
@@ -1338,7 +1353,7 @@ const Popup = {
           }
 
           if(this.oldAnimation) {
-            this.oldAnimation.timeScale(2).reverse().eventCallback('onReverseComplete', ()=>{
+            this.oldAnimation.timeScale(1.5).reverse().eventCallback('onReverseComplete', ()=>{
               this.newAnimation.play();
             });
           } else {
@@ -1351,7 +1366,7 @@ const Popup = {
       else if($button && $button.getAttribute('data-popup')=='close') {
         let $popup = $button.closest('.popup'),
             $form = $popup.querySelector('form');
-        this.oldAnimation.timeScale(2).reverse();
+        this.oldAnimation.timeScale(1.5).reverse();
         this.oldAnimation = false;
         if($form) Validation.reset($form);
       }

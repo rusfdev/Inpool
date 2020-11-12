@@ -67,13 +67,14 @@
     }
   }
   &__title {
-    font-size: 52px;
     line-height: 1.1;
   }
-  @include media-breakpoint-down(xxl) {
+  @include media-breakpoint-up(xxl) {
     &__title {
-      font-size: 42px;
+      font-size: 52px;
     }
+  }
+  @include media-breakpoint-down(xxl) {
     &-block {
       max-width: calc(#{$container-padding-x * 2} + 800px);
       &__container {

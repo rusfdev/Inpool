@@ -4,3 +4,183 @@ block title
 block variables
   -var namespace = family_namespace;
 block content
+  section.section.home-screen
+    .video-scene
+      .image.image_cover.video-scene__image
+        img(data-src="./img/family/home.jpg", alt="bg" data-parralax='0.35').lazyload
+      //contols
+      .video-scene__controls.container
+        a(href="javascript:void(0);").video-scene__close
+        .video-scene__timeline
+          span
+
+      video.video-scene__player(data-parralax='0.35')
+        source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
+    .home-screen__gradient
+    .container.home-screen__container
+      .row.home-screen__content
+        .home-screen__left.col-xl-6
+          span.home-screen__idx 04
+          h1.home-screen__title.text-uppercase Inpool FAMILY
+          p.home-screen__slogan дарите близким радость<br> общения и новые эмоции
+        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
+          p Это не просто бассейн, это место силы для всей семьи, где каждый может создавать индивидуальные сценарии отдыха и развлечений
+        .home-screen__play.col-xxl-4.col-xl-5
+          a(href="javascript:void(0);").home-screen__play-btn
+            svg.icon
+              use(xlink:href='./img/icons/icons-sprite.svg#play')
+            span Посмотрите видео-презентацию<br> об INPOOL FAMILY
+
+      button.home-screen__scroll-bottom.scroll-bottom
+        svg.icon
+          use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
+  
+  section.section.conception-items
+    .container
+      .row.conception-items__container
+        .conception-item.col-xl-2
+          img(src="./img/icons/1.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Стандартный<br> усиленный фильтр
+        .conception-item.col-xl-2
+          img(src="./img/icons/2.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Система управления<br> ASM Control
+        .conception-item.col-xl-2
+          img(src="./img/icons/3.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Стандартный<br> противоток
+        .conception-item.col-xl-2
+          img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
+          img(src="./img/icons/4.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Водопад 
+        .conception-item.col-xl-2
+          img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
+          img(src="./img/icons/5.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Гидромассаж
+        .conception-item.col-xl-2
+          img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
+          img(src="./img/icons/6.svg", alt="ico").conception-item__icon
+          h6.conception-item__title Аэромассаж
+
+  section.section.conceptions-slider
+    .container
+      .row
+        .conceptions-slider__slides.col-xxl-4.col-xl-5
+          .splide
+            .splide__track
+              .splide__list
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/jet.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL JET
+                  .conceptions-slider__slide-text
+                    p Технология активного противотока 
+                    p Уникальная система противотоков с эффектом плавания в открытом море.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/control.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL ASM Control
+                  .conceptions-slider__slide-text
+                    p Система интеллектуального управления бассейном.
+                    p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
+                    a(href="#asm-info" data-popup='open').button 
+                      span Подробнее
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/connect.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL ASM Connect
+                  .conceptions-slider__slide-text
+                    p Система удаленного доступа и диспетчеризации.
+                    p Позволяет сервисным службам дистанционно наблюдать за основными параметрами и оперативно реагировать на изменения в системе водоподготовки.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/premium.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL Premium
+                  .conceptions-slider__slide-text
+                    p Технология усиленной фильтрации.
+                    p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/evo.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL EVO
+                  .conceptions-slider__slide-text
+                    p Технология нагрева бассейна. 
+                    p Позволяет достичь самых низких эксплуатационных расходов.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/decor.jpg", alt="image")
+                  h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
+                  .conceptions-slider__slide-text
+                    p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/led.jpeg", alt="image")
+                  h2.conceptions-slider__slide-title LED освещение
+                  .conceptions-slider__slide-text
+                    p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
+
+        .conceptions-slider__d-images.col-xxl-7.col-xl-6.offset-xl-1
+          .conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2(data-images='./img/jet.jpg, ./img/control.jpg, ./img/connect.jpg, ./img/premium.jpg, ./img/evo.jpg, ./img/bronz.jpg, ./img/led.jpeg')
+
+  section.section.conceptions-about
+    .container
+      .row
+        h6.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL <br> FAMILY, если 
+      .row.conceptions-about__container
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/family/1.jpg", alt="image").lazyload
+          .conceptions-about__item-index 1
+          .conceptions-about__item-text
+            p Хотите наполнить атмосферу вашего дома гармонией и удовольствием
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/family/2.jpg", alt="image").lazyload
+          .conceptions-about__item-index 2
+          .conceptions-about__item-text
+            p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность 
+        //item
+        .conceptions-about__item.col-xl-4
+          .row  
+            .col-xl-9
+              .image.image_cover.js-distortion
+                img(data-src="./img/family/3.jpg", alt="image").lazyload
+          .conceptions-about__item-index 3
+          .conceptions-about__item-text
+            p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность 
+
+  section.section.conceptions-final
+    .container
+      span.conceptions-final__slogan.conceptions-final__slogan_style-2 INPOOL CONCEPT - это совокупность<br> лучших технологий мировых 
+      .row
+        h6.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL FAMILY – <br> сила вашей любви
+      .row
+        .conceptions-final__m-image.col-xxl-5.offset-xxl-2.col-xl-6.offset-xl-1
+          .image.image_cover.js-distortion
+            img(data-src="./img/family/4.jpg", alt="image").lazyload
+        .conceptions-final__content.col-xl-4.offset-xl-1
+          h2.conceptions-final__title От 50 000 €
+          p INPOOL ENERGY - вечная молодость, энергия и драйв. Будьте лучшим во всем. 
+          a(href="#form-popup" data-popup='open').button.conceptions-final__button
+            span Узнать подробнее
+
+        .conceptions-final__text.conceptions-final__text_style-2.col-xl-3.offset-xl-6
+          p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность 
+        
+        .conceptions-final__s-image.conceptions-final__s-image_style-2.col-xl-3
+          .image.image_cover.js-distortion
+            img(data-src="./img/family/5.jpg", alt="image").lazyload
+        
+
+  include blocks/form-section

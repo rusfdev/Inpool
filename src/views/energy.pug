@@ -8,7 +8,7 @@ block content
   section.section.home-screen
     .video-scene
       .image.image_cover.video-scene__image
-        img(data-src="#", alt="bg").lazyload(data-parralax='0.35')
+        img(data-src="#", alt="bg" data-parralax='0.35').lazyload
       //contols
       .video-scene__controls.container
         a(href="javascript:void(0);").video-scene__close
@@ -64,17 +64,14 @@ block content
   section.section.conceptions-slider
     .container
       .row
-        .conceptions-slider__d-images.col-xxl-7.col-xl-6
-          .conceptions-slider__d-images-container(data-images='./img/9r0jNz.jpg, ./img/9r0jNss.jpg, ./img/9r0jNa.jpg, ./img/9r0jNw.jpg, ./img/9r0jNss.jpg, ./img/9r0jNa.jpg, ./img/9r0jNss.jpg')
-
-        .conceptions-slider__slides.col-xxl-4.col-xl-5.offset-xl-1
+        .conceptions-slider__slides.col-xxl-4.col-xl-5
           .splide
             .splide__track
               .splide__list
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/jet.jpg", alt="image")
                   h2.conceptions-slider__slide-title INPOOL JET
                   .conceptions-slider__slide-text
                     p Технология активного противотока 
@@ -82,7 +79,7 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/control.jpg", alt="image")
                   h2.conceptions-slider__slide-title INPOOL ASM Control
                   .conceptions-slider__slide-text
                     p Система интеллектуального управления бассейном.
@@ -92,7 +89,7 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/connect.jpg", alt="image")
                   h2.conceptions-slider__slide-title INPOOL ASM Connect
                   .conceptions-slider__slide-text
                     p Система удаленного доступа и диспетчеризации.
@@ -100,7 +97,7 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/premium.jpg", alt="image")
                   h2.conceptions-slider__slide-title INPOOL Premium
                   .conceptions-slider__slide-text
                     p Технология усиленной фильтрации.
@@ -108,7 +105,7 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/evo.jpg", alt="image")
                   h2.conceptions-slider__slide-title INPOOL EVO
                   .conceptions-slider__slide-text
                     p Технология нагрева бассейна. 
@@ -116,30 +113,32 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/decor.jpg", alt="image")
                   h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
                   .conceptions-slider__slide-text
                     p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/9r0jNz.jpg", alt="image")
+                    img(data-src="./img/led.jpeg", alt="image")
                   h2.conceptions-slider__slide-title LED освещение
                   .conceptions-slider__slide-text
                     p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
 
+        .conceptions-slider__d-images.col-xxl-7.col-xl-6.offset-xl-1
+          .conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2(data-images='./img/jet.jpg, ./img/control.jpg, ./img/connect.jpg, ./img/premium.jpg, ./img/evo.jpg, ./img/bronz.jpg, ./img/led.jpeg')
 
   section.section.conceptions-about
     .container
       .row
-        h6.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='0.2') Вам подойдёт INPOOL<br> ENERGY, если вы 
+        h6.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL<br> ENERGY, если вы 
       .row.conceptions-about__container
         //item
         .conceptions-about__item.col-xl-4
           .row  
             .col-xl-9
               .image.image_cover.js-distortion
-                img(data-src="./img/llflss.jpg", alt="image").lazyload
+                img(data-src="#", alt="image").lazyload
           .conceptions-about__item-index 1
           .conceptions-about__item-text
             p Хотите профессионально заниматься спортом, не выходя из дома
@@ -148,7 +147,7 @@ block content
           .row  
             .col-xl-9
               .image.image_cover.js-distortion
-                img(data-src="./img/9r0jNzssasa.jpg", alt="image").lazyload
+                img(data-src="#", alt="image").lazyload
           .conceptions-about__item-index 2
           .conceptions-about__item-text
             p Хотите отточить свою технику плавания и улучшить координацию движений, синхронность и другие показатели
@@ -157,7 +156,7 @@ block content
           .row  
             .col-xl-9
               .image.image_cover.js-distortion
-                img(data-src="./img/9r0jNddz.jpg", alt="image").lazyload
+                img(data-src="#", alt="image").lazyload
           .conceptions-about__item-index 3
           .conceptions-about__item-text
             p Хотите иметь индивидуальное пространство для тренировок, где не нужно никому уступать дорожку
@@ -166,11 +165,11 @@ block content
     .container
       span.conceptions-final__slogan.conceptions-final__slogan_style-2 INPOOL CONCEPT - это совокупность<br> лучших технологий мировых 
       .row
-        h6.bg-title.offset-xl-1.col-11(data-parralax='0.2') INPOOL ENERGY  – <br>сила вашей энергии
+        h6.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL ENERGY  – <br>сила вашей энергии
       .row
         .conceptions-final__m-image.col-xxl-5.offset-xxl-2.col-xl-6.offset-xl-1
           .image.image_cover.js-distortion
-            img(data-src="./img/0r0jNz.jpg", alt="image").lazyload
+            img(data-src="#", alt="image").lazyload
         .conceptions-final__content.col-xl-4.offset-xl-1
           h2.conceptions-final__title От 70 000 €
           p INPOOL ENERGY - вечная молодость, энергия и драйв. Будьте лучшим во всем. 
@@ -182,7 +181,7 @@ block content
         
         .conceptions-final__s-image.conceptions-final__s-image_style-2.col-xl-3
           .image.image_cover.js-distortion
-            img(data-src="./img/dsss.jpg", alt="image").lazyload
+            img(data-src="#", alt="image").lazyload
         
 
   include blocks/form-section

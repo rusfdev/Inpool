@@ -56,6 +56,7 @@
   }
   &_cover {
     overflow: hidden;
+    background-color: var(--color-bg-text);
     img {
       object-fit: cover;
     }
@@ -193,6 +194,16 @@
     .trigger-round-icon {
       transform: rotate(-90deg) scale(0.5);
       stroke-width: 4px;
+    }
+  }
+
+  &.loading {
+    .trigger-round-icon {
+      transform: rotate(-90deg) scale(1);
+      stroke-width: 2px;
+    }
+    &:after {
+      opacity: 0;
     }
   }
 

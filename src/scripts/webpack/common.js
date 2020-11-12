@@ -83,62 +83,65 @@ document.addEventListener('click', (event)=>{
   }
 });
 
-
 window.onload = function(){
-  Preloader.finish();
-  Cursor.init();
-  TouchHoverEvents.init();
-  Header.init();
-  Nav.init();
-  Distortion.init();
-  Validation.init();
-  Popup.init();
-  Parralax.init();
+  App.init();
 }
 
 const App = {
+  $container: document.querySelector('[data-barba="container"]'),
+  namespace: document.querySelector('[data-barba="container"]').getAttribute('data-barba-namespace'),
   init: function() {
-    this.$container = document.querySelector('[data-barba="container"]');
-    this.namespace = this.$container.getAttribute('data-barba-namespace');
-    transitions.enter(this.$container, this.namespace);
-    if(!dev) {
-      Cursor.show();
-    }
+    Cursor.init();
+    TouchHoverEvents.init();
+    Header.init();
+    Nav.init();
+    Distortion.init();
+    Validation.init();
+    Popup.init();
+    Parralax.init();
+
+    Preloader.finish(()=>{
+      transitions.enter(this.$container, this.namespace);
+      if(!dev) {
+        Cursor.show();
+      }
+    });
   }
 }
 
 const transitions = {
   /* ENTER */
   enter: function($container, namespace) {
+    App.$container = $container;
+    App.namespace = namespace;
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
     PageScroll.track.yAxis.element.classList.remove('show');
     Nav.change(namespace);
-    setTimeout(()=>{
-      if(namespace==namespaces[0]) {
-        HomePage.init();
-      } 
-      else if(namespace==namespaces[1] ||
-              namespace==namespaces[2] || 
-              namespace==namespaces[3] ||
-              namespace==namespaces[4]) {
-        ConceptPage.init();
-      } 
-      else if(namespace==namespaces[6]) {
-        EquipmentPage.init();
-      } 
-      else if(namespace==namespaces[5]) {
-        TechnologyPage.init();
-      }
+    
+    if(namespace==namespaces[0]) {
+      HomePage.init();
+    } 
+    else if(namespace==namespaces[1] ||
+            namespace==namespaces[2] || 
+            namespace==namespaces[3] ||
+            namespace==namespaces[4]) {
+      ConceptPage.init();
+    } 
+    else if(namespace==namespaces[6]) {
+      EquipmentPage.init();
+    } 
+    else if(namespace==namespaces[5]) {
+      TechnologyPage.init();
+    }
 
-      this.animation = gsap.to($container, {duration:speed ,autoAlpha:1, ease:'power2.inOut'});
+    setTimeout(()=> {
+      this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
-      setTimeout(()=>{
-        Parralax.check();
-      }, 250)
-    }, 250)
+    }, speed*300)
+    
     
   },
   /* EXIT */
@@ -183,7 +186,7 @@ const transitions = {
 const Preloader = {
   min_loading_time: speed*2, 
   finish_speed: speed, 
-  finish: function() {
+  finish: function(callback) {
     if(dev) {
       this.min_loading_time = 0;
       this.finish_speed = 0;
@@ -204,9 +207,11 @@ const Preloader = {
     }, delay*1000)
 
     this.animation.eventCallback('onComplete', ()=> {
-      App.init();
       gsap.to($wrapper, {autoAlpha:1, duration:this.finish_speed, ease:'power2.inOut'})
       $prelaoder.remove();
+      if(callback) {
+        callback();
+      }
     })
 
   }
@@ -304,7 +309,7 @@ const HomePage = {
 const ConceptPage = {
   init: function() {
     HomeScreenVideo.init();
-    this.slider = new CSlider(document.querySelector('.conceptions-slider'));
+    this.slider = new CSlider(App.$container.querySelector('.conceptions-slider'));
     this.slider.init();
 
   },
@@ -492,7 +497,7 @@ const Parralax = {
     })
   },
   check: function() {
-    let $items = document.querySelectorAll('[data-parralax]');
+    let $items = App.$container.querySelectorAll('[data-parralax]');
     $items.forEach(($this, index)=>{
       let y = $this.getBoundingClientRect().y,
           h1 = window.innerHeight,
@@ -508,7 +513,7 @@ const Parralax = {
 
 const WaveScene = {
   init: function(callback) {
-    this.$scene = document.querySelector('.wave-scene');
+    this.$scene = App.$container.querySelector('.wave-scene');
     this.images = this.$scene.getAttribute('data-images').split(', ');
     this.textures = [];
     this.index = 0;
@@ -610,7 +615,7 @@ const WaveScene = {
 
 const Banner = {
   init: function() {
-    let $block = document.querySelector('.home'),
+    let $block = App.$container.querySelector('.home'),
         $slides = $block.querySelectorAll('.home-banner__slide'),
         $paginations = $block.querySelectorAll('.pagination__button');
 
@@ -716,8 +721,8 @@ const ConceptionsSlider = {
   init: function() {
     this.speed = speed;
 
-    this.$container = document.querySelector('.conceptions__slider');
-    this.$slide = document.querySelectorAll('.conceptions-slide');
+    this.$container = App.$container.querySelector('.conceptions__slider');
+    this.$slide = App.$container.querySelectorAll('.conceptions-slide');
     
 
     this.animation = gsap.timeline({paused:true});
@@ -760,7 +765,7 @@ const ConceptionsSlider = {
     $range.setAttribute('max', dur);
     $range.addEventListener('input', ()=>{
       this.animation.seek($range.value);
-      document.querySelector('.dur').textContent = `time: ${$range.value} s`;
+      App.$container.querySelector('.dur').textContent = `time: ${$range.value} s`;
     })
 
     this.setSize();
@@ -788,8 +793,6 @@ const Cursor = {
     this.$element.setAttribute("style", `stroke-dasharray:${this.circumference};stroke-dashoffset:0;`);
     this.flag = true;
     let xStart, yStart;
-
-    console.log(this.circumference)
 
     document.addEventListener('mousemove',(event)=>{
       let x = event.clientX,
@@ -836,10 +839,13 @@ const Cursor = {
   loading: function() {
     this.$parent.classList.add('loading');
     gsap.timeline()
-      .fromTo(this.$parent, {rotation:0}, {rotation:320, duration:speed*0.75, ease:'power2.in'})
-      .to(this.$parent, {rotation:720, duration:speed*1.25, ease:'power2.out'})
-      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.8}, duration:speed*0.75, ease:'power2.in'}, `-=${speed*2}`)
-      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed*0.5, ease:'power2.out'}, `-=${speed*0.5}`)
+      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed*0.9, ease:'power2.in'})
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.8}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
+      .to(this.$parent, {autoAlpha:0, duration:speed*0.25, ease:'power2.in'}, `-=${speed*0.25}`)
+      //end
+      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'}, `+=${speed*0.4}`)
+      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.5}`)
+      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .set(this.$parent, {rotation:0})
       .eventCallback('onComplete', ()=>{
         this.$parent.classList.remove('loading');
@@ -850,88 +856,147 @@ const Cursor = {
   }
 }
 
+class DistortionImage {
+  constructor($element) {
+    this.$element = $element;
+  }
+
+  init() {
+    this.$image = this.$element.querySelector('img');
+    this.path = this.$image.getAttribute('data-src');
+    this.displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
+    this.finished = ()=> {};
+
+    let w = this.$element.getBoundingClientRect().width,
+        h = this.$element.getBoundingClientRect().height;
+
+    this.animateEvent = (event)=> {
+      this.animate(event);
+    }
+    this.resizeEvent = ()=> {
+      this.resize();
+    }
+
+    document.addEventListener('lazybeforeunveil', this.animateEvent);
+
+    this.initScene = ()=> {
+      this.scene = new THREE.Scene();
+      this.renderer = new THREE.WebGL1Renderer();
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.$element.insertAdjacentElement('beforeend', this.renderer.domElement);
+      this.camera = new PerspectiveCamera(
+        70, 
+        w/h,
+        0.001,100
+      )
+      this.camera.position.set(0, 0, 1);
+      this.material = new THREE.ShaderMaterial({
+        side: THREE.DoubleSide,
+        uniforms: {
+          img: {type:'t', value:undefined},
+          displacement: {type:'t', value:this.displacement},
+          progress: {type:'f', value:0.75}
+        },
+        vertexShader: vertex_distortion,
+        fragmentShader: fragment_distortion
+      })
+      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
+      this.scene.add(this.plane);
+      this.render();
+
+      this.$image.style.display = 'block';
+    }
+
+    this.render = ()=> {
+      this.renderer.render(this.scene, this.camera);
+      this.animationFrame = requestAnimationFrame(this.render);
+    }
+
+    this.resize = ()=> {
+      w = this.$element.getBoundingClientRect().width;
+      h = this.$element.getBoundingClientRect().height;
+      let fov;
+      this.renderer.setSize(w,h);
+      this.camera.aspect = w/h;
+      this.plane.scale.x = (this.texture.image.width/this.texture.image.height);
+      if(w/h > this.plane.scale.x) {
+        fov = 2*(180/Math.PI)* (Math.atan((this.plane.scale.x/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
+      } else {
+        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
+      }   
+      this.camera.fov = fov; 
+      this.camera.updateProjectionMatrix();
+    }
+
+    this.initScene();
+
+  }
+
+  animate(event) {
+    let $target = event.target;
+    if(this.$image==$target) {
+      this.$image.style.display = 'none';
+      this.texture = new THREE.TextureLoader().load(this.path, ()=> {
+        this.resize();
+        window.addEventListener('resize', this.resizeEvent);
+        this.material.uniforms.img.value = this.texture;
+        gsap.timeline()
+          .to(this.renderer.domElement, {autoAlpha:1, duration:speed*2, ease:'power2.inOut'})
+          .to(this.material.uniforms.progress, {value:0, duration:speed*2, ease:'power2.out'}, `-=${speed*2}`)
+          .eventCallback('onComplete', ()=>{
+            this.$image.style.display = 'block';
+            this.destroy();
+          })
+      })
+    }
+  }
+
+  on(event, callback) {
+    if(event=='destroy') {
+      this.destroyEvent = callback;
+    }
+  }
+
+  destroy() {
+    if(this.destroyEvent) this.destroyEvent();
+    this.finished();
+    document.removeEventListener('lazybeforeunveil', this.animateEvent)
+    this.scene.remove.apply(this.scene, this.scene.children);
+    cancelAnimationFrame(this.animationFrame);
+    this.renderer.domElement.remove();
+    window.removeEventListener('resize', this.resizeEvent);
+  }
+
+  
+}
+
 const Distortion = {
   init: function() {
-    document.addEventListener('lazybeforeunveil', function(event){
-      let $image = event.target,
-          $parent = $image.parentNode;
+    this.objects = {};
 
-      if($parent.classList.contains('js-distortion')) {
-        $image.style.display = 'none';
-        let path = $image.getAttribute('data-src');
+    this.check(App.$container);
+    barba.hooks.enter((data) => {
+      this.check(data.next.container);
+    });
 
-        //scene
-        let camera, scene, renderer, material, plane,
-            w = $parent.getBoundingClientRect().width,
-            h = $parent.getBoundingClientRect().height,
-            texture = new THREE.TextureLoader().load(path, ()=>{
-              initScene();
-            }),
-            displacement = new THREE.TextureLoader().load('./img/displacement.jpg'),
-            animationFrame;
-
-        let initScene = ()=> {
-          scene = new THREE.Scene();
-          renderer = new THREE.WebGL1Renderer();
-          renderer.setPixelRatio(window.devicePixelRatio);
-          $parent.insertAdjacentElement('beforeend', renderer.domElement);
-          camera = new PerspectiveCamera(
-            70, 
-            w/h,
-            0.001,100
-          )
-          camera.position.set(0, 0, 1);
-          material = new THREE.ShaderMaterial({
-            side: THREE.DoubleSide,
-            uniforms: {
-              img: {type:'t', value:texture},
-              displacement: {type:'t', value:displacement},
-              progress: {type:'f', value:0.75}
-            },
-            vertexShader: vertex_distortion,
-            fragmentShader: fragment_distortion
-          })
-          plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), material);
-          scene.add(plane);
-          resize();
-          window.addEventListener('resize', resize);
-          render();
-
-          gsap.timeline()
-            .to(renderer.domElement, {autoAlpha:1, duration:speed*2, ease:'power2.inOut'})
-            .to(material.uniforms.progress, {value:0, duration:speed*2, ease:'power2.out'}, `-=${speed*2}`)
-            .eventCallback('onComplete', ()=>{
-              $image.style.display = 'block';
-              renderer.domElement.remove();
-              scene.remove.apply(scene, scene.children);
-              cancelAnimationFrame(animationFrame);
-              window.removeEventListener('resize', resize);
-            })
-        }
-
-        let render = ()=> {
-          renderer.render(scene, camera);
-          animationFrame = requestAnimationFrame(render);
-        }
-
-        let resize = ()=> {
-          w = $parent.getBoundingClientRect().width;
-          h = $parent.getBoundingClientRect().height;
-          let fov;
-          renderer.setSize(w,h);
-          camera.aspect = w/h;
-          plane.scale.x = (texture.image.width/texture.image.height);
-          if(w/h > plane.scale.x) {
-            fov = 2*(180/Math.PI)* (Math.atan((plane.scale.x/2)/(camera.position.z - plane.position.z)/camera.aspect));
-          } else {
-            fov = 2*(180/Math.PI)*Math.atan((plane.scale.y/2)/(camera.position.z - plane.position.z));
-          }   
-          camera.fov = fov; 
-          camera.updateProjectionMatrix();
-        }
-      
+    barba.hooks.leave(() => {
+      console.log(this.objects)
+      for(let key in this.objects) {
+        this.objects[key].destroy();
+        delete this.objects[key];
       }
     });
+    
+
+  },
+  check: function($page) {
+    $page.querySelectorAll('.js-distortion').forEach(($element, index)=>{
+      this.objects[index] = new DistortionImage($element);
+      this.objects[index].init();
+      this.objects[index].on('destroy', ()=> {
+        delete this.objects[index];
+      })
+    })
   }
 }
 
@@ -1020,14 +1085,14 @@ class BackgroundVideo {
 const HomeScreenVideo = {
   init: function() {
     this.state = false;
-    this.$scene = document.querySelector('.video-scene');
-    this.$player = document.querySelector('.video-scene__player');
-    this.$open = document.querySelector('.home-screen__play');
-    this.$close = document.querySelector('.video-scene__close');
-    this.$container = document.querySelector('.home-screen__container');
-    this.$gradient = document.querySelector('.home-screen__gradient');
-    this.controls = document.querySelector('.video-scene__controls');
-    this.timeline = document.querySelector('.video-scene__timeline span');
+    this.$scene = App.$container.querySelector('.video-scene');
+    this.$player = App.$container.querySelector('.video-scene__player');
+    this.$open = App.$container.querySelector('.home-screen__play');
+    this.$close = App.$container.querySelector('.video-scene__close');
+    this.$container = App.$container.querySelector('.home-screen__container');
+    this.$gradient = App.$container.querySelector('.home-screen__gradient');
+    this.controls = App.$container.querySelector('.video-scene__controls');
+    this.timeline = App.$container.querySelector('.video-scene__timeline span');
 
     this.openAnimation = gsap.timeline({paused:true})
       .to([this.$container, this.$gradient], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
@@ -1049,7 +1114,6 @@ const HomeScreenVideo = {
       if(this.state) {
         let time = this.video.$video.duration,
         ctime = this.video.$video.currentTime;
-        console.log(ctime/time*100)
         gsap.to(this.timeline, {css:{width:`${ctime/time*100}%`}, duration:0.1, ease:'linear'})
         if(time-ctime<2 && !this.volFlag) {
           this.volFlag = true;
@@ -1137,7 +1201,6 @@ class CSlider {
         w = this.$scene.getBoundingClientRect().width,
         h = this.$scene.getBoundingClientRect().height,
         displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
-    console.log($images)
     $images.forEach(($image, index)=>{
       let href = $image.getAttribute('data-src');
       this.textures[index] = new THREE.TextureLoader().load(href, ()=>{
@@ -1366,7 +1429,6 @@ const Popup = {
             .fromTo($content, {y:20}, {y:0, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
           
           if($popup.classList.contains('popup-succes')) {
-            console.log('{{')
             let $icon = $popup.querySelector('path'),
                 w = $icon.getTotalLength();
             let timeline = gsap.timeline()

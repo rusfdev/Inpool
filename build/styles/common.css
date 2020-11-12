@@ -3544,6 +3544,9 @@ a {
   .image_contain img {
     object-fit: contain; }
 
+.js-distortion img {
+  display: none; }
+
 .js-distortion canvas {
   position: absolute;
   top: 0;

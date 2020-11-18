@@ -140,7 +140,7 @@ const transitions = {
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
-    }, speed*300)
+    }, speed*250)
     
     
   },
@@ -148,7 +148,9 @@ const transitions = {
   exit: function($container, namespace) {
     $wrapper.classList.add('disabled');
     $header.classList.remove('header_fixed');
-    Cursor.loading();
+    if(!dev) {
+      Cursor.loading();
+    }
     if(Nav.state) {
       Nav.close();
     }
@@ -329,9 +331,22 @@ const EquipmentPage = {
 const TechnologyPage = {
   init: function() {
     WaveScene.init();
+    //
+    this.lines = [];
+    let $items = document.querySelectorAll('.asm-connect-preview__item');
+    $items.forEach(($this, index)=>{
+      let $line = $this.querySelector('.asm-connect-preview__item-line span'),
+          $value = $this.querySelector('.asm-connect-preview__item-idx'),
+          value = +$this.getAttribute('data-value');
+      this.lines[index] = new Scale($line, $value, value);
+      this.lines[index].init();
+    })
   },
   destroy: function() {
     WaveScene.destroy();
+    for (let $line of this.lines) {
+      $line.destroy();
+    }
   }
 }
 
@@ -625,7 +640,7 @@ const Banner = {
     
     let slide_current = 0,
         slide_old,
-        interval_duration = 7;
+        interval_duration = 10000;
 
     $slides.forEach(($slide, index)=>{
       let $title_chars = $slide.querySelectorAll('.home-banner__slide-title .char'),
@@ -840,10 +855,11 @@ const Cursor = {
     this.$parent.classList.add('loading');
     gsap.timeline()
       .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed*0.9, ease:'power2.in'})
-      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.8}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
-      .to(this.$parent, {autoAlpha:0, duration:speed*0.25, ease:'power2.in'}, `-=${speed*0.25}`)
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
+      .to(this.$parent, {autoAlpha:0, duration:speed*0.5, ease:'power2.in'}, `-=${speed*0.5}`)
+      .set(this.$element, {css:{'stroke-dashoffset':this.circumference*0.75}})
       //end
-      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'}, `+=${speed*0.4}`)
+      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'}, `+=${speed*0.25}`)
       .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.5}`)
       .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .set(this.$parent, {rotation:0})
@@ -1457,29 +1473,48 @@ const Popup = {
       }
     })
 
-  }, 
-  open: function($popup) {
-    let event = () => {
-      this.active = $popup;
-      scrollLock.disablePageScroll();
-      $popup.addClass('active');
-    }
+  }
+}
 
-    if(this.active) {
-      popup.close(this.active, function() {
-        event();
-      });
-    } else {
-      event();
-    }
+class Scale {
+  constructor($line, $value, value) {
+    this.$line = $line;
+    this.$value = $value;
+    this.value = value;
+  }
 
-  }, 
-  close: function($popup, callback) {
-    scrollLock.enablePageScroll();
-    $popup.removeClass('active');
-    setTimeout(()=>{
-      this.active = undefined;
-      typeof callback === 'function' && callback();
-    }, 250)
+  init() {
+    this.flag = false;
+    this.listener = ()=> {
+      this.check();
+    }
+    PageScroll.addListener(this.listener);
+    this.check();
+  }
+  check() {
+    let sy = PageScroll.offset.y,
+        ty = this.$line.getBoundingClientRect().y,
+        h = window.innerHeight;
+
+    if(sy+h > ty+sy && !this.flag) {
+      this.flag = true;
+
+      let i = {};
+      i.value = 0;
+
+      gsap.timeline()
+        .to(this.$line, {css:{width:`${100+this.value}%`}, duration:speed*1.5, ease:'power2.out'})
+        .to(i, {value:this.value, duration:speed*1.5, ease:'power2.out'}, `-=${speed*1.5}`)
+
+      let iteration = ()=> {
+        this.$value.textContent = `- ${Math.abs(Math.floor(i.value))}%`;
+        this.animation = requestAnimationFrame(iteration);
+      }
+      iteration();
+
+    }
+  }
+  destroy() {
+    PageScroll.removeListener(this.listener);
   }
 }

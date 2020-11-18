@@ -1,14 +1,13 @@
 .button {
   line-height: 50px;
   border-radius: 8px;
-  padding: 0 20px;
+  padding: 0 40px;
   color: var(--color-light) !important;
-  display: flex;
-  width: 100%;
-  justify-content: center;
+  display: inline-block;
   font-weight: 400;
   overflow: hidden;
   position: relative;
+  margin-bottom: -0.4em;
   &::before {
     content: '';
     display: block;

@@ -1,6 +1,9 @@
 .input {
   position: relative;
+  display: block;
+  font-size: 0;
   &__element {
+    font-size: 1rem;
     line-height: 24px;
     padding: 10px 0 10px 10px;
     display: block;
@@ -13,6 +16,7 @@
     border-bottom: 1px solid var(--color-light);
     transition: border-color $trs1;
     font-weight: 300;
+    pointer-events: none;
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
@@ -24,6 +28,7 @@
       transition: opacity $trs1;
     }
     &:focus {
+      pointer-events: all;
       &::placeholder {
         opacity: 0;
       }
@@ -46,12 +51,6 @@
       border-color: var(--color-error);
     }
   }
-  &.js-valid {
-    background-color: rgba(46, 230, 0, 0.2);
-  }
-  &.js-invalid {
-    background-color: rgba(221, 0, 0, 0.2);
-  }
 }
 
 .form {
@@ -62,6 +61,7 @@
   }
   &__submit {
     margin-top: 65px;
+    text-align: center;
     .button {
       max-width: 168px;
       margin: 0 auto;

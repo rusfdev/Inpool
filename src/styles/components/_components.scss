@@ -280,7 +280,8 @@
   color: var(--color-bg-text);
   font-size: 90px;
   line-height: 1.1;
-  margin-bottom: -0.25em;
+  margin: 0 0 -0.25em 0;
+  letter-spacing: -0.05em;
   @include media-breakpoint-down(xxl) {
     font-size: 72px;
   }

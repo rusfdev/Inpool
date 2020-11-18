@@ -19,6 +19,12 @@ $grid-gutter-width:          24px;
 $mobile-container-padding-x: 16px;
 $mobile-grid-gutter-width:   16px;
 
+$xxl-field: calc((100vw - #{map-get($container-max-widths, xxl) - $container-padding-x * 2})/2);
+$xxl-field-negative: calc((-100vw + #{map-get($container-max-widths, xxl) - $container-padding-x * 2})/2);
+
+$xl-field: calc((100vw - #{map-get($container-max-widths, xl) - $container-padding-x * 2})/2);
+$xl-field-negative: calc((-100vw + #{map-get($container-max-widths, xl) - $container-padding-x * 2})/2);
+
 $font1: 'Montserrat', sans-serif;
 $font2: 'Open Sans', sans-serif;
 

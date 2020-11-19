@@ -214,11 +214,12 @@
 }
 
 .video-scene {
-  height: 100%;
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;
   position: absolute;
+  overflow: hidden;
   &__player {
     position: absolute;
     left: 50%;
@@ -291,7 +292,7 @@
 }
 
 .wave-scene {
-  height: calc(100% - 20px);
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;

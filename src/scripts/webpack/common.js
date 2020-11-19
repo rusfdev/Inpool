@@ -47,7 +47,7 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = true;
+const dev = false;
 const speed = 1;
 
 const $wrapper = document.querySelector('.wrapper');

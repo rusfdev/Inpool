@@ -4176,11 +4176,12 @@ a {
       padding: 0; } }
 
 .video-scene {
-  height: 100%;
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;
-  position: absolute; }
+  position: absolute;
+  overflow: hidden; }
   .video-scene__player {
     position: absolute;
     left: 50%;
@@ -4241,7 +4242,7 @@ a {
       top: 120px; } }
 
 .wave-scene {
-  height: calc(100% - 20px);
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;

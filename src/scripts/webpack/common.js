@@ -528,7 +528,7 @@ const Parralax = {
 
 const WaveScene = {
   init: function(callback) {
-    this.$scene = App.$container.querySelector('.wave-scene');
+    this.$scene = App.$container.querySelector('.wave-scene__container');
     this.images = this.$scene.getAttribute('data-images').split(', ');
     this.textures = [];
     this.index = 0;

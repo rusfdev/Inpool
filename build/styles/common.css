@@ -4241,7 +4241,7 @@ a {
       top: 120px; } }
 
 .wave-scene {
-  height: calc(100% - 1px);
+  height: calc(100% - 20px);
   width: 100%;
   top: 0;
   left: 0;

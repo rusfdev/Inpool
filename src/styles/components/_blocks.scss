@@ -291,7 +291,7 @@
 }
 
 .wave-scene {
-  height: 100%;
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;
@@ -312,7 +312,6 @@
   background: var(--color-bg-darker);
   height: 100vh;
   position: relative;
-  overflow: hidden;
   &__container {
     height: 100%;
     position: relative;

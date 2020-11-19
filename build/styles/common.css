@@ -4241,7 +4241,7 @@ a {
       top: 120px; } }
 
 .wave-scene {
-  height: 100%;
+  height: calc(100% - 1px);
   width: 100%;
   top: 0;
   left: 0;
@@ -4259,8 +4259,7 @@ a {
 .home-screen {
   background: var(--color-bg-darker);
   height: 100vh;
-  position: relative;
-  overflow: hidden; }
+  position: relative; }
   .home-screen__container {
     height: 100%;
     position: relative;

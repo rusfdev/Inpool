@@ -1,6 +1,5 @@
 uniform vec2 resolutuion;
 varying vec2 vUv;
-varying vec4 vPosition;
 
 void main() {
   vUv = uv;

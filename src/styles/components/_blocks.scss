@@ -29,7 +29,7 @@
     left: 0;
     z-index: 2;
     pointer-events: none;
-    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, #1A1A1A 103.6%);
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%);
   }
   &__pagination {
     position: absolute;
@@ -429,7 +429,7 @@
     height: 70%;
     bottom: 0;
     left: 0;
-    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%);;
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%);
   }
   @include media-breakpoint-down(xxl) {
     &__play {
@@ -484,21 +484,11 @@
 
 .conceptions-slider {
   margin: 180px 0 140px 0;
-  &__d-images {
-    position: relative;
-    height: 400px;
-  }
   &__d-images-container {
-    position: absolute;
-    top: 0;
-    right: $grid-gutter-width/2;
-    width: calc(50vw + 106px);
-    height: 100%;
+    width: calc(100% + #{$xxl-field});
+    height: 420px;
     &_style-1 {
-      right: $grid-gutter-width/2;
-    }
-    &_style-2 {
-      left: $grid-gutter-width/2;
+      transform: translateX($xxl-field-negative);
     }
     .image {
       width: 100%;
@@ -519,7 +509,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 345px;
+    height: 355px;
     padding: 0 $grid-gutter-width/2;
     .image {
       display: none;
@@ -533,7 +523,10 @@
   }
   @include media-breakpoint-down(xxl) {
     &__d-images-container {
-      width: calc(50vw - #{$grid-gutter-width/2});
+      width: calc(100% + #{$xl-field});
+      &_style-1 {
+        transform: translateX($xl-field-negative);
+      }
     }
   }
 }
@@ -955,6 +948,116 @@
     &__image {
       .image {
         width: calc(100% + #{$xl-field});
+      }
+    }
+  }
+}
+
+.portfolio {
+  &__head {
+    margin: 10px 0 70px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 270px;
+  }
+  &__title {
+    margin: 0;
+  }
+}
+
+.portfolio-section {
+  &__title {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-left: calc(35px + #{$grid-gutter-width/2});
+    .icon {
+      width: 20px;
+      height: 1.4em;
+      position: absolute;
+      left: $grid-gutter-width/2;
+    }
+  }
+  &__scene {
+    &-container {
+      position: relative;
+      height: 560px;
+      background-color: var(--color-bg-text);
+    }
+  }
+  &__slider {
+    margin-top: 50px;
+  }
+  .splide {
+    &__arrows {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      width: 100%;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    &__arrow {
+      pointer-events: all;
+      width: 25px;
+      height: 25px;
+      display: flex;
+      border: 2px solid var(--color-darkened);
+      border-radius: 25px;
+      transition: border-color $trs1;
+      svg {
+        width: 12px;
+        height: 12px;
+        margin: auto;
+        fill: var(--color-darkened);
+        transition: fill $trs1;
+      }
+      &.touch, &.hover {
+        border-color: var(--color-light);
+        svg {
+          fill: var(--color-light);
+        }
+      }
+      &--prev {
+        transform: translateX(-40px) rotate(180deg);
+      }
+      &--next {
+        transform: translateX(40px);
+      }
+    }
+  }
+  &__slide {
+    .image {
+      &::before {
+        content: '';
+        display: block;
+        padding-top: 64%;
+      }
+    }
+  }
+  &__text {
+    padding-top: 92px;
+  }
+  @include media-breakpoint-up(lg) {
+    &__slide {
+      .image {
+        cursor: pointer;
+        transition: opacity $trs1;
+        &.touch, &.hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-down(xxl) {
+    &__scene {
+      &-container {
+        height: 480px;
       }
     }
   }

@@ -2,7 +2,8 @@ extends layout/layout
 block title
   title #{title} - Оборудование
 block variables
-  -var namespace = equipment_namespace;
+  -var namespace = 'equipment';
+  -var name = equipment_name;
 block content
   section.section.home-screen
     .wave-scene

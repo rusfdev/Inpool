@@ -1,5 +1,5 @@
 h1,h2,h3,h4,h5,h6 {
-  margin: 2.75rem 0 2.25rem 0;
+  margin: 3rem 0 2.5rem 0;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   line-height: 1.4;
@@ -14,9 +14,10 @@ h1,h2,h3,h4,h5,h6 {
   & + h4,
   & + h5,
   & + h6 {
-    margin-top: 2.25rem;
+    margin-top: 2.5rem;
   }
 }
+
 h1, .h1 {
   font-size: 4rem;
   line-height: 1.2;
@@ -38,9 +39,12 @@ h6, .h6 {
 }
 
 p {
-  margin: 0 0 1.75rem 0;
+  margin: 0 0 1rem 0;
   &:last-child {
     margin: 0;
+  }
+  & ~ .button {
+    margin-top: 1rem;
   }
 }
 mark {
@@ -122,6 +126,17 @@ a {
 }
 
 @include media-breakpoint-down(xxl) {
+  h1,h2,h3,h4,h5,h6 {
+    margin: 2.75rem 0 2.25rem 0;
+    & + h2,
+    & + h3,
+    & + h4,
+    & + h5,
+    & + h6 {
+      margin-top: 2.25rem;
+    }
+  }
+  
   h1, .h1 {
     font-size: 3.625rem;
   }

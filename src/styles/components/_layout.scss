@@ -75,6 +75,11 @@
   &:first-child {
     padding-top: 130px;
   }
+  .section {
+    &:last-child {
+      margin: 0;
+    }
+  }
   @include media-breakpoint-down(xxl) {
     margin-bottom: 100px;
     &:first-child {

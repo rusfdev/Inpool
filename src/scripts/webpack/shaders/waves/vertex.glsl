@@ -3,7 +3,6 @@ uniform float waveLength;
 uniform vec2 resolutuion;
 uniform vec2 mouse;
 varying vec2 vUv;
-varying vec4 vPosition;
 
 void main() {
   vUv = uv;

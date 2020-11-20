@@ -2,7 +2,8 @@ extends layout/layout
 block title
   title #{title} - Технологиии
 block variables
-  -var namespace = technology_namespace;
+  -var namespace = 'technology';
+  -var name = technology_name;
 block content
   section.section.home-screen
     .wave-scene
@@ -14,7 +15,7 @@ block content
           h1.h2.home-screen__title Оцените технологическое совершенство INPOOL CONCEPT
         .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
           p Создавайте индивидуальные сценарии использования бассейна с передовой системой управления INPOOL ASM Control.
-      button.home-screen__scroll-bottom.scroll-bottom
+      button.home-screen__scroll-bottom.scroll-bottom(aria-label='scroll-bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
 

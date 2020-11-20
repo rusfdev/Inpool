@@ -17,10 +17,10 @@ barba.init({
   transitions: [{
     leave(data) {
       barba.done = this.async();
-      transitions.exit(data.current.container, data.current.namespace);
+      Transitions.exit(data.current.container, data.current.namespace);
     },
     enter(data) {
-      transitions.enter(data.next.container, data.next.namespace);
+      Transitions.enter(data.next.container, data.next.namespace);
     }
   }]
 });
@@ -36,9 +36,10 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
-import Splide from '@splidejs/splide';
 import Inputmask from "inputmask";
 const validate = require("validate.js");
+import Splide from '@splidejs/splide';
+import SwipeListener from 'swipe-listener';
 
 const brakepoints = {
   sm: 576,
@@ -53,17 +54,6 @@ const speed = 1;
 const $wrapper = document.querySelector('.wrapper');
 const $header = document.querySelector('.header');
 const $body = document.body;
-const namespaces = [
-  'home',
-  'power',
-  'energy',
-  'family',
-  'balance',
-  'technology',
-  'equipment',
-  'portfolio',
-  'contacts'
-]
 
 //scroll
 const PageScroll = Scrollbar.init($wrapper, {
@@ -88,20 +78,22 @@ window.onload = function(){
 }
 
 const App = {
-  $container: document.querySelector('[data-barba="container"]'),
-  namespace: document.querySelector('[data-barba="container"]').getAttribute('data-barba-namespace'),
   init: function() {
+    this.$container = document.querySelector('[data-barba="container"]');
+    this.namespace = this.$container.getAttribute('data-barba-namespace');
+    this.name = this.$container.getAttribute('data-name');
+
     Cursor.init();
     TouchHoverEvents.init();
     Header.init();
     Nav.init();
-    Distortion.init();
+    DistortionImages.init();
     Validation.init();
     Popup.init();
     Parralax.init();
 
     Preloader.finish(()=>{
-      transitions.enter(this.$container, this.namespace);
+      Transitions.enter(this.$container, this.namespace);
       if(!dev) {
         Cursor.show();
       }
@@ -109,40 +101,25 @@ const App = {
   }
 }
 
-const transitions = {
+const Transitions = {
   /* ENTER */
   enter: function($container, namespace) {
     App.$container = $container;
     App.namespace = namespace;
+    App.name = App.$container.getAttribute('data-name');
+
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
     PageScroll.track.yAxis.element.classList.remove('show');
-    Nav.change(namespace);
-    
-    if(namespace==namespaces[0]) {
-      HomePage.init();
-    } 
-    else if(namespace==namespaces[1] ||
-            namespace==namespaces[2] || 
-            namespace==namespaces[3] ||
-            namespace==namespaces[4]) {
-      ConceptPage.init();
-    } 
-    else if(namespace==namespaces[6]) {
-      EquipmentPage.init();
-    } 
-    else if(namespace==namespaces[5]) {
-      TechnologyPage.init();
-    }
-
+    Nav.change(App.name);
     setTimeout(()=> {
+      Pages[namespace].init();
+      Parralax.check();
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
     }, speed*250)
-    
-    
   },
   /* EXIT */
   exit: function($container, namespace) {
@@ -161,27 +138,83 @@ const transitions = {
       .set(PageScroll, {scrollTop:0})
 
     this.animation.eventCallback('onComplete', ()=>{
+      Pages[namespace].destroy();
       Header.fixed = false;
-      /*==== Home =====*/
-      if(namespace==namespaces[0]) {
-        HomePage.destroy();
-      }
-      else if(namespace==namespaces[1] ||
-              namespace==namespaces[2] || 
-              namespace==namespaces[3] ||
-              namespace==namespaces[4]) {
-        ConceptPage.destroy();
-      } 
-      else if(namespace==namespaces[6]) {
-        EquipmentPage.destroy();
-      } 
-      else if(namespace==namespaces[5]) {
-        TechnologyPage.destroy();
-      }
-
       barba.done();
     })
 
+  }
+}
+
+const Pages = {
+  home: {
+    init: function() {
+      Splitting();
+      WaveScene.init(()=>{
+        Banner.init();
+      });
+      ConceptionsSlider.init();
+    },
+    destroy: function() {
+      WaveScene.destroy();
+      Banner.destroy();
+    }
+  },
+  conception: {
+    init: function() {
+      HomeScreenVideo.init();
+      this.slider = new CSlider(App.$container.querySelector('.conceptions-slider'));
+      this.slider.init();
+    },
+    destroy: function() {
+      HomeScreenVideo.destroy();
+      this.slider.destroy();
+    }
+  },
+  equipment: {
+    init: function() {
+      WaveScene.init();
+    },
+    destroy: function() {
+      WaveScene.destroy();
+    }
+  },
+  technology: {
+    init: function() {
+      WaveScene.init();
+      //
+      this.lines = [];
+      let $items = document.querySelectorAll('.asm-connect-preview__item');
+      $items.forEach(($this, index)=>{
+        let $line = $this.querySelector('.asm-connect-preview__item-line span'),
+            $value = $this.querySelector('.asm-connect-preview__item-idx'),
+            value = +$this.getAttribute('data-value');
+        this.lines[index] = new Scale($line, $value, value);
+        this.lines[index].init();
+      })
+    },
+    destroy: function() {
+      WaveScene.destroy();
+      for (let $line of this.lines) {
+        $line.destroy();
+      }
+    }
+  },
+  portfolio: {
+    init: function() {
+      this.sliders = [];
+      let $sliders = App.$container.querySelectorAll('.portfolio-section__slider .splide');
+      $sliders.forEach(($slider, index)=>{
+        this.sliders[index] = new PortfolioSlider($slider);
+        this.sliders[index].init();
+      })
+
+    },
+    destroy: function() {
+      for (let slider of this.sliders) {
+        slider.destroy();
+      }
+    }
   }
 }
 
@@ -294,62 +327,6 @@ const TouchHoverEvents = {
   }
 }
 
-//pages
-const HomePage = {
-  init: function() {
-    Splitting();
-    WaveScene.init(()=>{
-      Banner.init();
-    });
-    ConceptionsSlider.init();
-  },
-  destroy: function() {
-    WaveScene.destroy();
-    Banner.destroy();
-  }
-}
-const ConceptPage = {
-  init: function() {
-    HomeScreenVideo.init();
-    this.slider = new CSlider(App.$container.querySelector('.conceptions-slider'));
-    this.slider.init();
-
-  },
-  destroy: function() {
-    HomeScreenVideo.destroy();
-    this.slider.destroy();
-  }
-}
-const EquipmentPage = {
-  init: function() {
-    WaveScene.init();
-  },
-  destroy: function() {
-    WaveScene.destroy();
-  }
-}
-const TechnologyPage = {
-  init: function() {
-    WaveScene.init();
-    //
-    this.lines = [];
-    let $items = document.querySelectorAll('.asm-connect-preview__item');
-    $items.forEach(($this, index)=>{
-      let $line = $this.querySelector('.asm-connect-preview__item-line span'),
-          $value = $this.querySelector('.asm-connect-preview__item-idx'),
-          value = +$this.getAttribute('data-value');
-      this.lines[index] = new Scale($line, $value, value);
-      this.lines[index].init();
-    })
-  },
-  destroy: function() {
-    WaveScene.destroy();
-    for (let $line of this.lines) {
-      $line.destroy();
-    }
-  }
-}
-
 const Nav = {
   init: function() {
     this.$nav = document.querySelector('.nav');
@@ -411,6 +388,7 @@ const Nav = {
     window.addEventListener('resize', (event)=>{
       this.setSize()
     });
+    this.$nav.style.top = `${PageScroll.offset.y}px`;
     PageScroll.addListener(()=>{
       this.$nav.style.top = `${PageScroll.offset.y}px`;
     })
@@ -454,7 +432,7 @@ const Nav = {
         $link.classList.remove('active');
       })
     }
-    this.$active_links = document.querySelectorAll(`[data-namespace='${namespace}']`);
+    this.$active_links = document.querySelectorAll(`[data-name='${namespace}']`);
     this.$active_links.forEach(($link)=>{
       $link.classList.add('active');
     })
@@ -528,6 +506,7 @@ const Parralax = {
 
 const WaveScene = {
   init: function(callback) {
+    this.$parent = App.$container.querySelector('.wave-scene');
     this.$scene = App.$container.querySelector('.wave-scene__container');
     this.images = this.$scene.getAttribute('data-images').split(', ');
     this.textures = [];
@@ -538,6 +517,7 @@ const WaveScene = {
     this.minWave = 2;
     this.maxWave = 15;
     this.destination = {x:0, y:0};
+    this.flag = false;
 
     this.mousemove = (event)=> {
       this.destination.x = (event.clientX - window.innerWidth/2)/(window.innerWidth/2);
@@ -564,7 +544,6 @@ const WaveScene = {
       this.textures[index] = new THREE.TextureLoader().load($image, ()=>{
         if(index==0) {
           this.initScene(()=>{
-            this.render();
             if(callback!==undefined) {
               callback();
             }
@@ -606,10 +585,26 @@ const WaveScene = {
 
     window.addEventListener('resize', this.resize);
     window.addEventListener('mousemove', this.mousemove);
-
     this.fadeAnimation.play();
+    this.checkVisible();
+    this.checkVisibleEvent = ()=> {
+      this.checkVisible();
+    }
+    PageScroll.addListener(this.checkVisibleEvent)
+    document.addEventListener("visibilitychange", this.checkVisibleEvent);
+
     if(callback!==undefined) {
       callback();
+    }
+  },
+  checkVisible: function() {
+    let position = this.$parent.getBoundingClientRect().y + this.$parent.getBoundingClientRect().height;
+    if((position<=0 || document.visibilityState=='hidden') && this.flag) {
+      this.flag = false;
+      cancelAnimationFrame(this.animationFrame);
+    } else if(position>0 && document.visibilityState=='visible' && !this.flag) {
+      this.flag = true;
+      this.render();
     }
   },
   render: function() {
@@ -621,6 +616,8 @@ const WaveScene = {
     this.animationFrame = requestAnimationFrame(()=>{this.render()});
   },
   destroy: function() {
+    PageScroll.removeListener(this.checkVisibleEvent)
+    document.removeEventListener("visibilitychange", this.checkVisibleEvent);
     cancelAnimationFrame(this.animationFrame);
     this.scene.remove.apply(this.scene, this.scene.children);
     window.removeEventListener('resize', this.resize);
@@ -872,150 +869,6 @@ const Cursor = {
   }
 }
 
-class DistortionImage {
-  constructor($element) {
-    this.$element = $element;
-  }
-
-  init() {
-    this.$image = this.$element.querySelector('img');
-    this.path = this.$image.getAttribute('data-src');
-    this.displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
-    this.finished = ()=> {};
-
-    let w = this.$element.getBoundingClientRect().width,
-        h = this.$element.getBoundingClientRect().height;
-
-    this.animateEvent = (event)=> {
-      this.animate(event);
-    }
-    this.resizeEvent = ()=> {
-      this.resize();
-    }
-
-    document.addEventListener('lazybeforeunveil', this.animateEvent);
-
-    this.initScene = ()=> {
-      this.scene = new THREE.Scene();
-      this.renderer = new THREE.WebGL1Renderer();
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.$element.insertAdjacentElement('beforeend', this.renderer.domElement);
-      this.camera = new PerspectiveCamera(
-        70, 
-        w/h,
-        0.001,100
-      )
-      this.camera.position.set(0, 0, 1);
-      this.material = new THREE.ShaderMaterial({
-        side: THREE.DoubleSide,
-        uniforms: {
-          img: {type:'t', value:undefined},
-          displacement: {type:'t', value:this.displacement},
-          progress: {type:'f', value:0.75}
-        },
-        vertexShader: vertex_distortion,
-        fragmentShader: fragment_distortion
-      })
-      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
-      this.scene.add(this.plane);
-      this.render();
-
-      this.$image.style.display = 'block';
-    }
-
-    this.render = ()=> {
-      this.renderer.render(this.scene, this.camera);
-      this.animationFrame = requestAnimationFrame(this.render);
-    }
-
-    this.resize = ()=> {
-      w = this.$element.getBoundingClientRect().width;
-      h = this.$element.getBoundingClientRect().height;
-      let fov;
-      this.renderer.setSize(w,h);
-      this.camera.aspect = w/h;
-      this.plane.scale.x = (this.texture.image.width/this.texture.image.height);
-      if(w/h > this.plane.scale.x) {
-        fov = 2*(180/Math.PI)* (Math.atan((this.plane.scale.x/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
-      } else {
-        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
-      }   
-      this.camera.fov = fov; 
-      this.camera.updateProjectionMatrix();
-    }
-
-    this.initScene();
-
-  }
-
-  animate(event) {
-    let $target = event.target;
-    if(this.$image==$target) {
-      this.$image.style.display = 'none';
-      this.texture = new THREE.TextureLoader().load(this.path, ()=> {
-        this.resize();
-        window.addEventListener('resize', this.resizeEvent);
-        this.material.uniforms.img.value = this.texture;
-        gsap.timeline()
-          .to(this.renderer.domElement, {autoAlpha:1, duration:speed*2, ease:'power2.inOut'})
-          .to(this.material.uniforms.progress, {value:0, duration:speed*2, ease:'power2.out'}, `-=${speed*2}`)
-          .eventCallback('onComplete', ()=>{
-            this.$image.style.display = 'block';
-            this.destroy();
-          })
-      })
-    }
-  }
-
-  on(event, callback) {
-    if(event=='destroy') {
-      this.destroyEvent = callback;
-    }
-  }
-
-  destroy() {
-    if(this.destroyEvent) this.destroyEvent();
-    this.finished();
-    document.removeEventListener('lazybeforeunveil', this.animateEvent)
-    this.scene.remove.apply(this.scene, this.scene.children);
-    cancelAnimationFrame(this.animationFrame);
-    this.renderer.domElement.remove();
-    window.removeEventListener('resize', this.resizeEvent);
-  }
-
-  
-}
-
-const Distortion = {
-  init: function() {
-    this.objects = {};
-
-    this.check(App.$container);
-    barba.hooks.enter((data) => {
-      this.check(data.next.container);
-    });
-
-    barba.hooks.leave(() => {
-      console.log(this.objects)
-      for(let key in this.objects) {
-        this.objects[key].destroy();
-        delete this.objects[key];
-      }
-    });
-    
-
-  },
-  check: function($page) {
-    $page.querySelectorAll('.js-distortion').forEach(($element, index)=>{
-      this.objects[index] = new DistortionImage($element);
-      this.objects[index].init();
-      this.objects[index].on('destroy', ()=> {
-        delete this.objects[index];
-      })
-    })
-  }
-}
-
 class BackgroundVideo {
   constructor($parent) {
     this.$parent = $parent;
@@ -1174,131 +1027,6 @@ const HomeScreenVideo = {
     this.$open.removeEventListener('click', this.openEvent);
     this.$close.removeEventListener('click', this.closeEvent);
   }
-}
-
-class CSlider {
-  constructor($parent) {
-    this.$parent = $parent;
-  }
-
-  init() {
-    this.index = 0;
-    this.initScene(()=>{
-      this.initSlider();
-    });
-  }
-
-  initSlider() {
-    this.slider = new Splide(this.$parent.querySelector('.splide'), {
-      type: 'loop',
-      perPage: 1,
-      drag: false,
-      arrows: false,
-      pagination: true,
-      easing: 'ease-in-out',
-      speed: speed*1000,
-      autoplay: true,
-      perMove: 1,
-      interval: 10000
-    })
-    this.slider.mount();
-    this.slider.on('move', (newIndex)=> {
-      this.index = newIndex;
-      this.changeScene();
-    });
-    this.changeScene();
-  }
-
-  initScene(callback) {
-    this.textures = [];
-    this.$scene = this.$parent.querySelector('.conceptions-slider__d-images-container');
-
-    let $images = this.$parent.querySelectorAll('img'),
-        w = this.$scene.getBoundingClientRect().width,
-        h = this.$scene.getBoundingClientRect().height,
-        displacement = new THREE.TextureLoader().load('./img/displacement.jpg');
-    $images.forEach(($image, index)=>{
-      let href = $image.getAttribute('data-src');
-      this.textures[index] = new THREE.TextureLoader().load(href, ()=>{
-        if(index==this.index) {
-          init();
-        }
-      });
-    })
-    let init = ()=> {
-      this.scene = new THREE.Scene();
-      this.renderer = new THREE.WebGL1Renderer();
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.$scene.insertAdjacentElement('beforeend', this.renderer.domElement);
-      this.camera = new PerspectiveCamera(
-        70, 
-        w/h,
-        0.001,100
-      )
-      this.camera.position.set(0, 0, 1);
-      this.material = new THREE.ShaderMaterial({
-        side: THREE.DoubleSide,
-        uniforms: {
-          img: {type:'t', value:this.textures[this.index]},
-          displacement: {type:'t', value:displacement},
-          progress: {type:'f', value:0}
-        },
-        vertexShader: vertex_distortion,
-        fragmentShader: fragment_distortion
-      })
-      this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
-      this.scene.add(this.plane);
-      render();
-      resize();
-      window.addEventListener('resize', this.resizeEvent);
-      if(callback) {
-        callback();
-      }
-    }
-
-    let render = ()=> {
-      this.renderer.render(this.scene, this.camera);
-      this.animationFrame = requestAnimationFrame(render);
-    }
-
-    let resize = ()=> {
-      w = this.$scene.getBoundingClientRect().width;
-      h = this.$scene.getBoundingClientRect().height;
-      let fov;
-      this.renderer.setSize(w,h);
-      this.camera.aspect = w/h;
-      this.plane.scale.x = (this.textures[this.index].image.width/this.textures[this.index].image.height);
-      if(w/h > this.plane.scale.x) {
-        fov = 2*(180/Math.PI)* (Math.atan((this.plane.scale.x/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
-      } else {
-        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
-      }   
-      this.camera.fov = fov; 
-      this.camera.updateProjectionMatrix();
-    }
-    this.resizeEvent = ()=> {
-      resize();
-    }
-
-  }
-
-  changeScene() {
-    gsap.timeline()
-      .to(this.$scene, {autoAlpha:0, duration:speed*0.35, ease:'power2.inOut'})
-      .to(this.material.uniforms.progress, {value:1, duration:speed*0.35, ease:'power2.in', onComplete:()=>{
-        this.material.uniforms.img.value = this.textures[this.index];
-        this.resizeEvent();
-      }}, `-=${speed*0.35}`)
-      .to(this.$scene, {autoAlpha:1, duration:speed*0.65, ease:'power2.inOut'})
-      .to(this.material.uniforms.progress, {value:0, duration:speed*0.65, ease:'power2.out'}, `-=${speed*0.65}`)
-  }
-
-  destroy() {
-    this.scene.remove.apply(this.scene, this.scene.children);
-    cancelAnimationFrame(this.animationFrame);
-    window.removeEventListener('resize', this.resizeEvent);
-  }
-
 }
 
 const Validation = {
@@ -1516,5 +1244,369 @@ class Scale {
   }
   destroy() {
     PageScroll.removeListener(this.listener);
+  }
+}
+
+class DistortionScene {
+  constructor($scene, images) {
+    this.$scene = $scene;
+    this.images = images;
+  }
+
+  init(callback) {
+    this.textures = [];
+    this.time = 0;
+    this.w = this.$scene.getBoundingClientRect().width,
+    this.h = this.$scene.getBoundingClientRect().height;
+    this.scene = new THREE.Scene();
+    this.renderer = new THREE.WebGL1Renderer();
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.$scene.insertAdjacentElement('beforeend', this.renderer.domElement);
+    gsap.set(this.renderer.domElement, {autoAlpha:0})
+    this.camera = new PerspectiveCamera(
+      70, 
+      this.w/this.h,
+      0.001, 100
+    )
+    this.camera.position.set(0, 0, 1);
+    this.material = new THREE.ShaderMaterial({
+      side: THREE.DoubleSide,
+      uniforms: {
+        time: {type:'f'},
+        img1: {type:'t'},
+        img2: {type:'t'},
+        progress1: {type:'f'},
+        progress2: {type:'f'},
+        resolution: {type:'v2'},
+      },
+      vertexShader: vertex_distortion,
+      fragmentShader: fragment_distortion
+    })
+    this.plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 64, 64), this.material);
+    this.scene.add(this.plane);
+
+    this.render = ()=> {
+      this.animationFrame = requestAnimationFrame(this.render);
+      if(this.visible) {
+        this.time+=0.05;
+        this.material.uniforms.time.value = this.time;
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    this.resize = (texture, s)=>{
+      this.w = this.$scene.getBoundingClientRect().width;
+      this.h = this.$scene.getBoundingClientRect().height;
+      this.material.uniforms.resolution.value = new THREE.Vector2(this.w, this.h);
+      this.renderer.setSize(this.w,this.h);
+      this.camera.aspect = this.w/this.h;
+
+      let fov;
+      let scale = texture.image.width/texture.image.height;
+      if(this.w/this.h > scale) {
+        fov = 2*(180/Math.PI)* (Math.atan((scale/2)/(this.camera.position.z - this.plane.position.z)/this.camera.aspect));
+      } else {
+        fov = 2*(180/Math.PI)*Math.atan((this.plane.scale.y/2)/(this.camera.position.z - this.plane.position.z));
+      }   
+      gsap.timeline()
+        .to(this.camera, {fov:fov, duration:s, ease:'power2.inOut'})
+        .to(this.plane.scale, {x:scale, duration:s, ease:'power2.inOut'}, `-=${s}`)
+
+      let updateFrame;
+      let updateCamera = ()=> {
+        this.camera.updateProjectionMatrix();
+        updateFrame = requestAnimationFrame(updateCamera);
+      }
+      updateCamera();
+      if(s==0) {
+        cancelAnimationFrame(updateFrame);
+      } else {
+        setTimeout(()=>{
+          cancelAnimationFrame(updateFrame);
+        }, s*1000)
+      }
+    }
+
+    this.resizeEvent = ()=> {
+      this.resize(this.textures[this.index], 0);
+    }
+    this.checkVisibleEvent = ()=> {
+      this.checkVisible();
+    }
+
+    if(callback) callback();
+
+  }
+
+  checkVisible() {
+    let y = this.$scene.getBoundingClientRect().top,
+        h = window.innerHeight,
+        h2 = this.$scene.getBoundingClientRect().height,
+        v1 = h-y, 
+        v2 = h2+y;
+    if(v1>0 && v2>0 && !this.visible) {
+      this.visible = true;
+      if(!this.started) {
+        this.show(this.index);
+      }
+    } else if((v1<0 || v2<0) && this.visible) {
+      this.visible = false;
+    }
+  }
+
+  on(callback, func) {
+    if(callback=='afterShow') {
+      this.afterShow = func;
+    } else if(callback=='afterChange') {
+      this.afterChange = func;
+    }
+  }
+
+  show(index) {
+    if(!this.initialized) {
+      this.index = index;
+      this.initialized = true;
+      PageScroll.addListener(this.checkVisibleEvent)
+      document.addEventListener("visibilitychange", this.checkVisibleEvent);
+      this.checkVisible();
+    } else {
+      let show = ()=> {
+        this.started = true;
+        this.material.uniforms.img1.value = this.textures[index];
+        this.material.uniforms.img2.value = this.textures[index];
+        this.resize(this.textures[index], 0);
+        this.render();
+        window.addEventListener('resize', this.resizeEvent);
+        gsap.timeline()
+          .fromTo([this.material.uniforms.progress1, this.material.uniforms.progress2], {value:1}, {value:0, duration:speed*1.5, ease:'power2.out'})
+          .to(this.renderer.domElement, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'}, `-=${speed*1.5}`)
+          .eventCallback('onComplete', ()=>{
+            if(this.afterShow) this.afterShow();
+          })
+      }
+      if(this.textures[index] && this.textures[index].image) {
+        show();
+      } else {
+        this.textures[index] = new THREE.TextureLoader().load(this.images[index], ()=>{
+          show();
+        })
+      }
+    }
+  }
+
+  change(index) {
+    let change = ()=> {
+      this.index = index;
+      this.material.uniforms.img2.value = this.textures[index];
+      this.resize(this.textures[index], speed);
+      gsap.timeline()
+        .fromTo(this.material.uniforms.progress1, {value:0}, {value:1, duration:speed, ease:'power2.inOut'})
+        .fromTo(this.material.uniforms.progress2, {value:1}, {value:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+        .eventCallback('onComplete', ()=>{
+          this.material.uniforms.progress1.value = 0;
+          this.material.uniforms.progress2.value = 0;
+          this.material.uniforms.img1.value = this.textures[index];
+          if(this.afterChange) this.afterChange();
+      })
+    }
+    if(this.textures[index] && this.textures[index].image) {
+      change();
+    } else {
+      this.textures[index] = new THREE.TextureLoader().load(this.images[index], ()=>{
+        change();
+      })
+    }
+  }
+
+  destroy() {
+    this.scene.remove.apply(this.scene, this.scene.children);
+    cancelAnimationFrame(this.animationFrame);
+    this.renderer.domElement.remove();
+    window.removeEventListener('resize', this.resizeEvent);
+    PageScroll.removeListener(this.checkVisibleEvent)
+    document.removeEventListener("visibilitychange", this.checkVisibleEvent);
+  }
+
+}
+
+class PortfolioSlider {
+  constructor($slider) {
+    this.$slider = $slider;
+  }
+
+  init() {
+    this.autoplay_interval = 7000;
+    this.index = 0;
+    this.$scene = this.$slider.closest('.portfolio-section').querySelector('.portfolio-section__scene-container');
+    this.$images = this.$slider.querySelectorAll('img');
+    this.images = [];
+    this.$images.forEach(($image, index)=>{
+      this.images[index] = $image.getAttribute('data-src');
+    })
+
+    this.getPrev = (index)=> {
+      let val = index==0?this.images.length-1:index-1;
+      return val;
+    }
+
+    this.scene = new DistortionScene(this.$scene, this.images);
+    this.slider = new Splide(this.$slider, {
+      type: 'loop',
+      perPage: 6,
+      arrows: true,
+      pagination: false,
+      easing: 'ease-in-out',
+      speed: speed*1000,
+      gap: 24,
+      autoplay: false,
+      start: this.index+1,
+      perMove: 1,
+      interval: this.autoplay_interval
+    });
+
+    this.slider.on('mounted', ()=>{
+      setTimeout(()=>{
+        this.slider.State.set(this.slider.STATES.MOVING);
+      }, 100)
+    });
+
+    this.slider.mount();
+    this.scene.init(()=>{
+      this.scene.show(this.index);
+      this.scene.on('afterShow', ()=>{
+        this.slider.State.set(this.slider.STATES.IDLE);
+      })
+    });
+    
+    this.slider.on('move', (newIndex)=>{
+      this.scene.change(this.getPrev(newIndex));
+      this.scene.on('afterChange', ()=>{
+        setTimeout(()=>{
+          this.slider.State.set(this.slider.STATES.IDLE);
+        }, 100)
+      })
+    });
+
+    this.slider.on('moved', ()=>{
+      this.slider.State.set(this.slider.STATES.MOVING);
+    });
+
+    this.slider.on('click', ($slide)=>{
+      this.slider.go($slide.index+1);
+    });
+  }
+
+  destroy() {
+    this.scene.destroy();
+    this.slider.destroy();
+  }
+}
+
+class CSlider {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+
+  init() {
+    this.index = 0;
+    this.$scene = this.$parent.querySelector('.conceptions-slider__d-images-container');
+    this.$images = this.$parent.querySelectorAll('img');
+    this.images = [];
+    this.$images.forEach(($image, index)=>{
+      this.images[index] = $image.getAttribute('data-src');
+    })
+
+    this.scene = new DistortionScene(this.$scene, this.images);
+    this.slider = new Splide(this.$parent.querySelector('.splide'), {
+      type: 'loop',
+      perPage: 1,
+      arrows: false,
+      pagination: true,
+      easing: 'ease-in-out',
+      speed: speed*1000,
+      autoplay: true,
+      perMove: 1,
+      interval: 10000
+    })
+
+    this.slider.on('mounted', ()=>{
+      setTimeout(()=>{
+        this.slider.State.set(this.slider.STATES.MOVING);
+      }, 100)
+    });
+
+    this.slider.mount();
+    this.scene.init(()=>{
+      this.scene.show(this.index);
+      this.scene.on('afterShow', ()=>{
+        this.slider.State.set(this.slider.STATES.IDLE);
+      })
+    });
+    
+    this.slider.on('move', (newIndex)=>{
+      this.scene.change(newIndex);
+      this.scene.on('afterChange', ()=>{
+        setTimeout(()=>{
+          this.slider.State.set(this.slider.STATES.IDLE);
+        }, 100)
+      })
+    });
+
+    this.slider.on('moved', ()=>{
+      this.slider.State.set(this.slider.STATES.MOVING);
+    });
+
+  }
+
+  destroy() {
+    this.scene.destroy();
+    this.slider.destroy();
+  }
+
+}
+
+const DistortionImages = {
+  init: function() {
+    this.objects = {};
+
+    this.check(App.$container);
+    barba.hooks.enter((data) => {
+      this.check(data.next.container);
+    });
+
+    barba.hooks.leave(() => {
+      for(let index in this.objects) {
+        document.removeEventListener('lazybeforeunveil', this.objects[index].listener);
+        this.objects[index].scene.destroy();
+        delete this.objects[index];
+      }
+    });
+    
+  },
+  check: function($page) {
+    $page.querySelectorAll('.js-distortion').forEach(($scene, index)=>{
+      let $image = $scene.querySelector('img'), 
+          images = [];
+      images[0] = $image.getAttribute('data-src');
+
+      this.objects[index] = {};
+      this.objects[index].scene = new DistortionScene($scene, images);
+      this.objects[index].scene.init(()=>{
+        $image.style.display='block';
+        this.objects[index].listener = (event)=> {
+          if(event.target==$image) {
+            $image.style.display='none';
+            this.objects[index].scene.show(0)
+            this.objects[index].scene.on('afterShow', ()=>{
+              document.removeEventListener('lazybeforeunveil', this.objects[index].listener);
+              this.objects[index].scene.destroy();
+              $image.style.display = 'block';
+              delete this.objects[index];
+            })
+          }
+        }
+        document.addEventListener('lazybeforeunveil', this.objects[index].listener);
+      });
+    })
   }
 }

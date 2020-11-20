@@ -3280,7 +3280,7 @@ table {
 
 /*========== Typography ==========*/
 h1, h2, h3, h4, h5, h6 {
-  margin: 2.75rem 0 2.25rem 0;
+  margin: 3rem 0 2.5rem 0;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   line-height: 1.4; }
@@ -3313,7 +3313,7 @@ h1, h2, h3, h4, h5, h6 {
   h6 + h4,
   h6 + h5,
   h6 + h6 {
-    margin-top: 2.25rem; }
+    margin-top: 2.5rem; }
 
 h1, .h1 {
   font-size: 4rem;
@@ -3335,9 +3335,11 @@ h6, .h6 {
   font-size: 1.25rem; }
 
 p {
-  margin: 0 0 1.75rem 0; }
+  margin: 0 0 1rem 0; }
   p:last-child {
     margin: 0; }
+  p ~ .button {
+    margin-top: 1rem; }
 
 mark {
   background-color: transparent;
@@ -3396,6 +3398,34 @@ a {
       border-color: transparent; }
 
 @media (max-width: 1599.98px) {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 2.75rem 0 2.25rem 0; }
+    h1 + h2,
+    h1 + h3,
+    h1 + h4,
+    h1 + h5,
+    h1 + h6, h2 + h2,
+    h2 + h3,
+    h2 + h4,
+    h2 + h5,
+    h2 + h6, h3 + h2,
+    h3 + h3,
+    h3 + h4,
+    h3 + h5,
+    h3 + h6, h4 + h2,
+    h4 + h3,
+    h4 + h4,
+    h4 + h5,
+    h4 + h6, h5 + h2,
+    h5 + h3,
+    h5 + h4,
+    h5 + h5,
+    h5 + h6, h6 + h2,
+    h6 + h3,
+    h6 + h4,
+    h6 + h5,
+    h6 + h6 {
+      margin-top: 2.25rem; }
   h1, .h1 {
     font-size: 3.625rem; }
   h2, .h2 {
@@ -3461,6 +3491,8 @@ a {
     z-index: 2; }
   .section:first-child {
     padding-top: 130px; }
+  .section .section:last-child {
+    margin: 0; }
   @media (max-width: 1599.98px) {
     .section {
       margin-bottom: 100px; }
@@ -3679,7 +3711,7 @@ a {
   color: var(--color-bg-text);
   font-size: 90px;
   line-height: 1.1;
-  margin: 0 0 -0.25em 0;
+  margin: 0 0 -0.35em 0;
   letter-spacing: -0.05em; }
   @media (max-width: 1599.98px) {
     .bg-title {
@@ -4034,7 +4066,7 @@ a {
     left: 0;
     z-index: 2;
     pointer-events: none;
-    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, #1A1A1A 103.6%); }
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0) 0%, rgba(26, 26, 26, 0.380401) 35.42%, rgba(26, 26, 26, 0.604167) 56.25%, #1A1A1A 100%); }
   .home-banner__pagination {
     position: absolute;
     z-index: 4;
@@ -4398,19 +4430,11 @@ a {
 
 .conceptions-slider {
   margin: 180px 0 140px 0; }
-  .conceptions-slider__d-images {
-    position: relative;
-    height: 400px; }
   .conceptions-slider__d-images-container {
-    position: absolute;
-    top: 0;
-    right: 12px;
-    width: calc(50vw + 106px);
-    height: 100%; }
+    width: calc(100% + calc((100vw - 1392px)/2));
+    height: 420px; }
     .conceptions-slider__d-images-container_style-1 {
-      right: 12px; }
-    .conceptions-slider__d-images-container_style-2 {
-      left: 12px; }
+      transform: translateX(calc((-100vw + 1392px)/2)); }
     .conceptions-slider__d-images-container .image {
       width: 100%;
       height: 100%; }
@@ -4425,7 +4449,7 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 345px;
+    height: 355px;
     padding: 0 12px; }
     .conceptions-slider__slide .image {
       display: none; }
@@ -4435,7 +4459,9 @@ a {
       max-width: 330px; }
   @media (max-width: 1599.98px) {
     .conceptions-slider__d-images-container {
-      width: calc(50vw - 12px); } }
+      width: calc(100% + calc((100vw - 1200px)/2)); }
+      .conceptions-slider__d-images-container_style-1 {
+        transform: translateX(calc((-100vw + 1200px)/2)); } }
 
 .conceptions-about__item {
   position: relative; }
@@ -4714,6 +4740,89 @@ a {
 @media (max-width: 1599.98px) {
   .equipment4-section__image .image {
     width: calc(100% + calc((100vw - 1200px)/2)); } }
+
+.portfolio__head {
+  margin: 10px 0 70px 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 270px; }
+
+.portfolio__title {
+  margin: 0; }
+
+.portfolio-section__title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-left: calc(35px + 12px); }
+  .portfolio-section__title .icon {
+    width: 20px;
+    height: 1.4em;
+    position: absolute;
+    left: 12px; }
+
+.portfolio-section__scene-container {
+  position: relative;
+  height: 560px;
+  background-color: var(--color-bg-text); }
+
+.portfolio-section__slider {
+  margin-top: 50px; }
+
+.portfolio-section .splide__arrows {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none; }
+
+.portfolio-section .splide__arrow {
+  pointer-events: all;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  border: 2px solid var(--color-darkened);
+  border-radius: 25px;
+  transition: border-color 0.25s ease-out; }
+  .portfolio-section .splide__arrow svg {
+    width: 12px;
+    height: 12px;
+    margin: auto;
+    fill: var(--color-darkened);
+    transition: fill 0.25s ease-out; }
+  .portfolio-section .splide__arrow.touch, .portfolio-section .splide__arrow.hover {
+    border-color: var(--color-light); }
+    .portfolio-section .splide__arrow.touch svg, .portfolio-section .splide__arrow.hover svg {
+      fill: var(--color-light); }
+  .portfolio-section .splide__arrow--prev {
+    transform: translateX(-40px) rotate(180deg); }
+  .portfolio-section .splide__arrow--next {
+    transform: translateX(40px); }
+
+.portfolio-section__slide .image::before {
+  content: '';
+  display: block;
+  padding-top: 64%; }
+
+.portfolio-section__text {
+  padding-top: 92px; }
+
+@media (min-width: 1024px) {
+  .portfolio-section__slide .image {
+    cursor: pointer;
+    transition: opacity 0.25s ease-out; }
+    .portfolio-section__slide .image.touch, .portfolio-section__slide .image.hover {
+      opacity: 0.8; } }
+
+@media (max-width: 1599.98px) {
+  .portfolio-section__scene-container {
+    height: 480px; } }
 
 /*========== Conceptions ==========*/
 .conceptions {

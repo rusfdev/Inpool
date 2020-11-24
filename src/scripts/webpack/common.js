@@ -1,14 +1,14 @@
 //lazylaod
 import 'lazysizes';
-lazySizes.cfg.expand = 50;
+lazySizes.cfg.init = false;
+lazySizes.cfg.expand = 100;
 document.addEventListener('lazybeforeunveil', function(e){
-  let el = e.target.tagName,
-      bg = e.target.getAttribute('data-src');
-  if(el!=='IMG') {
+  if(e.target.tagName!=='IMG') {
     let bg = e.target.getAttribute('data-src');
     e.target.style.backgroundImage = `url('${bg}')`;
   }
 });
+
 //barba
 import barba from '@barba/core';
 barba.init({
@@ -82,7 +82,8 @@ const App = {
     this.$container = document.querySelector('[data-barba="container"]');
     this.namespace = this.$container.getAttribute('data-barba-namespace');
     this.name = this.$container.getAttribute('data-name');
-
+    
+    lazySizes.init();
     Cursor.init();
     TouchHoverEvents.init();
     Header.init();

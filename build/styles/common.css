@@ -3540,6 +3540,12 @@ a {
 .image {
   display: block;
   position: relative; }
+  .image canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
   .image img {
     display: block;
     opacity: 0;
@@ -4828,11 +4834,25 @@ a {
 .conceptions {
   background: var(--color-bg-darker);
   position: relative; }
+  .conceptions .grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0.2;
+    pointer-events: none;
+    display: none; }
   .conceptions input {
     position: absolute;
-    bottom: 30px;
-    left: 30px;
-    width: 400px; }
+    bottom: 36px;
+    left: 0;
+    width: 400px;
+    appearance: auto; }
+    @media (max-width: 1599.98px) {
+      .conceptions input {
+        bottom: 32px; } }
   .conceptions .dur {
     position: absolute;
     bottom: 27px;
@@ -4840,12 +4860,37 @@ a {
     display: block;
     font-weight: 500; }
   .conceptions__slider {
-    padding: 100px 0;
+    padding: 90px 0;
     position: relative;
-    z-index: 1; }
+    z-index: 1;
+    max-height: 900px; }
   .conceptions__slides {
     position: relative;
     height: 100%; }
+  .conceptions__scale {
+    width: 130px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--color-muted);
+    position: absolute;
+    bottom: 90px;
+    left: 710px; }
+    .conceptions__scale span {
+      display: block;
+      height: 100%;
+      background-color: var(--color-light); }
+  @media (max-width: 1599.98px) {
+    .conceptions__slider {
+      padding: 80px 0; }
+    .conceptions__scale {
+      bottom: 80px;
+      left: 680px; } }
+
+@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 640px) {
+  .conceptions__slider {
+    padding: 60px 0; }
+  .conceptions__scale {
+    bottom: 60px; } }
 
 .conceptions-slide {
   opacity: 0;
@@ -4855,30 +4900,144 @@ a {
   height: 100%;
   top: 0;
   left: 0; }
-  .conceptions-slide__container {
-    height: 100%; }
   .conceptions-slide__content {
     position: relative;
     height: 100%; }
+  .conceptions-slide__dec {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    width: 1em; }
+    .conceptions-slide__dec-val span {
+      text-transform: uppercase;
+      display: block;
+      transform: rotate(-90deg);
+      line-height: 1; }
+    .conceptions-slide__dec-line {
+      width: 1px;
+      height: 60px;
+      background-color: var(--color-text);
+      margin-top: 10px; }
+  .conceptions-slide__slogan {
+    position: absolute;
+    line-height: 1.25; }
+    .conceptions-slide__slogan_1 {
+      transform: translateX(calc(50% - 0.625em)) rotate(90deg);
+      right: 74px;
+      top: calc(28% - 0.625em); }
+    .conceptions-slide__slogan_2 {
+      transform: translateX(calc(50% - 1.875em)) rotate(90deg);
+      right: 0;
+      top: calc(32.5% - 1.875em);
+      width: 190px; }
+    .conceptions-slide__slogan_3 {
+      transform: translateX(calc(50% - 0.625em)) rotate(90deg);
+      right: 1062px;
+      top: calc(130px - 0.625em);
+      width: 260px; }
+    .conceptions-slide__slogan_4 {
+      transform: translateX(calc(50% - 1.25em)) rotate(90deg);
+      right: 1180px;
+      top: calc(35% - 1.25em);
+      width: 260px; }
+  .conceptions-slide__m-image {
+    background-color: transparent; }
+    .conceptions-slide__m-image_1 {
+      width: 446px;
+      height: 56%;
+      left: 710px; }
+    .conceptions-slide__m-image_2 {
+      width: 684px;
+      height: 65%;
+      left: 590px; }
+    .conceptions-slide__m-image_3 {
+      width: 564px;
+      height: 50%;
+      left: 356px; }
+    .conceptions-slide__m-image_4 {
+      width: 684px;
+      height: 70%;
+      left: 236px; }
+  .conceptions-slide__s-image {
+    background-color: transparent; }
+    .conceptions-slide__s-image_1 {
+      position: absolute;
+      width: calc(210px + calc((100vw - 1392px)/2));
+      transform: translateX(calc((-100vw + 1392px)/2));
+      left: 0;
+      bottom: 0;
+      height: 40%; }
+    .conceptions-slide__s-image_3 {
+      position: absolute;
+      width: calc(172px + calc((100vw - 1392px)/2));
+      left: 1220px;
+      bottom: 142px;
+      height: 45%; }
+  .conceptions-slide__text {
+    display: block;
+    position: absolute;
+    width: 300px;
+    margin: 0; }
+    .conceptions-slide__text_1 {
+      left: 354px;
+      top: calc(56% - 1em); }
+    .conceptions-slide__text_2 {
+      left: 0;
+      top: 55%; }
+    .conceptions-slide__text_3 {
+      left: 946px;
+      top: calc(50% - 2.25em);
+      width: 210px; }
+    .conceptions-slide__text_4 {
+      left: 946px;
+      top: calc(50% - 1.5em);
+      width: 210px; }
+  .conceptions-slide__title {
+    position: absolute;
+    line-height: 1;
+    bottom: 40px;
+    margin: 0;
+    text-transform: uppercase; }
+    .conceptions-slide__title_1 {
+      left: 548px; }
+    .conceptions-slide__title_2 {
+      left: 540px; }
+    .conceptions-slide__title_3 {
+      left: 544px; }
+    .conceptions-slide__title_4 {
+      left: 532px; }
+  .conceptions-slide__button {
+    position: absolute;
+    right: 80px;
+    bottom: 58px; }
   .conceptions-slide__index {
     position: absolute;
     display: flex;
     align-items: flex-end;
-    font-family: "Open Sans", sans-serif; }
+    font-family: "Open Sans", sans-serif;
+    z-index: 2;
+    font-size: 314px; }
     .conceptions-slide__index_1 {
       top: -30px;
-      left: 320px; }
+      left: 315px; }
+      .conceptions-slide__index_1 .conceptions-slide__count {
+        margin-left: -0.5em;
+        display: block; }
     .conceptions-slide__index_2 {
-      top: -50px;
-      left: 245px; }
+      top: -30px;
+      left: 146px; }
     .conceptions-slide__index_3 {
-      bottom: 35px;
-      left: 0; }
+      bottom: 80px;
+      left: -15px; }
     .conceptions-slide__index_4 {
-      top: -50px;
-      right: 195px; }
+      top: -30px;
+      left: 860px; }
   .conceptions-slide__value {
-    font-size: 314px;
     line-height: 0.85;
     letter-spacing: -0.06em;
     color: #7f7f7f;
@@ -4897,12 +5056,90 @@ a {
     top: 100%; }
   .conceptions-slide__count {
     color: #474747;
-    font-size: 62px;
+    font-size: 0.2em;
     line-height: 1;
-    transform: translateY(25px); }
+    transform: translateY(0.35em); }
+  @media (max-width: 1599.98px) {
+    .conceptions-slide__value {
+      font-size: 240px; }
+    .conceptions-slide__index_1 {
+      top: -20px;
+      left: 290px; }
+    .conceptions-slide__index_2 {
+      top: -20px;
+      left: 160px; }
+    .conceptions-slide__index_3 {
+      bottom: 10%;
+      left: -12px; }
+    .conceptions-slide__index_4 {
+      top: -20px;
+      left: 640px; }
+    .conceptions-slide__text {
+      width: 260px; }
+      .conceptions-slide__text_1 {
+        left: 268px;
+        top: 60%; }
+      .conceptions-slide__text_2 {
+        top: auto;
+        bottom: 40%; }
+      .conceptions-slide__text_3 {
+        top: 60%;
+        left: 830px; }
+      .conceptions-slide__text_4 {
+        top: 55%;
+        left: 820px; }
+    .conceptions-slide__m-image_1 {
+      width: 484px;
+      height: 60%;
+      left: 612px; }
+    .conceptions-slide__m-image_2 {
+      width: 540px;
+      height: 70%;
+      left: 510px; }
+    .conceptions-slide__m-image_3 {
+      width: 486px;
+      height: 60%;
+      left: 308px; }
+    .conceptions-slide__m-image_4 {
+      width: 486px;
+      height: 70%;
+      left: 204px; }
+    .conceptions-slide__s-image_1 {
+      width: calc(180px + calc((100vw - 1200px)/2));
+      transform: translateX(calc((-100vw + 1200px)/2)); }
+    .conceptions-slide__s-image_3 {
+      width: calc(78px + calc((100vw - 1200px)/2));
+      left: 1122px;
+      bottom: 22%;
+      height: 45%; }
+    .conceptions-slide__slogan_1 {
+      right: 0;
+      top: calc(30% - 0.75em);
+      width: auto; }
+    .conceptions-slide__slogan_2 {
+      right: 0;
+      top: 45%; }
+    .conceptions-slide__slogan_3 {
+      right: 920px; }
+    .conceptions-slide__slogan_4 {
+      right: 1062px; }
+    .conceptions-slide__title {
+      bottom: 30px; }
+      .conceptions-slide__title_1 {
+        left: 530px; }
+      .conceptions-slide__title_2 {
+        left: 532px; }
+      .conceptions-slide__title_3 {
+        left: 532px; }
+      .conceptions-slide__title_4 {
+        left: 504px; }
+    .conceptions-slide__button {
+      right: 0;
+      bottom: 44px; } }
 
 /*========== Header ==========*/
 .header {
+  display: none;
   flex-shrink: 0;
   position: fixed;
   top: 0;

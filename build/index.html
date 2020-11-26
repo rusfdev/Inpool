@@ -32,7 +32,9 @@
     <div class="preloader" style="opacity:0;">
       <link rel="stylesheet" href="./styles/preloader.css">
       <div class="preloader__center">
-        <div class="preloader__square"></div><img class="preloader__img" data-src="./img/pool.png" alt="image"><img class="preloader__girl preloader__girl_1" data-src="./img/preloader_girl1.png" alt="girl"><img class="preloader__girl preloader__girl_2" data-src="./img/preloader_girl2.png" alt="girl">
+        <div class="preloader__square"></div><img class="preloader__img" data-src="./img/pool.png" alt="image">
+        <!--img(data-src="./img/preloader_girl1.png", alt="girl").preloader__girl.preloader__girl_1-->
+        <!--img(data-src="./img/preloader_girl2.png", alt="girl").preloader__girl.preloader__girl_2-->
         <svg class="preloader__text" viewBox="0 0 188.7 12.7">
           <style type="text/css">
             .st0{fill:#FFFFFF;}
@@ -180,51 +182,146 @@
             </div>
           </div>
         </section>
+        <link rel="stylesheet" href="./styles/grid.css">
         <section class="section conceptions">
-          <!--h6.background-text.conceptions__background-text 4 концепции-->
-          <div class="conceptions__slider"><input type="range" min="0" max="100" step="0.05" value="0"> <span class="dur"></span>
-            <div class="conceptions__slides">
-              <!--slide-->
-              <div class="conceptions-slide">
-                <div class="container conceptions-slide__container">
+          <!---->
+          <div class="grid"> 
+            <div class="grid__background">
+              <div class="container grid__container">
+                <div class="row grid__row">
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                  <div class="col-1 grid__col"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!---->
+          <div class="container">
+            <div class="conceptions__head"></div>
+            <div class="conceptions__slider"><input type="range" min="0" max="100" step="0.05" value="0"> <span class="dur"></span>
+              <!--scale-->
+              <div class="conceptions__scale"><span></span></div>
+              <div class="conceptions__slides">
+                <!--slide-->
+                <div class="conceptions-slide">
                   <div class="conceptions-slide__content">
+                    <!---->
+                    <div class="conceptions-slide__dec"> 
+                      <div class="conceptions-slide__dec-val"><span>p</span></div>
+                      <div class="conceptions-slide__dec-line"></div>
+                    </div>
+                    <!---->
                     <div class="conceptions-slide__index conceptions-slide__index_1">
                       <div class="conceptions-slide__value">0<span class="conceptions-slide__value-index"><span class="conceptions-slide__value-index-prev">0</span><span class="conceptions-slide__value-index-current">1</span><span class="conceptions-slide__value-index-next">2</span></span></div>
                       <div class="conceptions-slide__count">/4</div>
                     </div>
+                    <!---->
+                    <div class="conceptions-slide__s-image conceptions-slide__s-image_1 image image_cover"><img class="lazyload" data-src="./img/slider/1.jpg" alt="image"></div>
+                    <!---->
+                    <div class="conceptions-slide__m-image conceptions-slide__m-image_1 image image_cover"><img class="lazyload" data-src="./img/slider/2.jpg" alt="image"></div>
+                    <!---->
+                    <p class="conceptions-slide__text conceptions-slide__text_1">Концепция, направленная на восстановление энергии и укрепление здоровья</p>
+                    <!---->
+                    <div class="conceptions-slide__slogan conceptions-slide__slogan_1">Покоряя стихию</div>
+                    <!---->
+                    <h2 class="h1 conceptions-slide__title conceptions-slide__title_1" data-splitting>Inpool power</h2>
+                    <!----><a class="button-more conceptions-slide__button" href="./power.html">Подробнее
+                      <svg class="icon">
+                        <use xlink:href="./img/icons/icons-sprite.svg#round-arrow"></use>
+                      </svg></a>
                   </div>
                 </div>
-              </div>
-              <!--slide-->
-              <div class="conceptions-slide">
-                <div class="container conceptions-slide__container">
+                <!--slide-->
+                <div class="conceptions-slide">
                   <div class="conceptions-slide__content">
+                    <!---->
+                    <div class="conceptions-slide__dec"> 
+                      <div class="conceptions-slide__dec-val"><span>e</span></div>
+                      <div class="conceptions-slide__dec-line"></div>
+                    </div>
+                    <!---->
                     <div class="conceptions-slide__index conceptions-slide__index_2">
                       <div class="conceptions-slide__value">0<span class="conceptions-slide__value-index"><span class="conceptions-slide__value-index-prev">1</span><span class="conceptions-slide__value-index-current">2</span><span class="conceptions-slide__value-index-next">3</span></span></div>
                       <div class="conceptions-slide__count">/4</div>
                     </div>
+                    <!---->
+                    <div class="conceptions-slide__m-image conceptions-slide__m-image_2 image image_cover"><img class="lazyload" data-src="./img/slider/3.jpg" alt="image"></div>
+                    <!---->
+                    <p class="conceptions-slide__text conceptions-slide__text_2">Поддерживайте тело<br> в идеальном состоянии</p>
+                    <!---->
+                    <div class="conceptions-slide__slogan conceptions-slide__slogan_2">Бассейны<br> с профессиональным<br> противотоком</div>
+                    <!---->
+                    <h2 class="h1 conceptions-slide__title conceptions-slide__title_2" data-splitting>Inpool ENERGY</h2>
+                    <!----><a class="button-more conceptions-slide__button" href="./energy.html">Подробнее
+                      <svg class="icon">
+                        <use xlink:href="./img/icons/icons-sprite.svg#round-arrow"></use>
+                      </svg></a>
                   </div>
                 </div>
-              </div>
-              <!--slide-->
-              <div class="conceptions-slide">
-                <div class="container conceptions-slide__container">
+                <!--slide-->
+                <div class="conceptions-slide">
                   <div class="conceptions-slide__content">
+                    <!---->
+                    <div class="conceptions-slide__dec"> 
+                      <div class="conceptions-slide__dec-val"><span>f</span></div>
+                      <div class="conceptions-slide__dec-line"></div>
+                    </div>
+                    <!---->
                     <div class="conceptions-slide__index conceptions-slide__index_3">
                       <div class="conceptions-slide__value">0<span class="conceptions-slide__value-index"><span class="conceptions-slide__value-index-prev">2</span><span class="conceptions-slide__value-index-current">3</span><span class="conceptions-slide__value-index-next">4</span></span></div>
                       <div class="conceptions-slide__count">/4</div>
                     </div>
+                    <!---->
+                    <div class="conceptions-slide__m-image conceptions-slide__m-image_3 image image_cover"><img class="lazyload" data-src="./img/slider/4.jpg" alt="image"></div>
+                    <!---->
+                    <p class="conceptions-slide__text conceptions-slide__text_3">Подарите близким радость общения и новые эмоции</p>
+                    <!---->
+                    <div class="conceptions-slide__s-image conceptions-slide__s-image_3 image image_cover"><img class="lazyload" data-src="./img/slider/5.jpg" alt="image"></div>
+                    <!---->
+                    <div class="conceptions-slide__slogan conceptions-slide__slogan_3">Забота о здоровье всей семьи</div>
+                    <!---->
+                    <h2 class="h1 conceptions-slide__title conceptions-slide__title_3" data-splitting>Inpool Family</h2>
+                    <!----><a class="button-more conceptions-slide__button" href="./family.html">Подробнее
+                      <svg class="icon">
+                        <use xlink:href="./img/icons/icons-sprite.svg#round-arrow"></use>
+                      </svg></a>
                   </div>
                 </div>
-              </div>
-              <!--slide-->
-              <div class="conceptions-slide">
-                <div class="container conceptions-slide__container">
+                <!--slide-->
+                <div class="conceptions-slide">
                   <div class="conceptions-slide__content">
+                    <!---->
+                    <div class="conceptions-slide__dec"> 
+                      <div class="conceptions-slide__dec-val"><span>b</span></div>
+                      <div class="conceptions-slide__dec-line"></div>
+                    </div>
+                    <!---->
                     <div class="conceptions-slide__index conceptions-slide__index_4">
                       <div class="conceptions-slide__value">0<span class="conceptions-slide__value-index"><span class="conceptions-slide__value-index-prev">3</span><span class="conceptions-slide__value-index-current">4</span><span class="conceptions-slide__value-index-next">5</span></span></div>
                       <div class="conceptions-slide__count">/4</div>
                     </div>
+                    <!---->
+                    <div class="conceptions-slide__m-image conceptions-slide__m-image_4 image image_cover"><img class="lazyload" data-src="./img/slider/6.jpg" alt="image"></div>
+                    <!---->
+                    <p class="conceptions-slide__text conceptions-slide__text_4">Баланс, перезагрузка, восстановление сил</p>
+                    <!---->
+                    <div class="conceptions-slide__slogan conceptions-slide__slogan_4">Подарите себе незабываемые<br> моменты отдыха и релаксации</div>
+                    <!---->
+                    <h2 class="h1 conceptions-slide__title conceptions-slide__title_4" data-splitting>Inpool Balance</h2>
+                    <!----><a class="button-more conceptions-slide__button" href="./balance.html">Подробнее
+                      <svg class="icon">
+                        <use xlink:href="./img/icons/icons-sprite.svg#round-arrow"></use>
+                      </svg></a>
                   </div>
                 </div>
               </div>

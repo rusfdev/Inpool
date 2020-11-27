@@ -7,6 +7,7 @@ var gulp = require("gulp"),
     mincss = require("gulp-clean-css"),
     sourcemaps = require("gulp-sourcemaps"),
     rename = require("gulp-rename"),
+    typograf = require('gulp-typograf'),
     favicons = require("gulp-favicons"),
     newer = require("gulp-newer"),
     watch = require("gulp-watch"),
@@ -50,6 +51,7 @@ let $images = ["./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,
 gulp.task("pug", function() {
   return gulp.src($pug)
     .pipe(pug({pretty:true}))
+    .pipe(typograf({locale:['ru']}))
     .pipe(gulp.dest("./build/"))
     .on("end", browsersync.reload);
 });

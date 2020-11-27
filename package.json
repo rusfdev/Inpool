@@ -29,6 +29,7 @@
 		"gulp-rsync": "0.0.8",
 		"gulp-sass": "^4.0.2",
 		"gulp-sourcemaps": "^2.6.5",
+		"gulp-typograf": "^4.0.3",
 		"gulp-uglify": "^3.0.2",
 		"gulp-watch": "^5.0.1",
 		"webpack": "^4.44.2",

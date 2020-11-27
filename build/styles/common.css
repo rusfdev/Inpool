@@ -4008,7 +4008,7 @@ a {
     .nav__block {
       padding: 130px 24px 80px 60px; } }
 
-@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 640px) {
+@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 620px) {
   .nav__block {
     padding-bottom: 60px; } }
 
@@ -4088,8 +4088,6 @@ a {
     position: absolute;
     margin-left: 48px; }
   .home-banner__slide {
-    opacity: 0;
-    visibility: hidden;
     padding-bottom: inherit;
     position: absolute;
     width: 100%;
@@ -4099,10 +4097,21 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between; }
-    .home-banner__slide-title {
+    .home-banner__slide-titles {
       font-size: 4.375rem;
+      margin-bottom: 50px;
+      height: 4.375rem;
+      position: relative; }
+    .home-banner__slide-title {
+      font-size: inherit;
       text-transform: uppercase;
-      margin: -0.25em 0 50px 0; }
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 1;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden; }
     .home-banner__slide-content {
       display: flex;
       flex-direction: column;
@@ -4111,7 +4120,7 @@ a {
     .home-banner__slide-text {
       max-width: 400px; }
 
-@media (min-width: 1600px) and (max-height: 760px) {
+@media (min-width: 1600px) and (max-height: 740px) {
   .home-banner__slide {
     height: 100%;
     justify-content: flex-end; } }
@@ -4121,21 +4130,20 @@ a {
       padding-bottom: 80px; }
     .home-banner__pagination {
       bottom: 80px; }
-    .home-banner__slide-title {
-      font-size: 4rem; } }
+    .home-banner__slide-titles {
+      font-size: 4rem;
+      height: 4rem; } }
 
-@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 740px) {
+@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 680px) {
   .home-banner__slide {
     height: 100%;
     justify-content: flex-end; } }
 
-@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 640px) {
+@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 620px) {
   .home-banner__container {
     padding-bottom: 60px; }
   .home-banner__pagination {
-    bottom: 60px; }
-  .home-banner__slide-title {
-    margin-bottom: 30px; } }
+    bottom: 60px; } }
 
 .home-scene {
   position: absolute;
@@ -4159,13 +4167,13 @@ a {
   .home-about__content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start; }
   .home-about__title {
     margin: 0;
     line-height: 1.25; }
-  .home-about__button {
-    margin-top: 50px; }
+  .home-about__button.touch .icon, .home-about__button.hover .icon {
+    transform: translateX(4px) rotate(90deg); }
 
 .contacts {
   position: relative; }
@@ -4833,7 +4841,9 @@ a {
 /*========== Conceptions ==========*/
 .conceptions {
   background: var(--color-bg-darker);
-  position: relative; }
+  position: relative;
+  padding-bottom: 600vh;
+  overflow: hidden; }
   .conceptions .grid {
     position: absolute;
     width: 100%;
@@ -4859,11 +4869,12 @@ a {
     left: 460px;
     display: block;
     font-weight: 500; }
-  .conceptions__slider {
+  .conceptions__slider-wrapper {
     padding: 90px 0;
-    position: relative;
-    z-index: 1;
+    height: 100vh;
     max-height: 900px; }
+    .conceptions__slider-wrapper .container {
+      height: 100%; }
   .conceptions__slides {
     position: relative;
     height: 100%; }
@@ -4873,24 +4884,21 @@ a {
     border-radius: 2px;
     background-color: var(--color-muted);
     position: absolute;
-    bottom: 90px;
+    bottom: 0;
     left: 710px; }
     .conceptions__scale span {
       display: block;
       height: 100%;
       background-color: var(--color-light); }
   @media (max-width: 1599.98px) {
-    .conceptions__slider {
+    .conceptions__slider-wrapper {
       padding: 80px 0; }
     .conceptions__scale {
-      bottom: 80px;
       left: 680px; } }
 
-@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 640px) {
-  .conceptions__slider {
-    padding: 60px 0; }
-  .conceptions__scale {
-    bottom: 60px; } }
+@media (min-width: 1280px) and (max-width: 1599.98px) and (max-height: 620px) {
+  .conceptions__slider-wrapper {
+    padding: 60px 0; } }
 
 .conceptions-slide {
   opacity: 0;
@@ -4942,7 +4950,7 @@ a {
       width: 260px; }
     .conceptions-slide__slogan_4 {
       transform: translateX(calc(50% - 1.25em)) rotate(90deg);
-      right: 1180px;
+      right: 1184px;
       top: calc(35% - 1.25em);
       width: 260px; }
   .conceptions-slide__m-image {
@@ -4990,11 +4998,11 @@ a {
       left: 0;
       top: 55%; }
     .conceptions-slide__text_3 {
-      left: 946px;
+      left: 980px;
       top: calc(50% - 2.25em);
       width: 210px; }
     .conceptions-slide__text_4 {
-      left: 946px;
+      left: 980px;
       top: calc(50% - 1.5em);
       width: 210px; }
   .conceptions-slide__title {
@@ -5026,17 +5034,20 @@ a {
       top: -30px;
       left: 315px; }
       .conceptions-slide__index_1 .conceptions-slide__count {
-        margin-left: -0.5em;
-        display: block; }
+        margin-left: -0.5em; }
     .conceptions-slide__index_2 {
       top: -30px;
-      left: 146px; }
+      left: 142px; }
+      .conceptions-slide__index_2 .conceptions-slide__count {
+        margin-left: 0.35em; }
     .conceptions-slide__index_3 {
       bottom: 80px;
       left: -15px; }
     .conceptions-slide__index_4 {
       top: -30px;
       left: 860px; }
+      .conceptions-slide__index_4 .conceptions-slide__value {
+        letter-spacing: 0; }
   .conceptions-slide__value {
     line-height: 0.85;
     letter-spacing: -0.06em;
@@ -5065,9 +5076,13 @@ a {
     .conceptions-slide__index_1 {
       top: -20px;
       left: 290px; }
+      .conceptions-slide__index_1 .conceptions-slide__count {
+        margin-left: -0.4em; }
     .conceptions-slide__index_2 {
       top: -20px;
-      left: 160px; }
+      left: 140px; }
+      .conceptions-slide__index_2 .conceptions-slide__count {
+        margin-left: 0.25em; }
     .conceptions-slide__index_3 {
       bottom: 10%;
       left: -12px; }
@@ -5139,7 +5154,6 @@ a {
 
 /*========== Header ==========*/
 .header {
-  display: none;
   flex-shrink: 0;
   position: fixed;
   top: 0;

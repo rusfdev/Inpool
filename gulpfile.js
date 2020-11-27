@@ -9,15 +9,12 @@ var gulp = require("gulp"),
     rename = require("gulp-rename"),
     favicons = require("gulp-favicons"),
     newer = require("gulp-newer"),
-    replace = require("gulp-replace"),
     watch = require("gulp-watch"),
     clean = require("gulp-clean"),
     uglify = require("gulp-uglify"),
     rsync = require('gulp-rsync'),
-    imagemin = require('gulp-imagemin'),
     webpack = require('webpack'),
     webpackStream = require('webpack-stream');
-
 
 let $images = ["./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,jpeg,png,gif}"],
     $images_watch = $images,
@@ -25,35 +22,39 @@ let $images = ["./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,
     $pug = ["./src/views/**/*.pug", "!./src/views/blocks/*.pug", "!./src/views/layout/*.pug"],
     $pug_watch = "./src/views/**/*.pug",
 
-    $scripts = ["./src/scripts/**/*.js", "!./src/scripts/webpack/**/*"],
-    $scripts_watch = $scripts,
-    $webpack_scripts = "./src/scripts/webpack/common.js",
-    $webpack_scripts_watch = "./src/scripts/webpack/**/*",
+    $scripts = ["./src/scripts/*.js"],
+    $scripts_watch = ["./src/scripts/*.js"],
+
+    $webpack = "./src/scripts/webpack/**/*.js",
+    $webpack_watch = "./src/scripts/webpack/**/*",
 
     $styles = ["./src/styles/**/*.scss", "!./src/styles/components/**/*.scss"],
     $styles_watch = "./src/styles/**/*.scss",
 
     $favicons = "./src/img/favicons/*.{jpg,jpeg,png,gif}"
 
-    $other = ["./src/**/*", "!./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,jpeg,png,gif}", "!./src/scripts/**/*", "!./src/styles/**/*", "!./src/views", "!./src/views/**/*", "!./src/locales", "!./src/locales/**/*"];
+    $other = ["./src/**/*", 
+              "!./src/img/**/*.{jpg,jpeg,png,gif}", 
+              "!./src/img/favicons/*.{jpg,jpeg,png,gif}", 
+              "!./src/scripts/*.js",
+              "!./src/scripts/webpack",
+              "!./src/scripts/webpack/**/*", 
+              "!./src/styles/**/*", 
+              "!./src/views", 
+              "!./src/views/**/*", 
+              "!./src/locales", 
+              "!./src/locales/**/*"
+              ];
 
 
-gulp.task("pug", function () {
+gulp.task("pug", function() {
   return gulp.src($pug)
     .pipe(pug({pretty:true}))
     .pipe(gulp.dest("./build/"))
     .on("end", browsersync.reload);
 });
-gulp.task("pug_production", function () {
-  return gulp.src($pug)
-    .pipe(pug({pretty:true}))
-    .pipe(replace('.css', '.min.css'))
-    .pipe(replace('.js', '.min.js'))
-    .pipe(gulp.dest("./build/"))
-    .on("end", browsersync.reload);
-});
 
-gulp.task("scripts", function () {
+gulp.task("scripts", function() {
   return gulp.src($scripts)
     .pipe(sourcemaps.init())
     .pipe(babel({presets: ["@babel/preset-env"]}))
@@ -61,15 +62,16 @@ gulp.task("scripts", function () {
     .pipe(gulp.dest("./build/scripts/"))
     .on("end", browsersync.reload);
 });
-gulp.task("scripts_production", function () {
+gulp.task("scripts_production", function() {
   return gulp.src($scripts)
     .pipe(babel({presets: ["@babel/preset-env"]}))
     .pipe(uglify())
     .pipe(rename({suffix: ".min"}))
     .pipe(gulp.dest("./build/scripts/"))
 });
-gulp.task("webpack_scripts", function () {
-  return gulp.src($webpack_scripts)
+
+gulp.task("webpack_scripts", function() {
+  return gulp.src($webpack)
     .pipe(webpackStream({
       mode: 'development',
       output: {
@@ -105,8 +107,8 @@ gulp.task("webpack_scripts", function () {
     .pipe(gulp.dest("./build/scripts/"))
     .on("end", browsersync.reload);
 });
-gulp.task("webpack_scripts_production", function () {
-  return gulp.src($webpack_scripts)
+gulp.task("webpack_scripts_production", function() {
+  return gulp.src($webpack)
     .pipe(webpackStream({
       mode: 'production',
       output: {
@@ -157,6 +159,7 @@ gulp.task("styles_production", function() {
     .pipe(mincss({level:{1:{specialComments:'none'},2:{}}}))
     .pipe(rename({suffix: ".min"}))
     .pipe(gulp.dest("./build/styles/"))
+    .on("end", browsersync.reload);
 });
 
 gulp.task("images", function () {
@@ -164,16 +167,6 @@ gulp.task("images", function () {
     .pipe(newer("./build/img/"))
     .pipe(gulp.dest("./build/img/"))
     .on("end", browsersync.reload);
-});
-gulp.task("images_production", function () {
-  return gulp.src($images)
-    .pipe(newer("./build/img/"))
-    .pipe(imagemin([
-      imagemin.gifsicle({interlaced: true}),
-      imagemin.mozjpeg({quality: 80, progressive: true}),
-      imagemin.optipng({optimizationLevel: 5})
-    ]))
-    .pipe(gulp.dest("./build/img/"))
 });
 
 gulp.task("favicons", function () {
@@ -219,18 +212,13 @@ gulp.task("serve", function () {
 });
 
 gulp.task("watch", function () {
-  return new Promise((res, rej) => {
+  return new Promise((res) => {
     watch($pug_watch, gulp.series("pug"));
-
     watch($styles_watch, gulp.series("styles"));
-
     watch($scripts_watch, gulp.series("scripts"));
-    watch($webpack_scripts_watch, gulp.series("webpack_scripts"));
-
+    watch($webpack_watch, gulp.series("webpack_scripts"));
     watch($images_watch, gulp.series("images"));
-
     watch($favicons, gulp.series("favicons"));
-
     watch($other, gulp.series("other"));
     res();
   });
@@ -246,9 +234,7 @@ gulp.task("default",
 
 gulp.task("production", 
   gulp.series(
-    "clean",
-    gulp.parallel("pug_production", "styles_production", "scripts_production", "webpack_scripts_production", "favicons", "other"),
-    "images_production"
+    "clean", gulp.parallel("pug", "styles", "styles_production", "scripts", "scripts_production", "webpack_scripts", "webpack_scripts_production", "images", "favicons", "other")
   )
 );
 

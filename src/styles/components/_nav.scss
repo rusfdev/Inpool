@@ -91,7 +91,7 @@
     }
   }
   @include media-breakpoint-between(xl, xxl) {
-    @media (max-height:640px) {
+    @media (max-height:620px) {
       &__block {
         padding-bottom: 60px;
       }

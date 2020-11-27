@@ -49,8 +49,6 @@
     margin-left: 48px;
   }
   &__slide {
-    opacity: 0;
-    visibility: hidden;
     padding-bottom: inherit;
     position: absolute;
     width: 100%;
@@ -60,10 +58,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    &-title {
+    &-titles {
       font-size: 4.375rem;
+      margin-bottom: 50px;
+      height: 4.375rem;
+      position: relative;
+    }
+    &-title {
+      font-size: inherit;
       text-transform: uppercase;
-      margin: -0.25em 0 50px 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 1;
+      margin: 0;
+      opacity: 0;
+      visibility: hidden;
     }
     &-content {
       display: flex;
@@ -76,7 +86,7 @@
     }
   }
   @include media-breakpoint-up(xxl) {
-    @media (max-height:760px) {
+    @media (max-height:740px) {
       &__slide {
         height: 100%;
         justify-content: flex-end;
@@ -91,26 +101,24 @@
     &__pagination {
       bottom: 80px;
     }
-    &__slide-title {
+    &__slide-titles {
       font-size: 4rem;
+      height: 4rem;
     }
   }
   @include media-breakpoint-between(xl, xxl) {
-    @media (max-height:740px) {
+    @media (max-height:680px) {
       &__slide {
         height: 100%;
         justify-content: flex-end;
       }
     }
-    @media (max-height:640px) {
+    @media (max-height:620px) {
       &__container {
         padding-bottom: 60px;
       }
       &__pagination {
         bottom: 60px;
-      }
-      &__slide-title {
-        margin-bottom: 30px;
       }
     }
   }
@@ -140,7 +148,7 @@
   &__content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start;
   }
   &__title {
@@ -148,7 +156,11 @@
     line-height: 1.25;
   }
   &__button {
-    margin-top: 50px;
+    &.touch, &.hover {
+      .icon {
+        transform: translateX(4px) rotate(90deg);
+      }
+    }
   }
 }
 

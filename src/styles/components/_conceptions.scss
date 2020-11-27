@@ -1,6 +1,8 @@
 .conceptions {
   background: var(--color-bg-darker);
   position: relative;
+  padding-bottom: 600vh;
+  overflow: hidden;
   .grid {
     position: absolute;
     width: 100%;
@@ -30,10 +32,14 @@
     font-weight: 500;
   }
   &__slider {
-    padding: 90px 0;
-    position: relative;
-    z-index: 1;
-    max-height: 900px;
+    &-wrapper {
+      padding: 90px 0;
+      height: 100vh;
+      max-height: 900px;
+      .container {
+        height: 100%;
+      }
+    }
   }
   &__slides {
     position: relative;
@@ -45,7 +51,7 @@
     border-radius: 2px;
     background-color: var(--color-muted);
     position: absolute;
-    bottom: 90px;
+    bottom: 0;
     left: 710px;
     span {
       display: block;
@@ -55,20 +61,20 @@
   }
   @include media-breakpoint-down(xxl) {
     &__slider {
-      padding: 80px 0;
+      &-wrapper {
+        padding: 80px 0;
+      }
     }
     &__scale {
-      bottom: 80px;
       left: 680px;
     }
   }
   @include media-breakpoint-between(xl, xxl) {
-    @media (max-height:640px) {
+    @media (max-height:620px) {
       &__slider {
-        padding: 60px 0;
-      }
-      &__scale {
-        bottom: 60px;
+        &-wrapper {
+          padding: 60px 0;
+        }
       }
     }
   }
@@ -134,7 +140,7 @@
     }
     &_4 {
       transform: translateX(calc(50% - 1.25em)) rotate(90deg);
-      right: 1180px;
+      right: 1184px;
       top: calc(35% - 1.25em);
       width: 260px;
     }
@@ -194,12 +200,12 @@
       top: 55%;
     }
     &_3 {
-      left: 946px;
+      left: 980px;
       top: calc(50% - 2.25em);
       width: 210px;
     }
     &_4 {
-      left: 946px;
+      left: 980px;
       top: calc(50% - 1.5em);
       width: 210px;
     }
@@ -240,12 +246,14 @@
       left: 315px;
       .conceptions-slide__count {
         margin-left: -0.5em;
-        display: block;
       }
     }
     &_2 {
       top: -30px;
-      left: 146px;
+      left: 142px;
+      .conceptions-slide__count {
+        margin-left: 0.35em;
+      }
     }
     &_3 {
       bottom: 80px;
@@ -254,6 +262,9 @@
     &_4 {
       top: -30px;
       left: 860px;
+      .conceptions-slide__value {
+        letter-spacing: 0;
+      }
     }
   }
   &__value {
@@ -294,10 +305,16 @@
       &_1 {
         top: -20px;
         left: 290px;
+        .conceptions-slide__count {
+          margin-left: -0.4em;
+        }
       }
       &_2 {
         top: -20px;
-        left: 160px;
+        left: 140px;
+        .conceptions-slide__count {
+          margin-left: 0.25em;
+        }
       }
       &_3 {
         bottom: 10%;

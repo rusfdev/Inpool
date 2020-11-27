@@ -1,7 +1,6 @@
 //vars
 $color-accent: #353535;
 $color-active: #ca2323;
-$color-disabled: #8a8a8a;
 $color-hover: #000;
 $trs: .25s ease-in-out;
 
@@ -29,13 +28,17 @@ $trs: .25s ease-in-out;
     box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.05);
     display: flex;
     z-index: 2;
-    color: $color-accent !important;
+    color: $color-accent;
+    transition: color $trs;
     .icon {
       margin: auto;
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       color: inherit;
       transition: transform $trs;
+    }
+    &.touch, &.hover {
+      color: $color-active;
     }
   }
   &__container {
@@ -71,17 +74,15 @@ $trs: .25s ease-in-out;
       font-weight: 500;
       text-align: center;
       background-color: $color-accent;
-      color: #fff !important;
+      color: #fff;
       transition: background-color $trs;
       line-height: 32px;
+      min-height: 32px;
+      min-width: 32px;
       padding: 0 10px;
       border-radius: 2px;
       text-decoration: none;
-      &.disabled {
-        cursor: default;
-        pointer-events: none;
-        background-color: $color-disabled;
-      }
+      border: none;
       &.touch, &.hover {
         background-color: $color-hover;
       }

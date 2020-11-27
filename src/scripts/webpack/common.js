@@ -48,8 +48,9 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = false;
-const speed = 1;
+const dev = true;
+const speed = 1; //seconds
+const autoslide_interval = 7; //seconds
 
 const $wrapper = document.querySelector('.wrapper');
 const $header = document.querySelector('.header');
@@ -58,6 +59,7 @@ const $body = document.body;
 //scroll
 const PageScroll = Scrollbar.init($wrapper, {
   damping: 0.2,
+  thumbMinSize: 150
 });
 PageScroll.addListener(()=>{
   localStorage.setItem('scroll', PageScroll.offset.y);
@@ -113,14 +115,19 @@ const Transitions = {
     window.$container = $container;
     PageScroll.track.yAxis.element.classList.remove('show');
     Nav.change(App.name);
+
     setTimeout(()=> {
-      Pages[namespace].init();
+      if(Pages[namespace]) {
+        Pages[namespace].init();
+      }
+
       Parralax.check();
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
       })
     }, speed*250)
+
   },
   /* EXIT */
   exit: function($container, namespace) {
@@ -139,7 +146,9 @@ const Transitions = {
       .set(PageScroll, {scrollTop:0})
 
     this.animation.eventCallback('onComplete', ()=>{
-      Pages[namespace].destroy();
+      if(Pages[namespace]) {
+        Pages[namespace].destroy();
+      }
       Header.fixed = false;
       barba.done();
     })
@@ -472,10 +481,10 @@ const Header = {
       $header.classList.remove('header_fixed');
     }
 
-    if(this.scrollY<y && this.scrollY>h && this.isVisible && !Nav.opened) {
+    if( ((this.scrollY<y && this.scrollY>h && this.isVisible) || ConceptionsSlider.fixed) && !Nav.opened) {
       this.isVisible = false;
       this.animation.timeScale(2).play();
-    } else if(this.scrollY>y && !this.isVisible) {
+    } else if(this.scrollY>y && !this.isVisible && !ConceptionsSlider.fixed) {
       this.isVisible = true;
       this.animation.timeScale(1).reverse();
     }    
@@ -629,106 +638,82 @@ const WaveScene = {
 const Banner = {
   init: function() {
     let $block = App.$container.querySelector('.home'),
-        $slides = $block.querySelectorAll('.home-banner__slide'),
+        $titles = $block.querySelectorAll('.home-banner__slide-title'),
         $paginations = $block.querySelectorAll('.pagination__button');
 
     this.animations_enter = [];
     this.animations_exit = [];
-    this.inAnimation = false;
-    
-    let slide_current = 0,
-        slide_old,
-        interval_duration = 10000;
+    this.index = 0;
 
-    $slides.forEach(($slide, index)=>{
-      let $title_chars = $slide.querySelectorAll('.home-banner__slide-title .char'),
-          $text_chars = $slide.querySelectorAll('.home-banner__slide-text .word'),
-          $button = $slide.querySelector('.button');
-
+    $titles.forEach(($title, index)=>{
+      let $chars = $title.querySelectorAll('.char');
+      //
       this.animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{
         this.inAnimation = false;
-        if(!this.interval) {
-          this.interval = setInterval(autoslide ,interval_duration*1000);
-        }
       }})
-        .set($slide, {autoAlpha:1})
-        .set([$title_chars, $text_chars, $button], {y:20, autoAlpha:0})
-        //scene
-        .fromTo(WaveScene.$scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power1.inOut'}) //1
-        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.maxWave}, {value:WaveScene.minWave, duration:speed, ease:'power1.out'}, `-=${speed}`) //1.5
-        //elements
-        .to($title_chars, {y:0, duration:speed, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed}`) // 1.5
-        .to($title_chars, {autoAlpha:1, duration:speed, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed*1.2}`) // 1.7
-        .to($text_chars, {y:0, duration:speed, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed*1.1}`) 
-        .to($text_chars, {autoAlpha:1, duration:speed, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed*1.2}`) 
-        .to($button, {y:0, duration:speed*1.2, ease:'power2.out'}, `-=${speed*1}`)
-        .to($button, {autoAlpha:1, duration:speed*1.2, ease:'power2.inOut'}, `-=${speed*1.2}`)
-
+        .set($title, {autoAlpha:1})
+        .fromTo(WaveScene.$scene, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power1.inOut'}) 
+        .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.maxWave}, {value:WaveScene.minWave, duration:speed, ease:'power1.out'}, `-=${speed}`)
+        .fromTo($chars, {y:20}, {y:0, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed}`) 
+        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`) 
 
       this.animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{
         this.inAnimation = true;
       }})
-        //scene
         .fromTo(WaveScene.material.uniforms.waveLength, {value:WaveScene.minWave}, {immediateRender:false, value:WaveScene.maxWave, duration:speed, ease:'power1.out'})
         .fromTo(WaveScene.$scene, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed, ease:'power2.out'}, `-=${speed}`) 
-        //elements
-        .to($title_chars, {y:-20, duration:speed*0.75, ease:'power1.in', stagger:{amount:speed*0.25}}, `-=${speed}`)
-        .to($title_chars, {autoAlpha:0, duration:speed*0.75, ease:'power2.out', stagger:{amount:speed*0.25}}, `-=${speed}`)
-        .to($text_chars, {y:-20, duration:speed*0.75, ease:'power1.in', stagger:{amount:speed*0.25}}, `-=${speed}`)
-        .to($text_chars, {autoAlpha:0, duration:speed*0.75, ease:'power2.out', stagger:{amount:speed*0.25}}, `-=${speed}`)
-        .to($button, {y:-20, duration:speed, ease:'power1.in'}, `-=${speed}`)
-        .to($button, {autoAlpha:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-        .set($slide, {autoAlpha:0})
+        .to($chars, {y:-20, duration:speed*0.8, ease:'power1.in', stagger:{amount:speed*0.2}}, `-=${speed}`)
+        .to($chars, {autoAlpha:0, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`)
+        .set($title, {autoAlpha:0})
+
     })
 
-    let change = ()=> {
-      if(slide_old!==undefined) {
-        $paginations[slide_old].classList.remove('active');
-        this.animations_exit[slide_old].play(0);
-        this.animations_exit[slide_old].eventCallback('onComplete', ()=>{
-          WaveScene.material.uniforms.img.value = WaveScene.textures[slide_current];
-          this.animations_enter[slide_current].play(0);
-        })
+    this.change = ()=> {
+      if(!this.initialized) {
+        this.initialized = true;
+        this.animations_enter[this.index].play(0);
+        this.interval = setInterval(this.autoslide, autoslide_interval*1000);
       } else {
-        this.animations_enter[slide_current].play(0);
+        $paginations[this.old].classList.remove('active');
+        this.animations_exit[this.old].play(0).eventCallback('onComplete', ()=>{
+          WaveScene.material.uniforms.img.value = WaveScene.textures[this.index];
+          this.animations_enter[this.index].play(0);
+        })
       }
-      $paginations[slide_current].classList.add('active');
-      slide_old = slide_current;
+      $paginations[this.index].classList.add('active');
+      this.old = this.index;
     }
 
-    let autoslide = ()=> {
-      slide_current++;
-      if(slide_current>$slides.length-1) {
-        slide_current=0;
+    this.autoslide = ()=> {
+      this.index++;
+      if(this.index>$titles.length-1) {
+        this.index=0;
       }
-      change();
+      this.change();
     }
 
     $paginations.forEach(($button, index)=>{
       $button.addEventListener('click', ()=>{
         if(!this.inAnimation) {
           clearInterval(this.interval);
-          this.interval=false;
-          slide_current = index;
-          change();
+          this.interval = setInterval(this.autoslide, autoslide_interval*1000);
+          this.index = index;
+          this.change();
         }
       })
     })
     
-    change();
+    this.change();
 
   },
   destroy: function() {
-    this.animations_enter.forEach(($this)=>{
-      $this.clear();
-    })
-    this.animations_exit.forEach(($this)=>{
-      $this.clear();
-    })
+    this.initialized = false;
     this.inAnimation = false;
     clearInterval(this.interval);
   }
 }
+
+
 
 const Cursor = {
   init: function() {
@@ -1358,15 +1343,39 @@ class DistortionScene {
 
 const ConceptionsSlider = {
   init: function() {
-    this.$container = App.$container.querySelector('.conceptions__slider');
+    this.$slider = App.$container.querySelector('.conceptions__slider');
+    this.$container = App.$container.querySelector('.conceptions__slider-container');
+    this.$wrapper = App.$container.querySelector('.conceptions__slider-wrapper');
     this.$slides = App.$container.querySelectorAll('.conceptions-slide');
     this.$scale = App.$container.querySelector('.conceptions__scale span');
-    this.animation = gsap.timeline({paused:true});
     this.slides = {};
+    this.speed = 1;
+    this.duration = this.speed*7;
+    
+
+    if(window.innerWidth>brakepoints.xl) {
+      this.create_desktop_animation(()=>{
+        this.checkScrolling();
+        //this.animation.seek(speed);
+
+        /* 
+        let $range = this.$container.querySelector('input');
+        $range.setAttribute('min', speed);
+        $range.setAttribute('max', this.animation.totalDuration());
+        $range.addEventListener('input', ()=>{
+          this.animation.seek($range.value);
+          App.$container.querySelector('.dur').textContent = `time: ${$range.value} s`;
+        }) */
+
+      });
+    }
+  },
+
+  create_desktop_animation: function(callback) {
+    this.animation = gsap.timeline({paused:true})
 
     this.$slides.forEach(($slide, slide_index)=>{
       this.slides[slide_index] = {};
-
       //create scenes
       this.slides[slide_index].scenes = [];
       $slide.querySelectorAll('.image').forEach(($scene, scene_index)=>{
@@ -1378,11 +1387,9 @@ const ConceptionsSlider = {
           scene.start(texture);
         })
         scene.on('started', ()=>{
-          console.log('started')
         })
         scene.init();
       });
-
       //create animations
       let $index = $slide.querySelector('.conceptions-slide__index'),
           $num = $slide.querySelector('.conceptions-slide__value-index-current'),
@@ -1398,127 +1405,134 @@ const ConceptionsSlider = {
           $button = $slide.querySelector('.conceptions-slide__button'),
           //
           $chars = $slide.querySelectorAll('.conceptions-slide__title .char');
-
       //timeline start
       let timeline_start = gsap.timeline()
         .set($slide, {autoAlpha:1})
-        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-        .fromTo($index, {x:100}, {x:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:speed, ease:'power2.out'},`-=${speed}`)
+        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
+        .fromTo($index, {x:100}, {x:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:this.speed, ease:'power2.out'},`-=${this.speed}`)
         //slogan
-        .fromTo($slogan, {autoAlpha:0, y:50}, {autoAlpha:1, y:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+        .fromTo($slogan, {autoAlpha:0, y:50}, {autoAlpha:1, y:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
         //text
-        .fromTo($text, {autoAlpha:0, y:25}, {autoAlpha:1, y:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+        .fromTo($text, {autoAlpha:0, y:25}, {autoAlpha:1, y:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
         //dec
-        .fromTo($dec, {autoAlpha:0, x:15}, {autoAlpha:1, x:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-        .fromTo($decline, {yPercent:50, scaleY:0}, {yPercent:0, scaleY:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+        .fromTo($dec, {autoAlpha:0, x:15}, {autoAlpha:1, x:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        .fromTo($decline, {yPercent:50, scaleY:0}, {yPercent:0, scaleY:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
         //
-        .fromTo($button, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-        .fromTo($button, {x:25}, {x:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
+        .fromTo($button, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        .fromTo($button, {x:25}, {x:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
         //
-        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`)
-        .fromTo($chars, {y:20}, {y:0, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}, `-=${speed}`)
-
+        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:this.speed*0.8, ease:'power2.inOut', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+        .fromTo($chars, {y:20}, {y:0, duration:this.speed*0.8, ease:'power2.out', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
       //timeline start images
       for(let index in this.slides[slide_index].scenes) {
         let scene = this.slides[slide_index].scenes[index];
         let timeline_image = gsap.timeline()
-          .fromTo([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1}, {value:0, duration:speed, ease:'power2.out'})
-          .fromTo(scene.renderer.domElement, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-          .fromTo(scene.renderer.domElement, {scale:0.9}, {scale:1, duration:speed, ease:'power2.out'}, `-=${speed}`)
+          .fromTo([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1}, {value:0, duration:this.speed, ease:'power2.out'})
+          .fromTo(scene.renderer.domElement, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .fromTo(scene.renderer.domElement, {scale:0.9}, {scale:1, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
     
-        timeline_start.add(timeline_image, `>-${speed}`)
-
+        timeline_start.add(timeline_image, `>-${this.speed}`)
         //fix1
         if(slide_index==0 && index==0) {
           let timeline_image = gsap.timeline()
-            .fromTo(scene.renderer.domElement, {xPercent:-5}, {xPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-          timeline_start.add(timeline_image, `>-${speed}`)
+            .fromTo(scene.renderer.domElement, {xPercent:-5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+          timeline_start.add(timeline_image, `>-${this.speed}`)
         } else if(slide_index==2 && index==1) {
           let timeline_image = gsap.timeline()
-            .fromTo(scene.renderer.domElement, {xPercent:5}, {xPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-          timeline_start.add(timeline_image, `>-${speed}`)
+            .fromTo(scene.renderer.domElement, {xPercent:5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+          timeline_start.add(timeline_image, `>-${this.speed}`)
         }
-
       }
-
       //timeline end
       if(slide_index!==3) {
         let timeline_end = gsap.timeline()
           //index
-          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:speed, ease:'power2.inOut'})
-          .fromTo($index, {x:0}, {x:-100, duration:speed, ease:'power2.in'}, `-=${speed}`)
-          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:speed, ease:'power2.in'}, `-=${speed}`)
-          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:speed, ease:'power2.in'},`-=${speed}`)
+          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'})
+          .fromTo($index, {x:0}, {x:-100, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:this.speed, ease:'power2.in'},`-=${this.speed}`)
           //slogan
-          .to($slogan, {autoAlpha:0, y:-50, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+          .to($slogan, {autoAlpha:0, y:-50, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
           //text
-          .to($text, {autoAlpha:0, y:-25, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+          .to($text, {autoAlpha:0, y:-25, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
           //dec
-          .to($dec, {autoAlpha:0, x:-15, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-          .to($decline, {yPercent:-50, scaleY:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+          .to($dec, {autoAlpha:0, x:-15, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .to($decline, {yPercent:-50, scaleY:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
           //
-          .to($button, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-          .to($button, {x:-25, duration:speed, ease:'power2.in'}, `-=${speed}`)
+          .to($button, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .to($button, {x:-25, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
           //
-          .to($chars, {autoAlpha:0, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`)
-          .to($chars, {y:-20, duration:speed*0.8, ease:'power2.in', stagger:{amount:speed*0.2}}, `-=${speed}`)
+          .to($chars, {autoAlpha:0, duration:this.speed*0.8, ease:'power2.inOut', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+          .to($chars, {y:-20, duration:this.speed*0.8, ease:'power2.in', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
           .set($slide, {autoAlpha:0})
-
         //timeline end images
         for(let index in this.slides[slide_index].scenes) {
           let scene = this.slides[slide_index].scenes[index];
           let timeline_image = gsap.timeline()
-            .to([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1, duration:speed, ease:'power2.in'})
-            .to(scene.renderer.domElement, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-            .to(scene.renderer.domElement, {scale:0.9, duration:speed, ease:'power2.in'}, `-=${speed}`)
-          timeline_end.add(timeline_image, `>-${speed}`)
+            .to([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1, duration:this.speed, ease:'power2.in'})
+            .to(scene.renderer.domElement, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+            .to(scene.renderer.domElement, {scale:0.9, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          timeline_end.add(timeline_image, `>-${this.speed}`)
           
           if(slide_index==0 && index==0) {
             let timeline_image = gsap.timeline()
-              .to(scene.renderer.domElement, {xPercent:-5, duration:speed, ease:'power2.in'}, `-=${speed}`)
-            timeline_end.add(timeline_image, `>-${speed}`)
+              .to(scene.renderer.domElement, {xPercent:-5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+            timeline_end.add(timeline_image, `>-${this.speed}`)
           } else if(slide_index==2 && index==1) {
             let timeline_image = gsap.timeline()
-              .to(scene.renderer.domElement, {xPercent:5, duration:speed, ease:'power2.in'}, `-=${speed}`)
-              timeline_end.add(timeline_image, `>-${speed}`)
+              .to(scene.renderer.domElement, {xPercent:5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+              timeline_end.add(timeline_image, `>-${this.speed}`)
           }
         }
-
         timeline_start.add(timeline_end, '>')
       }
-
-      //final timeline
+      //add iteration to timeline
       this.animation.add(timeline_start, '>');
     })
+    
+    //final
+    let finalanimations = gsap.timeline()
+      .fromTo(this.$scale, {css:{width:'12.5%'}}, {css:{width:'100%'}, duration:this.duration, ease:'linear'})
 
+    this.animation.add(finalanimations, `>-${this.duration}`);
 
-    let duration = this.animation.totalDuration();
-
-    this.scaleAnimation = gsap.timeline({paused:true})
-      .fromTo(this.$scale, {css:{width:'12.5%'}}, {css:{width:'100%'}, duration:duration, ease:'linear'})
-
-    this.animation.seek(speed);
-    this.scaleAnimation.seek(speed);
-
-    //управление
-    let $range = this.$container.querySelector('input');
-    $range.setAttribute('min', speed);
-    $range.setAttribute('max', duration);
-    $range.addEventListener('input', ()=>{
-      this.animation.seek($range.value);
-      this.scaleAnimation.seek($range.value);
-      App.$container.querySelector('.dur').textContent = `time: ${$range.value} s`;
-    })
-
-
-    this.setSize();
-    window.addEventListener('resize', ()=>{this.setSize()});
+    if(callback) callback();
   },
-  setSize: function() {
-    let h = $wrapper.getBoundingClientRect().height;
-    this.$container.style.height = `${h}px`;
+
+  checkScrolling: function() {
+    this.scrollListener = ()=> {
+      this.scrolling();
+    }
+    PageScroll.addListener(this.scrollListener);
+
+    this.scrolling = ()=> {
+      let y = PageScroll.offset.y,
+          h = this.$slider.getBoundingClientRect().height,
+          t = this.$slider.getBoundingClientRect().y,
+          val = y-(t+y-h);
+      
+      if(val>=0 && val<=this.duration*h) {
+        let time = (val/h);
+        this.animation.seek(time);
+      }
+
+      if(val>=h && val<=this.duration*h) {
+        this.fixed = true;
+        let fix = val-h;
+        gsap.set(this.$container, {y:fix})
+      } else {
+        this.fixed = false;
+      }
+
+    }
+
+  },
+  destroy: function() {
+    if(this.scrollListener) {
+      PageScroll.removeListener(this.scrollListener);
+    }
   }
 }
 
@@ -1705,8 +1719,6 @@ const DistortionImages = {
         }
       }
       scene.init();
-
-      console.log(this.objects[index])
     })
   }
 }

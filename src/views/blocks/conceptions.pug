@@ -18,144 +18,144 @@ section.section.conceptions
           .col-1.grid__col
           .col-1.grid__col
   //
+  .conceptions__head
+    .container
 
-  .container
-    .conceptions__head
+  .conceptions__slider
+    .conceptions__slider-container
+      .conceptions__slider-wrapper
+        .container
+          .conceptions__slides
+            //slide
+            .conceptions-slide
+              .conceptions-slide__content
+                //
+                .conceptions-slide__dec 
+                  .conceptions-slide__dec-val
+                    span p
+                  .conceptions-slide__dec-line
+                //
+                .conceptions-slide__index.conceptions-slide__index_1
+                  .conceptions-slide__value 0
+                    span.conceptions-slide__value-index
+                      span.conceptions-slide__value-index-prev 0
+                      span.conceptions-slide__value-index-current 1
+                      span.conceptions-slide__value-index-next 2
+                  .conceptions-slide__count /4
+                //
+                .conceptions-slide__s-image.conceptions-slide__s-image_1.image.image_cover
+                  img(data-src='./img/slider/1.jpg', alt="image").lazyload
+                //
+                .conceptions-slide__m-image.conceptions-slide__m-image_1.image.image_cover
+                  img(data-src='./img/slider/2.jpg', alt="image").lazyload
+                //
+                p.conceptions-slide__text.conceptions-slide__text_1 Концепция, направленная на восстановление энергии и укрепление здоровья
+                //
+                .conceptions-slide__slogan.conceptions-slide__slogan_1 Покоряя стихию
+                //
+                h2.h1.conceptions-slide__title.conceptions-slide__title_1(data-splitting) Inpool power
+                //
+                a(href=power).button-more.conceptions-slide__button Подробнее
+                  svg.icon
+                    use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
 
-    .conceptions__slider
-      <input type="range" min="0" max="100" step="0.05" value="0"> 
-      span.dur
-      //scale
-      .conceptions__scale
-        span
-
-
-
-      .conceptions__slides
-        //slide
-        .conceptions-slide
-          .conceptions-slide__content
-            //
-            .conceptions-slide__dec 
-              .conceptions-slide__dec-val
-                span p
-              .conceptions-slide__dec-line
-            //
-            .conceptions-slide__index.conceptions-slide__index_1
-              .conceptions-slide__value 0
-                span.conceptions-slide__value-index
-                  span.conceptions-slide__value-index-prev 0
-                  span.conceptions-slide__value-index-current 1
-                  span.conceptions-slide__value-index-next 2
-              .conceptions-slide__count /4
-            //
-            .conceptions-slide__s-image.conceptions-slide__s-image_1.image.image_cover
-              img(data-src='./img/slider/1.jpg', alt="image").lazyload
-            //
-            .conceptions-slide__m-image.conceptions-slide__m-image_1.image.image_cover
-              img(data-src='./img/slider/2.jpg', alt="image").lazyload
-            //
-            p.conceptions-slide__text.conceptions-slide__text_1 Концепция, направленная на восстановление энергии и укрепление здоровья
-            //
-            .conceptions-slide__slogan.conceptions-slide__slogan_1 Покоряя стихию
-            //
-            h2.h1.conceptions-slide__title.conceptions-slide__title_1(data-splitting) Inpool power
-            //
-            a(href=power).button-more.conceptions-slide__button Подробнее
-              svg.icon
-                use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
-
-        //slide
-        .conceptions-slide
-          .conceptions-slide__content
-            //
-            .conceptions-slide__dec 
-              .conceptions-slide__dec-val
-                span e
-              .conceptions-slide__dec-line
-            //
-            .conceptions-slide__index.conceptions-slide__index_2
-              .conceptions-slide__value 0
-                span.conceptions-slide__value-index
-                  span.conceptions-slide__value-index-prev 1
-                  span.conceptions-slide__value-index-current 2
-                  span.conceptions-slide__value-index-next 3
-              .conceptions-slide__count /4
-            //
-            .conceptions-slide__m-image.conceptions-slide__m-image_2.image.image_cover
-              img(data-src='./img/slider/3.jpg', alt="image").lazyload
-            //
-            p.conceptions-slide__text.conceptions-slide__text_2 Поддерживайте тело<br> в идеальном состоянии
-            //
-            .conceptions-slide__slogan.conceptions-slide__slogan_2 Бассейны<br> с профессиональным<br> противотоком
-            //
-            h2.h1.conceptions-slide__title.conceptions-slide__title_2(data-splitting) Inpool ENERGY
-            //
-            a(href=energy).button-more.conceptions-slide__button Подробнее
-              svg.icon
-                use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
-              
-        //slide
-        .conceptions-slide
-          .conceptions-slide__content
-            //
-            .conceptions-slide__dec 
-              .conceptions-slide__dec-val
-                span f
-              .conceptions-slide__dec-line
-            //
-            .conceptions-slide__index.conceptions-slide__index_3
-              .conceptions-slide__value 0
-                span.conceptions-slide__value-index
-                  span.conceptions-slide__value-index-prev 2
-                  span.conceptions-slide__value-index-current 3
-                  span.conceptions-slide__value-index-next 4
-              .conceptions-slide__count /4
-            //
-            .conceptions-slide__m-image.conceptions-slide__m-image_3.image.image_cover
-              img(data-src='./img/slider/4.jpg', alt="image").lazyload
-            //
-            p.conceptions-slide__text.conceptions-slide__text_3 Подарите близким радость общения и новые эмоции
-            //
-            .conceptions-slide__s-image.conceptions-slide__s-image_3.image.image_cover
-              img(data-src='./img/slider/5.jpg', alt="image").lazyload
-            //
-            .conceptions-slide__slogan.conceptions-slide__slogan_3 Забота о здоровье всей семьи
-            //
-            h2.h1.conceptions-slide__title.conceptions-slide__title_3(data-splitting) Inpool Family
-            //
-            a(href=family).button-more.conceptions-slide__button Подробнее
-              svg.icon
-                use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
+            //slide
+            .conceptions-slide
+              .conceptions-slide__content
+                //
+                .conceptions-slide__dec 
+                  .conceptions-slide__dec-val
+                    span e
+                  .conceptions-slide__dec-line
+                //
+                .conceptions-slide__index.conceptions-slide__index_2
+                  .conceptions-slide__value 0
+                    span.conceptions-slide__value-index
+                      span.conceptions-slide__value-index-prev 1
+                      span.conceptions-slide__value-index-current 2
+                      span.conceptions-slide__value-index-next 3
+                  .conceptions-slide__count /4
+                //
+                .conceptions-slide__m-image.conceptions-slide__m-image_2.image.image_cover
+                  img(data-src='./img/slider/3.jpg', alt="image").lazyload
+                //
+                p.conceptions-slide__text.conceptions-slide__text_2 Поддерживайте тело<br> в идеальном состоянии
+                //
+                .conceptions-slide__slogan.conceptions-slide__slogan_2 Бассейны<br> с профессиональным<br> противотоком
+                //
+                h2.h1.conceptions-slide__title.conceptions-slide__title_2(data-splitting) Inpool ENERGY
+                //
+                a(href=energy).button-more.conceptions-slide__button Подробнее
+                  svg.icon
+                    use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
+                  
+            //slide
+            .conceptions-slide
+              .conceptions-slide__content
+                //
+                .conceptions-slide__dec 
+                  .conceptions-slide__dec-val
+                    span f
+                  .conceptions-slide__dec-line
+                //
+                .conceptions-slide__index.conceptions-slide__index_3
+                  .conceptions-slide__value 0
+                    span.conceptions-slide__value-index
+                      span.conceptions-slide__value-index-prev 2
+                      span.conceptions-slide__value-index-current 3
+                      span.conceptions-slide__value-index-next 4
+                  .conceptions-slide__count /4
+                //
+                .conceptions-slide__m-image.conceptions-slide__m-image_3.image.image_cover
+                  img(data-src='./img/slider/4.jpg', alt="image").lazyload
+                //
+                p.conceptions-slide__text.conceptions-slide__text_3 Подарите близким радость общения и новые эмоции
+                //
+                .conceptions-slide__s-image.conceptions-slide__s-image_3.image.image_cover
+                  img(data-src='./img/slider/5.jpg', alt="image").lazyload
+                //
+                .conceptions-slide__slogan.conceptions-slide__slogan_3 Забота о здоровье всей семьи
+                //
+                h2.h1.conceptions-slide__title.conceptions-slide__title_3(data-splitting) Inpool Family
+                //
+                a(href=family).button-more.conceptions-slide__button Подробнее
+                  svg.icon
+                    use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
 
 
 
-        //slide
-        .conceptions-slide
-          .conceptions-slide__content
-            //
-            .conceptions-slide__dec 
-              .conceptions-slide__dec-val
-                span b
-              .conceptions-slide__dec-line
-            //
-            .conceptions-slide__index.conceptions-slide__index_4
-              .conceptions-slide__value 0
-                span.conceptions-slide__value-index
-                  span.conceptions-slide__value-index-prev 3
-                  span.conceptions-slide__value-index-current 4
-                  span.conceptions-slide__value-index-next 5
-              .conceptions-slide__count /4
-            //
-            .conceptions-slide__m-image.conceptions-slide__m-image_4.image.image_cover
-              img(data-src='./img/slider/6.jpg', alt="image").lazyload
-            //
-            p.conceptions-slide__text.conceptions-slide__text_4 Баланс, перезагрузка, восстановление сил
-            //
-            .conceptions-slide__slogan.conceptions-slide__slogan_4 Подарите себе незабываемые<br> моменты отдыха и релаксации
-            //
-            h2.h1.conceptions-slide__title.conceptions-slide__title_4(data-splitting) Inpool Balance
-            //
-            a(href=balance).button-more.conceptions-slide__button Подробнее
-              svg.icon
-                use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
+            //slide
+            .conceptions-slide
+              .conceptions-slide__content
+                //
+                .conceptions-slide__dec 
+                  .conceptions-slide__dec-val
+                    span b
+                  .conceptions-slide__dec-line
+                //
+                .conceptions-slide__index.conceptions-slide__index_4
+                  .conceptions-slide__value 0
+                    span.conceptions-slide__value-index
+                      span.conceptions-slide__value-index-prev 3
+                      span.conceptions-slide__value-index-current 4
+                      span.conceptions-slide__value-index-next 5
+                  .conceptions-slide__count /4
+                //
+                .conceptions-slide__m-image.conceptions-slide__m-image_4.image.image_cover
+                  img(data-src='./img/slider/6.jpg', alt="image").lazyload
+                //
+                p.conceptions-slide__text.conceptions-slide__text_4 Баланс, перезагрузка, восстановление сил
+                //
+                .conceptions-slide__slogan.conceptions-slide__slogan_4 Подарите себе незабываемые<br> моменты отдыха и релаксации
+                //
+                h2.h1.conceptions-slide__title.conceptions-slide__title_4(data-splitting) Inpool Balance
+                //
+                a(href=balance).button-more.conceptions-slide__button Подробнее
+                  svg.icon
+                    use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
+        
+          //<input type="range" min="0" max="100" step="0.05" value="0"> 
+          //span.dur
+          //scale
+          .conceptions__scale
+            span

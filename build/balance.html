@@ -92,17 +92,9 @@
               </ul>
               <div class="nav__content-bottom">
                 <ul class="socials nav__socials">
-                  <li class="socials__item nav__animate no-flickr"><a class="socials__link" href="#">Вконтакте
-                      <svg class="icon">
-                        <use xlink:href="./img/icons/socials-sprite.svg#vkontakte"></use>
-                      </svg></a></li>
                   <li class="socials__item nav__animate no-flickr"><a class="socials__link" href="#">Инстаграм
                       <svg class="icon">
                         <use xlink:href="./img/icons/socials-sprite.svg#instagram"></use>
-                      </svg></a></li>
-                  <li class="socials__item nav__animate no-flickr"><a class="socials__link" href="#">Одноклассники
-                      <svg class="icon">
-                        <use xlink:href="./img/icons/socials-sprite.svg#odnoklassniki"></use>
                       </svg></a></li>
                   <li class="socials__item nav__animate no-flickr"><a class="socials__link" href="#">Фейсбук
                       <svg class="icon">
@@ -356,17 +348,9 @@
         <div class="container footer__container">
           <div class="footer__left"><a class="logo footer__logo" href="./index.html"><img src="./img/logos/logo.svg" alt="logo"></a><span class="footer__copyright">© Все права защищены. 2020</span></div>
           <ul class="socials footer__socials">
-            <li class="socials__item no-flickr"><a class="socials__link" href="#">Вконтакте
-                <svg class="icon">
-                  <use xlink:href="./img/icons/socials-sprite.svg#vkontakte"></use>
-                </svg></a></li>
             <li class="socials__item no-flickr"><a class="socials__link" href="#">Инстаграм
                 <svg class="icon">
                   <use xlink:href="./img/icons/socials-sprite.svg#instagram"></use>
-                </svg></a></li>
-            <li class="socials__item no-flickr"><a class="socials__link" href="#">Одноклассники
-                <svg class="icon">
-                  <use xlink:href="./img/icons/socials-sprite.svg#odnoklassniki"></use>
                 </svg></a></li>
             <li class="socials__item no-flickr"><a class="socials__link" href="#">Фейсбук
                 <svg class="icon">
@@ -453,12 +437,15 @@
     <link rel="stylesheet" href="./styles/common.css">
     <script src="./scripts/common.js"></script>
     <!--helper-->
-    <div class="helper">
-      <button class="helper__trigger" aria-label="helper-toggle">
-        <svg class="icon" stroke="none" fill="currentColor" viewBox="0 0 12 20">
-          <path d="M2.18 19.05L.77 17.64 8.4 10 .77 2.36 2.18.95 11.23 10l-9.05 9.05z"></path>
-        </svg>
-      </button>
+    <div class="helper"><a class="helper__trigger" href="javascript:void(0);"> 
+        <svg class="icon" viewBox="0 0 100 100" fill="currentColor">
+          <g transform="translate(50 50)">
+            <g>
+              <animatetransform attributeName="transform" type="rotate" values="0;51.42857142857143" keyTimes="0;1" dur="0.6s" repeatCount="indefinite"></animatetransform>
+              <path d="M31.448370387032774 -10 L46.448370387032774 -10 L46.448370387032774 10 L31.448370387032774 10 A33 33 0 0 1 27.42605304607143 18.352428022310185 L27.42605304607143 18.352428022310185 L36.77840007395243 30.079900259330632 L21.141770424591833 42.5496962965053 L11.789423396710829 30.82222405948486 A33 33 0 0 1 2.7513583718916075 32.885103422513694 L2.7513583718916075 32.885103422513694 L-0.5864556374531071 47.509022105241044 L-20.085013881089584 43.05860342611476 L-16.74719987174487 28.434684743387407 A33 33 0 0 1 -23.995165273805295 22.654625211703866 L-23.995165273805295 22.654625211703866 L-37.50969829234158 29.16288129846724 L-46.18737307469275 11.143503940418853 L-32.67284005615647 4.635247853655478 A33 33 0 0 1 -32.67284005615647 -4.63524785365547 L-32.67284005615647 -4.63524785365547 L-46.18737307469276 -11.143503940418839 L-37.50969829234159 -29.162881298467227 L-23.995165273805302 -22.654625211703856 A33 33 0 0 1 -16.747199871744876 -28.434684743387404 L-16.747199871744876 -28.434684743387404 L-20.085013881089594 -43.05860342611476 L-0.5864556374531196 -47.509022105241044 L2.751358371891599 -32.885103422513694 A33 33 0 0 1 11.78942339671082 -30.82222405948486 L11.78942339671082 -30.82222405948486 L21.141770424591822 -42.54969629650531 L36.778400073952426 -30.079900259330635 L27.426053046071427 -18.35242802231019 A33 33 0 0 1 31.448370387032774 -10.000000000000009 M0 -20A20 20 0 1 0 0 20 A20 20 0 1 0 0 -20"></path>
+            </g>
+          </g>
+        </svg></a>
       <div class="helper__container">
         <!--section-->
         <div class="helper__section"><span class="helper__section-title">Всплывающие окна:</span>
@@ -466,7 +453,11 @@
         </div>
         <!--section-->
         <div class="helper__section"><span class="helper__section-title">Страницы:</span>
-          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./power.html">Inpool power</a><a class="helper__section-button" href="./energy.html">Inpool energy</a><a class="helper__section-button" href="./family.html">Inpool family</a><a class="helper__section-button" href="./balance.html">Inpool balance</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./technology.html">Технологии</a><a class="helper__section-button" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="./contacts.html">Контакты</a><a class="helper__section-button" href="components.html">Компоненты</a><a class="helper__section-button" href="grid.html">Сетка</a></div>
+          <div class="helper__section-content"><a class="helper__section-button" href="./index.html">Главная</a><a class="helper__section-button" href="./power.html">Inpool power</a><a class="helper__section-button" href="./energy.html">Inpool energy</a><a class="helper__section-button" href="./family.html">Inpool family</a><a class="helper__section-button" href="./balance.html">Inpool balance</a><a class="helper__section-button" href="./equipment.html">Оборудование</a><a class="helper__section-button" href="./technology.html">Технологии</a><a class="helper__section-button" href="./portfolio.html">Портфолио</a><a class="helper__section-button" href="./contacts.html">Контакты</a></div>
+        </div>
+        <!--section-->
+        <div class="helper__section"><span class="helper__section-title">Техническое:</span>
+          <div class="helper__section-content"><a class="helper__section-button" href="./grid.html">Сетка</a><a class="helper__section-button" href="./components.html">Компоненты</a></div>
         </div>
       </div>
     </div>

@@ -48,7 +48,7 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = true;
+const dev = false;
 const speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 
@@ -163,11 +163,12 @@ const Pages = {
       WaveScene.init(()=>{
         Banner.init();
       });
-      ConceptionsSlider.init();
+      desktopConceptionsSlider.init();
     },
     destroy: function() {
       WaveScene.destroy();
       Banner.destroy();
+      desktopConceptionsSlider.destroy();
     }
   },
   conception: {
@@ -481,10 +482,10 @@ const Header = {
       $header.classList.remove('header_fixed');
     }
 
-    if( ((this.scrollY<y && this.scrollY>h && this.isVisible) || ConceptionsSlider.fixed) && !Nav.opened) {
+    if( ((this.scrollY<y && this.scrollY>h && this.isVisible) || desktopConceptionsSlider.fixed) && !Nav.opened) {
       this.isVisible = false;
       this.animation.timeScale(2).play();
-    } else if(this.scrollY>y && !this.isVisible && !ConceptionsSlider.fixed) {
+    } else if(this.scrollY>y && !this.isVisible && !desktopConceptionsSlider.fixed) {
       this.isVisible = true;
       this.animation.timeScale(1).reverse();
     }    
@@ -712,8 +713,6 @@ const Banner = {
     clearInterval(this.interval);
   }
 }
-
-
 
 const Cursor = {
   init: function() {
@@ -1341,7 +1340,7 @@ class DistortionScene {
 
 }
 
-const ConceptionsSlider = {
+const desktopConceptionsSlider = {
   init: function() {
     this.$slider = App.$container.querySelector('.conceptions__slider');
     this.$container = App.$container.querySelector('.conceptions__slider-container');
@@ -1356,7 +1355,9 @@ const ConceptionsSlider = {
     if(window.innerWidth>brakepoints.xl) {
       this.create_desktop_animation(()=>{
         this.checkScrolling();
-        //this.animation.seek(speed);
+        
+
+
 
         /* 
         let $range = this.$container.querySelector('input');
@@ -1366,7 +1367,6 @@ const ConceptionsSlider = {
           this.animation.seek($range.value);
           App.$container.querySelector('.dur').textContent = `time: ${$range.value} s`;
         }) */
-
       });
     }
   },
@@ -1533,6 +1533,15 @@ const ConceptionsSlider = {
     if(this.scrollListener) {
       PageScroll.removeListener(this.scrollListener);
     }
+    for(let slide_index in this.slides) {
+      if(this.slides[slide_index].scenes) {
+        for(let scene_index in this.slides[slide_index].scenes) {
+          this.slides[slide_index].scenes[scene_index].destroy()
+          console.log('destroyed')
+        }
+      }
+    }
+    
   }
 }
 

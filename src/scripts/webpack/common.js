@@ -1342,17 +1342,26 @@ class DistortionScene {
 
 const desktopConceptionsSlider = {
   init: function() {
-    this.$slider = App.$container.querySelector('.conceptions__slider');
-    this.$container = App.$container.querySelector('.conceptions__slider-container');
-    this.$wrapper = App.$container.querySelector('.conceptions__slider-wrapper');
-    this.$slides = App.$container.querySelectorAll('.conceptions-slide');
-    this.$scale = App.$container.querySelector('.conceptions__scale span');
+    this.$parent = App.$container.querySelector('.conceptions');
+    this.$slider = this.$parent.querySelector('.conceptions__slider');
+    this.$container = this.$parent.querySelector('.conceptions__slider-container');
+    this.$wrapper = this.$parent.querySelector('.conceptions__slider-wrapper');
+    this.$slides = this.$parent.querySelectorAll('.conceptions-slide');
+    this.$scale = this.$parent.querySelector('.conceptions__scale span');
     this.slides = {};
     this.speed = 1;
     this.duration = this.speed*7;
+
     
 
     if(window.innerWidth>brakepoints.xl) {
+      //bg anim
+      let style = getComputedStyle(document.documentElement),
+          start_bg = style.getPropertyValue('--color-bg'),
+          end_bg = style.getPropertyValue('--color-bg-darker');
+      this.colorAnimation = gsap.timeline({paused:true})
+        .fromTo($body, {css:{backgroundColor:start_bg}}, {css:{backgroundColor:end_bg}, duration:this.speed, ease:'linear'})
+
       this.create_desktop_animation(()=>{
         this.checkScrolling();
         
@@ -1514,8 +1523,7 @@ const desktopConceptionsSlider = {
           val = y-(t+y-h);
       
       if(val>=0 && val<=this.duration*h) {
-        let time = (val/h);
-        this.animation.seek(time);
+        this.animation.seek(val/h);
       }
 
       if(val>=h && val<=this.duration*h) {
@@ -1526,6 +1534,14 @@ const desktopConceptionsSlider = {
         this.fixed = false;
       }
 
+      
+
+      if(val>0 && val<=h) {
+        this.colorAnimation.seek(val/h);
+      } else if(val>this.duration*h && val<=(this.duration*h)+h) {
+        let time = (this.duration + 1)-val/h;
+        this.colorAnimation.seek(time);
+      }
     }
 
   },

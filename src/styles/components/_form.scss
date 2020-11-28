@@ -54,10 +54,11 @@
 }
 
 .form {
+  &__group {
+    margin-bottom: -35px;
+  }
   &__item {
-    &:not(:last-child) {
-      margin-bottom: 35px;
-    }
+    margin-bottom: 35px;
   }
   &__submit {
     margin-top: 65px;

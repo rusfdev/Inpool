@@ -3918,7 +3918,10 @@ a {
   .input.error .input__element {
     border-color: var(--color-error); }
 
-.form__item:not(:last-child) {
+.form__group {
+  margin-bottom: -35px; }
+
+.form__item {
   margin-bottom: 35px; }
 
 .form__submit {
@@ -4838,9 +4841,23 @@ a {
   .portfolio-section__scene-container {
     height: 480px; } }
 
+.personal-form {
+  padding: 20px 0 30px 0; }
+  .personal-form__head {
+    margin-bottom: 50px;
+    align-items: center; }
+    .personal-form__head-text {
+      transform: translateY(5px); }
+  .personal-form__title {
+    margin: 0;
+    font-size: 3.125rem;
+    line-height: 1.25; }
+  @media (max-width: 1599.98px) {
+    .personal-form__title {
+      margin: 0 0 20px 0; } }
+
 /*========== Conceptions ==========*/
 .conceptions {
-  background: var(--color-bg-darker);
   position: relative;
   padding-bottom: 600vh;
   overflow: hidden; }

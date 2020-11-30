@@ -72,7 +72,7 @@ function mobile() {
 
 //scroll
 const PageScroll = Scrollbar.init($wrapper, {
-  damping: 0.2,
+  damping: 0.1,
   thumbMinSize: 150
 });
 PageScroll.addListener(()=>{
@@ -1148,7 +1148,7 @@ class Scale {
   }
 }
 
-const desktopConceptionsSlider = {
+const desktopConceptionsSliderOld = {
   init: function() {
     this.$parent = App.$container.querySelector('.conceptions');
     this.$slider = this.$parent.querySelector('.conceptions__slider');
@@ -1381,6 +1381,259 @@ const desktopConceptionsSlider = {
     this.$slider.addEventListener('wheel', this.mouseWheelListener)
   },
   destroy: function() {
+    if(this.autoscroll_timeout) {
+      clearTimeout(this.autoscroll_timeout);
+    }
+    this.$slider.removeEventListener('wheel', this.mouseWheelListener)
+    if(this.scrollListener) {
+      PageScroll.removeListener(this.scrollListener);
+      this.fixed = false;
+    }
+    for(let slide_index in this.slides) {
+      if(this.slides[slide_index].scenes) {
+        for(let scene_index in this.slides[slide_index].scenes) {
+          this.slides[slide_index].scenes[scene_index].destroy();
+        }
+      }
+    }
+    
+  }
+}
+
+const desktopConceptionsSlider = {
+  init: function() {
+    this.$parent = App.$container.querySelector('.conceptions');
+    this.$slider = this.$parent.querySelector('.conceptions__slider');
+    this.$container = this.$parent.querySelector('.conceptions__slider-container');
+    this.$wrapper = this.$parent.querySelector('.conceptions__slider-wrapper');
+    this.$slides = this.$parent.querySelectorAll('.conceptions-slide');
+    this.$scale = this.$parent.querySelector('.conceptions__scale span');
+    this.slides = {};
+    this.speed = 1;
+    this.duration = this.speed*7;
+    
+    this.colorAnimation = gsap.timeline({paused:true})
+        .fromTo($body, {css:{backgroundColor:bg}}, {css:{backgroundColor:bg_dark}, duration:this.speed, ease:'none'})
+
+    this.create_desktop_animation(()=>{
+      this.sizing(()=>{
+        this.checkScrolling();
+      });
+    });
+
+    this.sizingEvent = ()=> {
+      this.sizing();
+    }
+    window.addEventListener('resize', this.sizingEvent);
+  },
+
+  sizing: function(callback) {
+    this.h = this.$slider.getBoundingClientRect().height;
+    this.factor = 1/(this.h/2); // seconds/scroll
+    this.max_scroll = this.h+6/this.factor;
+    this.$parent.style.paddingBottom = `${this.max_scroll-this.h}px`;
+    if(callback) callback();
+  },
+
+  create_desktop_animation: function(callback) {
+    this.animation = gsap.timeline({paused:true})
+
+    this.$slides.forEach(($slide, slide_index)=>{
+      this.slides[slide_index] = {};
+      //create scenes
+      this.slides[slide_index].scenes = [];
+      $slide.querySelectorAll('.image').forEach(($scene, scene_index)=>{
+        let $img = $scene.querySelector('img'),
+            texture = $img.getAttribute('data-src');
+            $img.style.display = 'none';
+        let scene = this.slides[slide_index].scenes[scene_index] = new DistortionScene($scene);
+        scene.on('initialized', ()=>{
+          scene.start(texture);
+        })
+        scene.on('started', ()=>{
+        })
+        scene.init();
+      });
+      //create animations
+      let $index = $slide.querySelector('.conceptions-slide__index'),
+          $num = $slide.querySelector('.conceptions-slide__value-index-current'),
+          $prevNum = $slide.querySelector('.conceptions-slide__value-index-prev'),
+          $nextNum = $slide.querySelector('.conceptions-slide__value-index-next'),
+          $slogan = $slide.querySelector('.conceptions-slide__slogan'),
+          $text = $slide.querySelector('.conceptions-slide__text'),
+          $dec = $slide.querySelector('.conceptions-slide__dec-val'),
+          $decline = $slide.querySelector('.conceptions-slide__dec-line'),
+          $button = $slide.querySelector('.conceptions-slide__button'),
+          $chars = $slide.querySelectorAll('.conceptions-slide__title .char');
+      //timeline start
+      let timeline_start = gsap.timeline()
+        .set($slide, {autoAlpha:1})
+        .fromTo($index, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
+        .fromTo($index, {x:100}, {x:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        .fromTo([$prevNum, $num], {yPercent:50}, {yPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        .fromTo($prevNum, {autoAlpha:0.5}, {autoAlpha:0, duration:this.speed, ease:'power2.out'},`-=${this.speed}`)
+        //slogan
+        .fromTo($slogan, {autoAlpha:0, y:50}, {autoAlpha:1, y:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        //text
+        .fromTo($text, {autoAlpha:0, y:25}, {autoAlpha:1, y:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        //dec
+        .fromTo($dec, {autoAlpha:0, x:15}, {autoAlpha:1, x:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        .fromTo($decline, {yPercent:50, scaleY:0}, {yPercent:0, scaleY:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        //
+        .fromTo($button, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+        .fromTo($button, {x:25}, {x:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+        //
+        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:this.speed*0.8, ease:'power2.inOut', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+        .fromTo($chars, {y:20}, {y:0, duration:this.speed*0.8, ease:'power2.out', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+      //timeline start images
+      for(let index in this.slides[slide_index].scenes) {
+        let scene = this.slides[slide_index].scenes[index];
+        let timeline_image = gsap.timeline()
+          .fromTo([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1}, {value:0, duration:this.speed, ease:'power2.out'})
+          .fromTo(scene.renderer.domElement, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .fromTo(scene.renderer.domElement, {scale:0.9}, {scale:1, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+    
+        timeline_start.add(timeline_image, `>-${this.speed}`)
+        //fix1
+        if(slide_index==0 && index==0) {
+          let timeline_image = gsap.timeline()
+            .fromTo(scene.renderer.domElement, {xPercent:-5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+          timeline_start.add(timeline_image, `>-${this.speed}`)
+        } else if(slide_index==2 && index==1) {
+          let timeline_image = gsap.timeline()
+            .fromTo(scene.renderer.domElement, {xPercent:5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+          timeline_start.add(timeline_image, `>-${this.speed}`)
+        }
+      }
+      //timeline end
+      if(slide_index!==3) {
+        let timeline_end = gsap.timeline()
+          //index
+          .fromTo($index, {autoAlpha:1}, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'})
+          .fromTo($index, {x:0}, {x:-100, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          .fromTo([$num, $nextNum], {yPercent:0}, {yPercent:-50, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          .fromTo($nextNum, {autoAlpha:0}, {autoAlpha:0.5, duration:this.speed, ease:'power2.in'},`-=${this.speed}`)
+          //slogan
+          .to($slogan, {autoAlpha:0, y:-50, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          //text
+          .to($text, {autoAlpha:0, y:-25, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          //dec
+          .to($dec, {autoAlpha:0, x:-15, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .to($decline, {yPercent:-50, scaleY:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          //
+          .to($button, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .to($button, {x:-25, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          //
+          .to($chars, {autoAlpha:0, duration:this.speed*0.8, ease:'power2.inOut', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+          .to($chars, {y:-20, duration:this.speed*0.8, ease:'power2.in', stagger:{amount:this.speed*0.2}}, `-=${this.speed}`)
+          .set($slide, {autoAlpha:0})
+        //timeline end images
+        for(let index in this.slides[slide_index].scenes) {
+          let scene = this.slides[slide_index].scenes[index];
+          let timeline_image = gsap.timeline()
+            .to([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1, duration:this.speed, ease:'power2.in'})
+            .to(scene.renderer.domElement, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+            .to(scene.renderer.domElement, {scale:0.9, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+          timeline_end.add(timeline_image, `>-${this.speed}`)
+          
+          if(slide_index==0 && index==0) {
+            let timeline_image = gsap.timeline()
+              .to(scene.renderer.domElement, {xPercent:-5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+            timeline_end.add(timeline_image, `>-${this.speed}`)
+          } else if(slide_index==2 && index==1) {
+            let timeline_image = gsap.timeline()
+              .to(scene.renderer.domElement, {xPercent:5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+              timeline_end.add(timeline_image, `>-${this.speed}`)
+          }
+        }
+        timeline_start.add(timeline_end, '>')
+      }
+      //add iteration to timeline
+      this.animation.add(timeline_start, '>');
+    })
+    
+    //final
+    let finalanimations = gsap.timeline()
+      .fromTo(this.$scale, {css:{width:'12.5%'}}, {css:{width:'100%'}, duration:this.duration, ease:'none'})
+
+    this.animation.add(finalanimations, `>-${this.duration}`);
+
+    if(callback) callback();
+  },
+
+  checkScrolling: function() {
+    this.scrolling = (event)=> {
+      let y = PageScroll.offset.y,
+          t = this.$slider.getBoundingClientRect().y,
+          scroll = y-(t+y-this.h);
+          
+      if(scroll>=0 && scroll<=this.max_scroll) {
+        if(scroll>=this.h) {
+          this.animation.seek(1+(scroll-this.h)*this.factor);
+          this.fixed = true;
+          gsap.set(this.$container, {y:scroll-this.h})
+          if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
+          this.autoscroll_timeout = setTimeout(()=>{
+            let points = [1, 3, 5, 7], value;
+            for(let index in points) {
+              if(Math.abs(points[index] - this.animation.time())<1) {
+                value = (y-scroll) + this.h + (points[index]-1)/this.factor;
+              }
+            }
+            this.autoscroll = gsap.to(PageScroll, {scrollTop:value, duration:speed, ease:'power1.inOut', onComplete:()=>{
+              clearTimeout(this.autoscroll_timeout);
+            }})
+          }, 100)
+        } else {
+          this.animation.seek(scroll/this.h);
+          if(this.fixed) {
+            this.fixed = false;
+            gsap.set(this.$container, {y:0})
+            if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
+          }
+        }
+      } 
+
+      else if(scroll>this.max_scroll && this.animation.progress()!==1) {
+        this.fixed = false;
+        this.animation.seek(7);
+        gsap.set(this.$container, {y:this.max_scroll-this.h})
+        if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
+      } 
+      
+      else if(scroll<0 && this.animation.progress()!==0) {
+        this.animation.seek(0);
+      }
+
+      if(scroll>this.h/2 && scroll<=this.h && !Transitions.active) {
+        let time = (scroll/this.h*2)-1;
+        this.colorAnimation.seek(time);
+      } else if(scroll>this.max_scroll && scroll<=this.max_scroll+this.h/2 && !Transitions.active) {
+        let time = 1-(scroll-this.max_scroll)/this.h*2;
+        console.log(time)
+        this.colorAnimation.seek(time);
+      }
+    }
+
+    this.mouseWheelListener = ()=> {
+      if(this.autoscroll) {
+        this.autoscroll.pause();
+        this.autoscroll = false;
+      }
+    }
+
+    this.scrolling();
+    this.scrollListener = (event)=> {
+      this.scrolling(event);
+    }
+    PageScroll.addListener(this.scrollListener);
+    this.$slider.addEventListener('wheel', this.mouseWheelListener)
+  },
+  destroy: function() {
+    window.removeEventListener('resize', this.sizing)
+    if(this.autoscroll_timeout) {
+      clearTimeout(this.autoscroll_timeout);
+    }
     this.$slider.removeEventListener('wheel', this.mouseWheelListener)
     if(this.scrollListener) {
       PageScroll.removeListener(this.scrollListener);

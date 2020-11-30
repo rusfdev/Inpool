@@ -4951,8 +4951,7 @@ a {
 
 /*========== Conceptions ==========*/
 .conceptions {
-  position: relative;
-  padding-bottom: 600vh; }
+  position: relative; }
   .conceptions .grid {
     position: absolute;
     width: 100%;

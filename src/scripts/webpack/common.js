@@ -190,9 +190,9 @@ const Pages = {
       Splitting();
       HomeBanner.init();
       desktopConceptionsSlider.init();
-      //scene
+      /* 
       this.scene = new BackgroundScene(App.$container.querySelector('.section-image__scene'))
-      this.scene.init();
+      this.scene.init(); */
       //slider
       this.slider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
       this.slider.init();
@@ -200,9 +200,9 @@ const Pages = {
     destroy: function() {
       HomeBanner.destroy();
       desktopConceptionsSlider.destroy();
-      //scene
+      /* 
       this.scene.destroy();
-      delete this.scene;
+      delete this.scene; */
       //slider
       this.slider.destroy();
       delete this.slider;
@@ -1311,7 +1311,7 @@ const desktopConceptionsSlider = {
   },
 
   checkScrolling: function() {
-    this.scrolling = ()=> {
+    this.scrolling = (event)=> {
       let y = PageScroll.offset.y,
           h = this.$slider.getBoundingClientRect().height,
           t = this.$slider.getBoundingClientRect().y,
@@ -1324,9 +1324,25 @@ const desktopConceptionsSlider = {
         if(val>=h) {
           this.fixed = true;
           gsap.set(this.$container, {y:val-h})
-        } else if(this.fixed) {
+          //scroll helper
+          if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
+          this.autoscroll_timeout = setTimeout(()=>{
+            console.log('stop')
+            let points = [1, 3, 5, 7], value;
+            for(let index in points) {
+              if(Math.abs(points[index] - val/h)<1) value = (y-val)+(points[index]*h);
+            }
+            this.autoscroll = gsap.to(PageScroll, {scrollTop:value, duration:speed, ease:'power1.inOut', onComplete:()=>{
+              clearTimeout(this.autoscroll_timeout);
+            }})
+          }, 250)
+        } 
+        
+        
+        else if(this.fixed) {
           this.fixed = false;
           gsap.set(this.$container, {y:0})
+          if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
         }
       } 
 
@@ -1334,6 +1350,7 @@ const desktopConceptionsSlider = {
         this.fixed = false;
         this.animation.seek(7);
         gsap.set(this.$container, {y:h*6})
+        if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
       } 
       
       else if(val<min && this.animation.progress()!==0) {
@@ -1348,13 +1365,23 @@ const desktopConceptionsSlider = {
         this.colorAnimation.seek(time);
       }
     }
+
+    this.mouseWheelListener = ()=> {
+      if(this.autoscroll) {
+        this.autoscroll.pause();
+        this.autoscroll = false;
+      }
+    }
+
     this.scrolling();
-    this.scrollListener = ()=> {
-      this.scrolling();
+    this.scrollListener = (event)=> {
+      this.scrolling(event);
     }
     PageScroll.addListener(this.scrollListener);
+    this.$slider.addEventListener('wheel', this.mouseWheelListener)
   },
   destroy: function() {
+    this.$slider.removeEventListener('wheel', this.mouseWheelListener)
     if(this.scrollListener) {
       PageScroll.removeListener(this.scrollListener);
       this.fixed = false;

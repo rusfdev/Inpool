@@ -26,12 +26,6 @@
     border: none !important;
     backface-visibility: hidden;
   }
-  &__ripple {
-    display: block;
-    background: var(--color-accent);
-    position: absolute;
-    border-radius: 100%;
-  }
   &.touch, &.hover {
     &::before {
       opacity: 1;
@@ -45,9 +39,10 @@
 }
 
 .button-more {
-  color: var(--color-light);
   display: inline-flex;
   line-height: 25px;
+  color: var(--color-light);
+  transition: color $trs1;
   font-weight: 300;
   .icon {
     margin-left: 12px;
@@ -63,6 +58,7 @@
     }
   }
   &.focus {
+    color: var(--color-accent);
     .icon {
       color: var(--color-accent);
     }

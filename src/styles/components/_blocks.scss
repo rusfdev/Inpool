@@ -1124,7 +1124,7 @@
   }
   &__idx {
     position: absolute;
-    bottom: -3px;
+    bottom: 0;
     right: 0;
     line-height: 1;
     height: 1em;
@@ -1143,9 +1143,9 @@
   }
   &__slider {
     padding-bottom: 44px;
-    overflow: hidden;
     .splide__pagination {
       bottom: 0;
+      left: 0;
     }
     .splide__track {
       margin: 0 #{-$grid-gutter-width/2};

@@ -3885,20 +3885,16 @@ a {
     z-index: 2;
     border: none !important;
     backface-visibility: hidden; }
-  .button__ripple {
-    display: block;
-    background: var(--color-accent);
-    position: absolute;
-    border-radius: 100%; }
   .button.touch::before, .button.hover::before {
     opacity: 1; }
   .button.focus::before {
     opacity: 0.6; }
 
 .button-more {
-  color: var(--color-light);
   display: inline-flex;
   line-height: 25px;
+  color: var(--color-light);
+  transition: color 0.25s ease-out;
   font-weight: 300; }
   .button-more .icon {
     margin-left: 12px;
@@ -3909,8 +3905,10 @@ a {
   .button-more.touch .icon, .button-more.hover .icon {
     color: var(--color-text);
     transform: translateX(4px); }
-  .button-more.focus .icon {
+  .button-more.focus {
     color: var(--color-accent); }
+    .button-more.focus .icon {
+      color: var(--color-accent); }
 
 /*========== Form ==========*/
 .input {
@@ -4919,7 +4917,7 @@ a {
     color: var(--color-muted); }
   .technologies-slider__idx {
     position: absolute;
-    bottom: -3px;
+    bottom: 0;
     right: 0;
     line-height: 1;
     height: 1em;
@@ -4935,10 +4933,10 @@ a {
       opacity: 0;
       visibility: hidden; }
   .technologies-slider__slider {
-    padding-bottom: 44px;
-    overflow: hidden; }
+    padding-bottom: 44px; }
     .technologies-slider__slider .splide__pagination {
-      bottom: 0; }
+      bottom: 0;
+      left: 0; }
     .technologies-slider__slider .splide__track {
       margin: 0 -12px; }
     .technologies-slider__slider .splide__slide {

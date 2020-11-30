@@ -23,7 +23,7 @@ void main() {
   c/=200.;
   c = 1.8 - sqrt(c);
 
-  vec4 img = texture2D(img, vUv) * texture2D(img, vec2(vUv.x + cos(c)*mouse.x*0.15, vUv.y + cos(c)*mouse.y*0.15));
+  vec4 img = texture2D(img, vec2(vUv.x + cos(c)*mouse.x*0.05, vUv.y + cos(c)*mouse.y*0.05));
 
-  gl_FragColor = sqrt((c*c*img - img*1.75));
+  gl_FragColor = (img*c*c)/3.;
 }

@@ -60,7 +60,10 @@
     width: 7.5em;
     top: 50%;
     z-index: 1;
-    transform: translateY(-50%); }
+    transform: translateY(-50%);
+    transition: opacity 1s ease-in-out; }
+    .preloader__square.active {
+      opacity: 1; }
 
 @keyframes girl {
   0% {

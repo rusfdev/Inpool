@@ -295,9 +295,9 @@ const Preloader = {
     let delay = Math.max(this.min_loading_time-loading_duration/1000, 0);
 
     this.animation = gsap.timeline({paused:true})
-      .set([$prelaoder, $images, $chars], {css:{transition:'none'}})
-      .set($square, {autoAlpha:1}) 
-      .to($images, {autoAlpha:0, duration:this.finish_speed, ease:'power2.inOut'})
+      .set([$prelaoder, /* $images, */ $chars, $square], {css:{transition:'none'}})
+      //.set($square, {autoAlpha:1}) 
+      //.to($images, {autoAlpha:0, duration:this.finish_speed, ease:'power2.inOut'})
       .to($square, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut'})
       .to($chars, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut', stagger:{amount:this.finish_speed*0.25, from:'random'}}, `-=${this.finish_speed}`)
       .set($prelaoder, {autoAlpha:0})

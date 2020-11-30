@@ -20,11 +20,17 @@
     transition: opacity $trs1;
     opacity: 0.85;
   }
-  span {
+  span:not([class]) {
     position: relative;
     z-index: 2;
     border: none !important;
     backface-visibility: hidden;
+  }
+  &__ripple {
+    display: block;
+    background: var(--color-accent);
+    position: absolute;
+    border-radius: 100%;
   }
   &.touch, &.hover {
     &::before {
@@ -42,6 +48,7 @@
   color: var(--color-light);
   display: inline-flex;
   line-height: 25px;
+  font-weight: 300;
   .icon {
     margin-left: 12px;
     width: 25px;

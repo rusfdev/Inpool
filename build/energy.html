@@ -141,7 +141,7 @@
                     <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
                   </svg><span>Посмотрите видео-презентацию<br> об INPOOL ENERGY</span></a></div>
             </div>
-            <button class="home-screen__scroll-bottom scroll-bottom" aria-label="scroll-bottom">
+            <button class="home-screen__scroll-bottom" aria-label="scroll-bottom" data-scroll="bottom">
               <svg class="icon">
                 <use xlink:href="./img/icons/icons-sprite.svg#bottom-arrow"></use>
               </svg>
@@ -253,7 +253,7 @@
         <section class="section conceptions-about">
           <div class="container">
             <div class="row">
-              <h2 class="conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL<br> ENERGY, если вы </h2>
+              <h2 class="conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL<br> ENERGY, если Вы </h2>
             </div>
             <div class="row conceptions-about__container">
               <!--item-->
@@ -296,7 +296,7 @@
           </div>
         </section>
         <section class="section conceptions-final">
-          <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-2">INPOOL CONCEPT — это совокупность<br> лучших технологий мировых </span>
+          <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-3">INPOOL ENERGY — помогает побеждать</span>
             <div class="row">
               <h2 class="bg-title offset-xl-1 col-11" data-parralax="-0.1">INPOOL ENERGY — <br>сила вашей энергии</h2>
             </div>
@@ -309,7 +309,7 @@
                 <p>INPOOL ENERGY — вечная молодость, энергия и драйв. Будьте лучшим во всем. </p><a class="button conceptions-final__button" href="#form-popup" data-popup="open"><span>Согласен</span></a>
               </div>
               <div class="conceptions-final__text conceptions-final__text_style-2 col-xl-3 offset-xl-6">
-                <p>Искусственный интеллект и лучшие мировые технологии позволили создать по-настоящему инновационный бассейн</p>
+                <p>Плавание — самый приятный и легкий способ прийти в форму. Поддерживайте идеальную спортивную форму с INPOOL ENERGY</p>
               </div>
               <div class="conceptions-final__s-image conceptions-final__s-image_style-2 col-xl-3">
                 <div class="image image_cover js-distortion"><img class="lazyload" data-src="./img/energy/5.jpg" alt="image"></div>
@@ -323,20 +323,22 @@
             <div class="row justify-content-center">
               <div class="col-xxl-4 col-xl-5">
                 <form class="form form-section__form js-validation">
-                  <div class="form__group">
-                    <div class="form__item">
-                      <label class="input contacts__animate-item">Ваше имя
-                        <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
-                      </label>
+                  <div class="row">
+                    <div class="form__group col-12">
+                      <div class="form__item">
+                        <label class="input contacts__animate-item">Ваше имя
+                          <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                        </label>
+                      </div>
+                      <div class="form__item">
+                        <label class="input contacts__animate-item">Номер вашего телефона
+                          <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                        </label>
+                      </div>
                     </div>
-                    <div class="form__item">
-                      <label class="input contacts__animate-item">Номер вашего телефона
-                        <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
-                      </label>
+                    <div class="form__submit col-12">
+                      <button class="button" type="submit"><span>Отправить</span></button>
                     </div>
-                  </div>
-                  <div class="form__submit">
-                    <button class="button" type="submit"><span>Отправить</span></button>
                   </div>
                 </form>
               </div>
@@ -412,20 +414,22 @@
             <h2 class="popup__title popup-form__title">Получите персональное предложение!</h2>
             <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
             <form class="form popup-form__form js-validation">
-              <div class="form__group">
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
-                  </label>
+              <div class="row">
+                <div class="form__group col-12">
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                    </label>
+                  </div>
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                    </label>
+                  </div>
                 </div>
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
-                  </label>
+                <div class="form__submit col-12">
+                  <button class="button" type="submit"><span>Отправить</span></button>
                 </div>
-              </div>
-              <div class="form__submit">
-                <button class="button" type="submit"><span>Отправить</span></button>
               </div>
             </form>
           </div>

@@ -9,4 +9,48 @@ block content
   include blocks/home-about
   include blocks/conceptions
   include blocks/personal-form
+
+  section.section.section-image
+    .section-image__scene.scene(data-src='./img/lll.jpg')
+
+  section.section.technologies-slider
+    //scene
+    .technologies-slider__scene.scene
+      .image.image_cover.technologies-slider__image
+        img(data-src="./img/technologiesslider/1.jpg", alt="image").lazyload
+      .image.image_cover.technologies-slider__image
+        img(data-src="./img/technologiesslider/2.jpg", alt="image").lazyload
+      .image.image_cover.technologies-slider__image
+        img(data-src="./img/technologiesslider/3.jpg", alt="image").lazyload
+    //content
+    .container
+      .row
+        .col-xxl-3.col-xl-4
+          .technologies-slider__content
+            h6.technologies-slider__title Оцените наши технологии
+            //slider
+            .splide.technologies-slider__slider
+              .splide__track
+                .splide__list
+                  //slide
+                  .splide__slide.technologies-slider__slide
+                    h2.technologies-slider__slide-title Усиленная фильтрации INPOOL Premium
+                    p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность воды обеспечивается благодаря усиленной фильтрации INPOOL Premium
+                  //slide
+                  .splide__slide.technologies-slider__slide
+                    h2.technologies-slider__slide-title Быстрый нагрев INPOOL EVO
+                    p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность воды обеспечивается благодаря усиленной фильтрации INPOOL Premium
+                  //slide
+                  .splide__slide.technologies-slider__slide
+                    h2.technologies-slider__slide-title Пошаговая дезинфекции AOP INPOOL
+                    p Вы получаете максимальный эффект от дезинфекции при минимальном использовании химических средств, наслаждаясь  природной водой.
+              .technologies-slider__idx
+                span 01
+                span 02
+                span 03
+            //
+            .technologies-slider__button
+              a(href=technology).button-more Подробнее о технологиях
+                svg.icon
+                  use(xlink:href='./img/icons/icons-sprite.svg#round-arrow')
   include blocks/contacts

@@ -141,7 +141,7 @@
                     <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
                   </svg><span>Посмотрите видео-презентацию<br> об INPOOL FAMILY</span></a></div>
             </div>
-            <button class="home-screen__scroll-bottom scroll-bottom" aria-label="scroll-bottom">
+            <button class="home-screen__scroll-bottom" aria-label="scroll-bottom" data-scroll="bottom">
               <svg class="icon">
                 <use xlink:href="./img/icons/icons-sprite.svg#bottom-arrow"></use>
               </svg>
@@ -253,7 +253,7 @@
         <section class="section conceptions-about">
           <div class="container">
             <div class="row">
-              <h2 class="conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL <br> FAMILY, если </h2>
+              <h2 class="conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL <br> FAMILY, если Вы</h2>
             </div>
             <div class="row conceptions-about__container">
               <!--item-->
@@ -277,7 +277,7 @@
                 </div>
                 <div class="conceptions-about__item-index">2</div>
                 <div class="conceptions-about__item-text">
-                  <p>Кристальная чистота воды, низкое содержание химикатов, максимальная естественность </p>
+                  <p>Хотите иметь кусочек моря у себя дома</p>
                 </div>
               </div>
               <!--item-->
@@ -289,14 +289,14 @@
                 </div>
                 <div class="conceptions-about__item-index">3</div>
                 <div class="conceptions-about__item-text">
-                  <p>Кристальная чистота воды, низкое содержание химикатов, максимальная естественность </p>
+                  <p>Хотите создавать индивидуальные сценарии отдыха и развлечений </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
         <section class="section conceptions-final">
-          <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-2">INPOOL CONCEPT — это совокупность<br> лучших технологий мировых </span>
+          <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-2">Хотите создавать индивидуальные<br> сценарии отдыха и развлечений </span>
             <div class="row">
               <h2 class="bg-title offset-xl-1 col-11" data-parralax="-0.1">INPOOL FAMILY — <br> сила вашей любви</h2>
             </div>
@@ -306,10 +306,10 @@
               </div>
               <div class="conceptions-final__content col-xl-4 offset-xl-1">
                 <h2 class="conceptions-final__title">От 50 000 €</h2>
-                <p>INPOOL ENERGY — вечная молодость, энергия и драйв. Будьте лучшим во всем. </p><a class="button conceptions-final__button" href="#form-popup" data-popup="open"><span>Узнать подробнее</span></a>
+                <p>Хотите создавать индивидуальные сценарии отдыха и развлечений </p><a class="button conceptions-final__button" href="#form-popup" data-popup="open"><span>Узнать подробнее</span></a>
               </div>
               <div class="conceptions-final__text conceptions-final__text_style-2 col-xl-3 offset-xl-6">
-                <p>Кристальная чистота воды, низкое содержание химикатов, максимальная естественность </p>
+                <p>Бассейны INPOOL FAMILY — это центр притяжения для всей семьи. Мы создали этот концепт для того, чтобы в вашей семье было больше общения и развлечений</p>
               </div>
               <div class="conceptions-final__s-image conceptions-final__s-image_style-2 col-xl-3">
                 <div class="image image_cover js-distortion"><img class="lazyload" data-src="./img/family/5.jpg" alt="image"></div>
@@ -323,20 +323,22 @@
             <div class="row justify-content-center">
               <div class="col-xxl-4 col-xl-5">
                 <form class="form form-section__form js-validation">
-                  <div class="form__group">
-                    <div class="form__item">
-                      <label class="input contacts__animate-item">Ваше имя
-                        <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
-                      </label>
+                  <div class="row">
+                    <div class="form__group col-12">
+                      <div class="form__item">
+                        <label class="input contacts__animate-item">Ваше имя
+                          <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                        </label>
+                      </div>
+                      <div class="form__item">
+                        <label class="input contacts__animate-item">Номер вашего телефона
+                          <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                        </label>
+                      </div>
                     </div>
-                    <div class="form__item">
-                      <label class="input contacts__animate-item">Номер вашего телефона
-                        <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
-                      </label>
+                    <div class="form__submit col-12">
+                      <button class="button" type="submit"><span>Отправить</span></button>
                     </div>
-                  </div>
-                  <div class="form__submit">
-                    <button class="button" type="submit"><span>Отправить</span></button>
                   </div>
                 </form>
               </div>
@@ -412,20 +414,22 @@
             <h2 class="popup__title popup-form__title">Получите персональное предложение!</h2>
             <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
             <form class="form popup-form__form js-validation">
-              <div class="form__group">
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
-                  </label>
+              <div class="row">
+                <div class="form__group col-12">
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                    </label>
+                  </div>
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                    </label>
+                  </div>
                 </div>
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
-                  </label>
+                <div class="form__submit col-12">
+                  <button class="button" type="submit"><span>Отправить</span></button>
                 </div>
-              </div>
-              <div class="form__submit">
-                <button class="button" type="submit"><span>Отправить</span></button>
               </div>
             </form>
           </div>

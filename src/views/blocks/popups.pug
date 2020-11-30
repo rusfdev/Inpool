@@ -36,14 +36,14 @@
         h2.popup__title.popup-form__title Получите персональное предложение!
         p INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных 
         form.form.popup-form__form.js-validation
-          .form__group
-            .form__item
-              label.input.contacts__animate-item
-                input(type="text" name='name' placeholder="Ваше имя" data-validate='name').input__element
-            .form__item
-              label.input.contacts__animate-item
-                input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone').input__element
-
-          .form__submit
-            button.button(type='submit')
-              span Отправить
+          .row
+            .form__group.col-12
+              .form__item
+                label.input.contacts__animate-item
+                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name').input__element
+              .form__item
+                label.input.contacts__animate-item
+                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone').input__element
+            .form__submit.col-12
+              button.button(type='submit')
+                span Отправить

@@ -5,17 +5,16 @@ block variables
   -var namespace = 'technology';
   -var name = technology_name;
 block content
-  section.section.home-screen
-    .wave-scene
-      .wave-scene__container(data-parralax='0.35' data-images='./img/technology/home.jpg')
+  section.section.home-screen 
+    .home-screen__scene.scene(data-src='./img/technology/home.jpg')
     .home-screen__gradient
     .container.home-screen__container
       .row.home-screen__content
         .home-screen__left.col-xl-5
           h1.h2.home-screen__title Оцените технологическое совершенство INPOOL CONCEPT
         .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
-          p Создавайте индивидуальные сценарии использования бассейна с передовой системой управления INPOOL ASM Control.
-      button.home-screen__scroll-bottom.scroll-bottom(aria-label='scroll-bottom')
+          p INPOOL CONCEPT - это совокупность лучших технологий мировых производителей бассейнов. Мы продумали каждую деталь, чтобы вы могли наслаждаться отдыхом. 
+      button.home-screen__scroll-bottom(aria-label='scroll-bottom' data-scroll='bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
 

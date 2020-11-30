@@ -1,7 +1,14 @@
 section.section.home
   .home-banner
-    .wave-scene 
-      .wave-scene__container(data-parralax='0.35' data-images='./img/home1.jpg, ./img/home2.jpg, ./img/home3.jpg')
+    //
+    .home-banner__scene.scene
+      .image.image_cover
+        img(data-src="./img/home1.jpg", alt="image").lazyload
+      .image.image_cover
+        img(data-src="./img/home2.jpg", alt="image").lazyload
+      .image.image_cover
+        img(data-src="./img/home3.jpg", alt="image").lazyload
+    //
     .container.home-banner__container
       .home-banner__slogan.no-flickr Больше,<br> чем бассейн
       .home-banner__slide.container

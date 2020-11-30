@@ -1,5 +1,6 @@
-h1,h2,h3,h4,h5,h6 {
-  margin: 3rem 0 2.5rem 0;
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  margin-top: 3rem;
+  margin-bottom: 2.5rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   line-height: 1.4;
@@ -9,11 +10,11 @@ h1,h2,h3,h4,h5,h6 {
   &:last-child {
     margin-bottom: 0;
   }
-  & + h2,
-  & + h3,
-  & + h4,
-  & + h5,
-  & + h6 {
+  & + h2, .h2,
+  & + h3, .h3,
+  & + h4, .h4,
+  & + h5, .h5,
+  & + h6, .h6 {
     margin-top: 2.5rem;
   }
 }
@@ -41,7 +42,7 @@ h6, .h6 {
 p {
   margin: 0 0 1rem 0;
   &:last-child {
-    margin: 0;
+    margin-bottom: 0;
   }
   & ~ .button {
     margin-top: 1rem;

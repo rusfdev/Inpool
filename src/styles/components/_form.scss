@@ -54,6 +54,9 @@
 }
 
 .form {
+  .button {
+    margin-bottom: 0;
+  }
   &__group {
     margin-bottom: -35px;
   }
@@ -69,10 +72,11 @@
     }
   }
   @include media-breakpoint-down(xxl) {
+    &__group {
+      margin-bottom: -30px;
+    }
     &__item {
-      &:not(:last-child) {
-        margin-bottom: 30px;
-      }
+      margin-bottom: 30px;
     }
     &__submit {
       margin-top: 50px;

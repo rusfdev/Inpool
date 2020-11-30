@@ -1,8 +1,6 @@
 .conceptions {
-  //background: var(--color-bg-darker);
   position: relative;
   padding-bottom: 600vh;
-  overflow: hidden;
   .grid {
     position: absolute;
     width: 100%;
@@ -22,6 +20,18 @@
     appearance: auto;
     @include media-breakpoint-down(xxl) {
       bottom: 32px;
+    }
+  }
+  &__bg-title {
+    font-size: 110px;
+  }
+  &__head {
+    margin-bottom: 30px;
+    &-text {
+      max-width: 320px;
+      margin-left: 880px;
+      position: relative;
+      z-index: 2;
     }
   }
   .dur {
@@ -60,6 +70,14 @@
     }
   }
   @include media-breakpoint-down(xxl) {
+    &__bg-title {
+      font-size: 105px;
+    }
+    &__head {
+      &-text {
+        margin-left: 770px;
+      }
+    }
     &__slider {
       &-wrapper {
         padding: 80px 0;
@@ -79,6 +97,7 @@
     }
   }
 }
+
 
 .conceptions-slide {
   opacity: 0;

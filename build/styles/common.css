@@ -3279,40 +3279,65 @@ table {
   border-collapse: collapse; }
 
 /*========== Typography ==========*/
-h1, h2, h3, h4, h5, h6 {
-  margin: 3rem 0 2.5rem 0;
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  margin-top: 3rem;
+  margin-bottom: 2.5rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   line-height: 1.4; }
-  h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child, h6:first-child {
+  h1:first-child, .h1:first-child, h2:first-child, .h2:first-child, h3:first-child, .h3:first-child, h4:first-child, .h4:first-child, h5:first-child, .h5:first-child, h6:first-child, .h6:first-child {
     margin-top: 0; }
-  h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:last-child {
+  h1:last-child, .h1:last-child, h2:last-child, .h2:last-child, h3:last-child, .h3:last-child, h4:last-child, .h4:last-child, h5:last-child, .h5:last-child, h6:last-child, .h6:last-child {
     margin-bottom: 0; }
-  h1 + h2,
-  h1 + h3,
-  h1 + h4,
-  h1 + h5,
-  h1 + h6, h2 + h2,
-  h2 + h3,
-  h2 + h4,
-  h2 + h5,
-  h2 + h6, h3 + h2,
-  h3 + h3,
-  h3 + h4,
-  h3 + h5,
-  h3 + h6, h4 + h2,
-  h4 + h3,
-  h4 + h4,
-  h4 + h5,
-  h4 + h6, h5 + h2,
-  h5 + h3,
-  h5 + h4,
-  h5 + h5,
-  h5 + h6, h6 + h2,
-  h6 + h3,
-  h6 + h4,
-  h6 + h5,
-  h6 + h6 {
+  h1 + h2, h1 .h2,
+  h1 + h3, h1 .h3,
+  h1 + h4, h1 .h4,
+  h1 + h5, h1 .h5,
+  h1 + h6, h1 .h6, .h1 + h2, .h1 .h2,
+  .h1 + h3, .h1 .h3,
+  .h1 + h4, .h1 .h4,
+  .h1 + h5, .h1 .h5,
+  .h1 + h6, .h1 .h6, h2 + h2, h2 .h2,
+  h2 + h3, h2 .h3,
+  h2 + h4, h2 .h4,
+  h2 + h5, h2 .h5,
+  h2 + h6, h2 .h6, .h2 + h2, .h2 .h2,
+  .h2 + h3, .h2 .h3,
+  .h2 + h4, .h2 .h4,
+  .h2 + h5, .h2 .h5,
+  .h2 + h6, .h2 .h6, h3 + h2, h3 .h2,
+  h3 + h3, h3 .h3,
+  h3 + h4, h3 .h4,
+  h3 + h5, h3 .h5,
+  h3 + h6, h3 .h6, .h3 + h2, .h3 .h2,
+  .h3 + h3, .h3 .h3,
+  .h3 + h4, .h3 .h4,
+  .h3 + h5, .h3 .h5,
+  .h3 + h6, .h3 .h6, h4 + h2, h4 .h2,
+  h4 + h3, h4 .h3,
+  h4 + h4, h4 .h4,
+  h4 + h5, h4 .h5,
+  h4 + h6, h4 .h6, .h4 + h2, .h4 .h2,
+  .h4 + h3, .h4 .h3,
+  .h4 + h4, .h4 .h4,
+  .h4 + h5, .h4 .h5,
+  .h4 + h6, .h4 .h6, h5 + h2, h5 .h2,
+  h5 + h3, h5 .h3,
+  h5 + h4, h5 .h4,
+  h5 + h5, h5 .h5,
+  h5 + h6, h5 .h6, .h5 + h2, .h5 .h2,
+  .h5 + h3, .h5 .h3,
+  .h5 + h4, .h5 .h4,
+  .h5 + h5, .h5 .h5,
+  .h5 + h6, .h5 .h6, h6 + h2, h6 .h2,
+  h6 + h3, h6 .h3,
+  h6 + h4, h6 .h4,
+  h6 + h5, h6 .h5,
+  h6 + h6, h6 .h6, .h6 + h2, .h6 .h2,
+  .h6 + h3, .h6 .h3,
+  .h6 + h4, .h6 .h4,
+  .h6 + h5, .h6 .h5,
+  .h6 + h6, .h6 .h6 {
     margin-top: 2.5rem; }
 
 h1, .h1 {
@@ -3337,7 +3362,7 @@ h6, .h6 {
 p {
   margin: 0 0 1rem 0; }
   p:last-child {
-    margin: 0; }
+    margin-bottom: 0; }
   p ~ .button {
     margin-top: 1rem; }
 
@@ -3537,15 +3562,14 @@ a {
   .background_bottom {
     background-position-y: bottom; }
 
+.scene {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg-darker); }
+
 .image {
   display: block;
   position: relative; }
-  .image canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; }
   .image img {
     display: block;
     opacity: 0;
@@ -3562,11 +3586,18 @@ a {
     height: 100%; }
   .image_cover {
     overflow: hidden;
-    background-color: var(--color-bg-text); }
+    background-color: var(--color-bg-darker); }
     .image_cover img {
       object-fit: cover; }
   .image_contain img {
     object-fit: contain; }
+
+.image canvas, .scene canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
 
 .js-distortion img {
   display: none; }
@@ -3717,7 +3748,8 @@ a {
   color: var(--color-bg-text);
   font-size: 90px;
   line-height: 1.1;
-  margin: 0 0 -0.35em 0;
+  margin-top: 0;
+  margin-bottom: -0.35em;
   letter-spacing: -0.05em; }
   @media (max-width: 1599.98px) {
     .bg-title {
@@ -3848,11 +3880,16 @@ a {
     background: var(--gradient-accent);
     transition: opacity 0.25s ease-out;
     opacity: 0.85; }
-  .button span {
+  .button span:not([class]) {
     position: relative;
     z-index: 2;
     border: none !important;
     backface-visibility: hidden; }
+  .button__ripple {
+    display: block;
+    background: var(--color-accent);
+    position: absolute;
+    border-radius: 100%; }
   .button.touch::before, .button.hover::before {
     opacity: 1; }
   .button.focus::before {
@@ -3861,7 +3898,8 @@ a {
 .button-more {
   color: var(--color-light);
   display: inline-flex;
-  line-height: 25px; }
+  line-height: 25px;
+  font-weight: 300; }
   .button-more .icon {
     margin-left: 12px;
     width: 25px;
@@ -3918,6 +3956,9 @@ a {
   .input.error .input__element {
     border-color: var(--color-error); }
 
+.form .button {
+  margin-bottom: 0; }
+
 .form__group {
   margin-bottom: -35px; }
 
@@ -3932,7 +3973,9 @@ a {
     margin: 0 auto; }
 
 @media (max-width: 1599.98px) {
-  .form__item:not(:last-child) {
+  .form__group {
+    margin-bottom: -30px; }
+  .form__item {
     margin-bottom: 30px; }
   .form__submit {
     margin-top: 50px; } }
@@ -4063,8 +4106,13 @@ a {
   width: 100%;
   height: 100%;
   top: 0;
-  left: 0;
-  overflow: hidden; }
+  left: 0; }
+  .home-banner__scene {
+    position: absolute;
+    height: calc(100% - 1px);
+    width: 100%;
+    top: 0;
+    left: 0; }
   .home-banner:after {
     content: '';
     display: block;
@@ -4148,15 +4196,6 @@ a {
   .home-banner__pagination {
     bottom: 60px; } }
 
-.home-scene {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  visibility: hidden; }
-
 .logo {
   display: block;
   width: 196px; }
@@ -4165,7 +4204,7 @@ a {
     width: 100%; }
 
 .home-about {
-  padding: 100px 0;
+  padding: 120px 0;
   margin: 0 !important; }
   .home-about__content {
     display: flex;
@@ -4177,6 +4216,9 @@ a {
     line-height: 1.25; }
   .home-about__button.touch .icon, .home-about__button.hover .icon {
     transform: translateX(4px) rotate(90deg); }
+  @media (max-width: 1599.98px) {
+    .home-about {
+      padding: 100px 0; } }
 
 .contacts {
   position: relative; }
@@ -4290,26 +4332,16 @@ a {
     .video-scene__close {
       top: 120px; } }
 
-.wave-scene {
-  height: calc(100% - 1px);
-  width: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  overflow: hidden; }
-  .wave-scene__container {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0; }
-
 .home-screen {
   background: var(--color-bg-darker);
   height: 100vh;
   position: relative; }
+  .home-screen__scene {
+    position: absolute;
+    height: calc(100% - 1px);
+    width: 100%;
+    top: 0;
+    left: 0; }
   .home-screen__container {
     height: 100%;
     position: relative;
@@ -4449,7 +4481,8 @@ a {
   margin: 180px 0 140px 0; }
   .conceptions-slider__d-images-container {
     width: calc(100% + calc((100vw - 1392px)/2));
-    height: 420px; }
+    height: 420px;
+    position: relative; }
     .conceptions-slider__d-images-container_style-1 {
       transform: translateX(calc((-100vw + 1392px)/2)); }
     .conceptions-slider__d-images-container .image {
@@ -4529,6 +4562,9 @@ a {
     margin-right: 8.33%; }
   .conceptions-final__slogan_style-2 {
     transform: translateX(calc(-50% + 1.5em)) rotate(90deg);
+    left: 24px; }
+  .conceptions-final__slogan_style-3 {
+    transform: translateX(calc(-50% + 0.75em)) rotate(90deg);
     left: 24px; }
 
 .conceptions-final__m-image .image {
@@ -4842,7 +4878,7 @@ a {
     height: 480px; } }
 
 .personal-form {
-  padding: 20px 0 30px 0; }
+  padding: 0 0 90px 0; }
   .personal-form__head {
     margin-bottom: 50px;
     align-items: center; }
@@ -4856,11 +4892,69 @@ a {
     .personal-form__title {
       margin: 0 0 20px 0; } }
 
+.section-image__scene {
+  height: 100vh; }
+
+.technologies-slider {
+  position: relative;
+  padding: 84px 0 70px 0;
+  padding-bottom: 70px; }
+  .technologies-slider__scene {
+    height: calc(100% - 84px);
+    top: 84px;
+    left: 0;
+    width: 100%;
+    position: absolute; }
+  .technologies-slider__content {
+    background: var(--color-bg-transparent);
+    padding: 32px;
+    width: 330px;
+    margin-top: -84px; }
+  .technologies-slider__title {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: "Montserrat", sans-serif;
+    line-height: 20px;
+    margin: 0 0 80px 0;
+    color: var(--color-muted); }
+  .technologies-slider__idx {
+    position: absolute;
+    bottom: -3px;
+    right: 0;
+    line-height: 1;
+    height: 1em;
+    width: 1.75em; }
+    .technologies-slider__idx span {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      right: 0;
+      top: 0;
+      text-align: center;
+      opacity: 0;
+      visibility: hidden; }
+  .technologies-slider__slider {
+    padding-bottom: 40px;
+    overflow: hidden; }
+    .technologies-slider__slider .splide__pagination {
+      bottom: 0; }
+    .technologies-slider__slider .splide__track {
+      margin: 0 -12px; }
+    .technologies-slider__slider .splide__slide {
+      padding: 0 12px; }
+  .technologies-slider__slide-title {
+    font-size: 1rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500; }
+  .technologies-slider__button {
+    margin-top: 45px;
+    text-align: right; }
+
 /*========== Conceptions ==========*/
 .conceptions {
   position: relative;
-  padding-bottom: 600vh;
-  overflow: hidden; }
+  padding-bottom: 600vh; }
   .conceptions .grid {
     position: absolute;
     width: 100%;
@@ -4880,6 +4974,15 @@ a {
     @media (max-width: 1599.98px) {
       .conceptions input {
         bottom: 32px; } }
+  .conceptions__bg-title {
+    font-size: 110px; }
+  .conceptions__head {
+    margin-bottom: 30px; }
+    .conceptions__head-text {
+      max-width: 320px;
+      margin-left: 880px;
+      position: relative;
+      z-index: 2; }
   .conceptions .dur {
     position: absolute;
     bottom: 27px;
@@ -4908,6 +5011,10 @@ a {
       height: 100%;
       background-color: var(--color-light); }
   @media (max-width: 1599.98px) {
+    .conceptions__bg-title {
+      font-size: 105px; }
+    .conceptions__head-text {
+      margin-left: 770px; }
     .conceptions__slider-wrapper {
       padding: 80px 0; }
     .conceptions__scale {

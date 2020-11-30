@@ -115,9 +115,7 @@
       </nav>
       <main class="main" data-barba="container" data-barba-namespace="technology" data-name="technology">
         <section class="section home-screen">
-          <div class="wave-scene">
-            <div class="wave-scene__container" data-parralax="0.35" data-images="./img/technology/home.jpg"></div>
-          </div>
+          <div class="home-screen__scene scene" data-src="./img/technology/home.jpg"></div>
           <div class="home-screen__gradient"></div>
           <div class="container home-screen__container">
             <div class="row home-screen__content">
@@ -125,10 +123,10 @@
                 <h1 class="h2 home-screen__title">Оцените технологическое совершенство INPOOL CONCEPT</h1>
               </div>
               <div class="home-screen__right offset-xxl-2 col-xxl-4 offset-xxl-1 col-xl-5">
-                <p>Создавайте индивидуальные сценарии использования бассейна с передовой системой управления INPOOL ASM Control.</p>
+                <p>INPOOL CONCEPT — это совокупность лучших технологий мировых производителей бассейнов. Мы продумали каждую деталь, чтобы вы могли наслаждаться отдыхом. </p>
               </div>
             </div>
-            <button class="home-screen__scroll-bottom scroll-bottom" aria-label="scroll-bottom">
+            <button class="home-screen__scroll-bottom" aria-label="scroll-bottom" data-scroll="bottom">
               <svg class="icon">
                 <use xlink:href="./img/icons/icons-sprite.svg#bottom-arrow"></use>
               </svg>
@@ -385,20 +383,22 @@
             <h2 class="popup__title popup-form__title">Получите персональное предложение!</h2>
             <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
             <form class="form popup-form__form js-validation">
-              <div class="form__group">
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
-                  </label>
+              <div class="row">
+                <div class="form__group col-12">
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                    </label>
+                  </div>
+                  <div class="form__item">
+                    <label class="input contacts__animate-item">
+                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                    </label>
+                  </div>
                 </div>
-                <div class="form__item">
-                  <label class="input contacts__animate-item">
-                    <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
-                  </label>
+                <div class="form__submit col-12">
+                  <button class="button" type="submit"><span>Отправить</span></button>
                 </div>
-              </div>
-              <div class="form__submit">
-                <button class="button" type="submit"><span>Отправить</span></button>
               </div>
             </form>
           </div>

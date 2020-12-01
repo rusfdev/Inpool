@@ -109,7 +109,9 @@ const App = {
     this.name = this.$container.getAttribute('data-name');
     
     lazySizes.init();
-    Cursor.init();
+    if(!mobile()) {
+      Cursor.init();
+    }
     TouchHoverEvents.init();
     Header.init();
     Nav.init();
@@ -160,7 +162,7 @@ const Transitions = {
     this.active = true;
     $wrapper.classList.add('disabled');
     $header.classList.remove('header_fixed');
-    if(!dev) {
+    if(!mobile() && !dev) {
       Cursor.loading();
     }
     if(Nav.state) {
@@ -485,13 +487,15 @@ const Nav = {
     this.animation.timeScale(2).reverse();
   },
   setSize: function() {
-    let w = window.innerWidth,
-        cw = document.querySelector('.container').getBoundingClientRect().width,
-        w2 = (w-cw)/2,
-        nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
-        
-        this.$container.style.width = `${nw+w2}px`;
-        this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
+    this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
+    if(window.innerWidth>brakepoints.md) {
+      let w = window.innerWidth,
+          cw = document.querySelector('.container').getBoundingClientRect().width,
+          w2 = (w-cw)/2,
+          nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
+      
+      this.$container.style.width = `${nw+w2}px`;
+    } 
   },
   change: function(namespace) {
     if(this.$active_links) {

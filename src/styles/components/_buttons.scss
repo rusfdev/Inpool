@@ -3,11 +3,10 @@
   border-radius: 8px;
   padding: 0 40px;
   color: var(--color-light) !important;
-  display: inline-block;
+  display: inline-flex;
   font-weight: 400;
   overflow: hidden;
   position: relative;
-  margin-bottom: -0.4em;
   &::before {
     content: '';
     display: block;

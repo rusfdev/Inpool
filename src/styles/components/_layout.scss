@@ -54,6 +54,14 @@
         }
       }
     }
+    @include media-breakpoint-down(sm) {
+      width: 16px;
+      padding: 4px 4px 4px 8px;
+      pointer-events: none;
+      &:after {
+        border-radius: 2px;
+      }
+    }
   }
 }
 

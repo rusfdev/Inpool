@@ -7,6 +7,9 @@
   z-index: 100;
   width: 100%;
   transition: background-color $trs2;
+  &__logo {
+    transition: opacity $trs2, visibility $trs2;
+  }
   &_fixed {
     background-color: var(--color-bg-transparent);
     .header__container {
@@ -35,7 +38,31 @@
         height: 100px;
       }
     }
-  } 
+  }
+  @include media-breakpoint-down(md) {
+    &__container {
+      height: 90px;
+    }
+    &_nav-opened {
+      .header__container {
+        height: 90px;
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__container {
+      height: 80px;
+    }
+    &_nav-opened {
+      .header__container {
+        height: 80px;
+      }
+      .header__logo {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+  }
 }
 
 .nav-toggle {
@@ -54,5 +81,8 @@
       stroke-width: 2.5px;
       transition: $trs1;
     }
+  }
+  @include media-breakpoint-down(sm) {
+    margin-right: -8px;
   }
 }

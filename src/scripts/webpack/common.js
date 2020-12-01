@@ -2131,7 +2131,7 @@ class WaveScene {
     this.w = this.$scene.getBoundingClientRect().width,
     this.h = this.$scene.getBoundingClientRect().height;
     this.wave_min = 2;
-    this.wave_max = 15;
+    this.wave_max = 10;
     this.destination = {x:0, y:0};
     this.time = 0;
     this.scene = new THREE.Scene();

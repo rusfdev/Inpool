@@ -3572,7 +3572,7 @@ a {
 .scene {
   position: relative;
   overflow: hidden;
-  background-color: var(--color-bg-darker); }
+  background-color: var(--color-bg-images); }
 
 .image {
   display: block;
@@ -3592,8 +3592,8 @@ a {
     width: 100%;
     height: 100%; }
   .image_cover {
-    overflow: hidden;
-    background-color: var(--color-bg-darker); }
+    background-color: var(--color-bg-images);
+    overflow: hidden; }
     .image_cover img {
       object-fit: cover; }
   .image_contain img {
@@ -4121,7 +4121,6 @@ a {
 
 /*========== Blocks ==========*/
 .home {
-  height: 100vh;
   margin: 0 !important;
   position: relative; }
   .home__category-list {
@@ -4147,7 +4146,8 @@ a {
     height: calc(100% - 1px);
     width: 100%;
     top: 0;
-    left: 0; }
+    left: 0;
+    background-color: var(--color-bg-darker); }
   .home-banner:after {
     content: '';
     display: block;
@@ -4420,10 +4420,10 @@ a {
       top: 120px; } }
 
 .home-screen {
-  background: var(--color-bg-darker);
   height: 100vh;
   position: relative; }
   .home-screen__scene {
+    background-color: var(--color-bg-darker);
     position: absolute;
     height: calc(100% - 1px);
     width: 100%;

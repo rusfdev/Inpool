@@ -78,7 +78,7 @@ const PageScroll = Scrollbar.init($wrapper, {
 PageScroll.addListener(()=>{
   localStorage.setItem('scroll', PageScroll.offset.y);
 })
-if(+localStorage.getItem('scroll')>0) {
+if(+localStorage.getItem('scroll')>0 && dev) {
   PageScroll.setPosition(0, +localStorage.getItem('scroll'));
 }
 //scroll btn
@@ -119,6 +119,7 @@ const App = {
     Validation.init();
     Popup.init();
     Parralax.init();
+    SetSize.init();
 
     Preloader.finish(()=>{
       Transitions.active = true;
@@ -141,6 +142,8 @@ const Transitions = {
     window.$container = $container;
     PageScroll.track.yAxis.element.classList.remove('show');
     Nav.change(App.name);
+
+    SetSize.check();
 
     setTimeout(()=> {
       if(Pages[namespace]) {
@@ -168,7 +171,7 @@ const Transitions = {
     if(Nav.state) {
       Nav.close();
     }
-    let y = Math.max(PageScroll.offset.y-window.innerHeight, 0);
+    let y = Math.max(PageScroll.offset.y-window.innerHeight/2, 0);
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
       .to(PageScroll, {scrollTop:y, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
@@ -487,7 +490,6 @@ const Nav = {
     this.animation.timeScale(2).reverse();
   },
   setSize: function() {
-    this.$nav.style.height = `${$wrapper.getBoundingClientRect().height}px`;
     if(window.innerWidth>brakepoints.md) {
       let w = window.innerWidth,
           cw = document.querySelector('.container').getBoundingClientRect().width,
@@ -1912,6 +1914,21 @@ const DistortionImages = {
         }
       }
       scene.init();
+    })
+  }
+}
+
+const SetSize = {
+  init: function() {
+    window.addEventListener('resize', ()=>{
+      this.check();
+    })
+  }, 
+  check: function() {
+    let $elements = document.querySelectorAll('[data-window]'),
+        h = $wrapper.getBoundingClientRect().height;
+    $elements.forEach(($element)=>{
+      $element.style.height = `${h}px`;
     })
   }
 }

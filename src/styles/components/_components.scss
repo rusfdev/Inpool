@@ -34,7 +34,7 @@
 .scene {
   position: relative;
   overflow: hidden;
-  background-color: var(--color-bg-darker);
+  background-color: var(--color-bg-images);
 }
 //images
 .image {
@@ -61,8 +61,8 @@
     }
   }
   &_cover {
+    background-color: var(--color-bg-images);
     overflow: hidden;
-    background-color: var(--color-bg-darker);
     img {
       object-fit: cover;
     }

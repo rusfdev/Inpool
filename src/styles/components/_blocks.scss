@@ -1,5 +1,4 @@
 .home {
-  height: 100vh;
   margin: 0 !important;
   position: relative;
   &__category-list {
@@ -30,6 +29,7 @@
     width: 100%;
     top: 0;
     left: 0;
+    background-color: var(--color-bg-darker);
   }
   &:after {
     content: '';
@@ -384,10 +384,10 @@
 }
 
 .home-screen {
-  background: var(--color-bg-darker);
   height: 100vh;
   position: relative;
   &__scene {
+    background-color: var(--color-bg-darker);
     position: absolute;
     height: calc(100% - 1px);
     width: 100%;

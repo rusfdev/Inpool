@@ -48,7 +48,7 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = false;
+const dev = true;
 const speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 

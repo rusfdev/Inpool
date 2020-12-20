@@ -3363,7 +3363,7 @@ p {
   margin: 0 0 1rem 0; }
   p:last-child {
     margin-bottom: 0; }
-  p ~ .button {
+  p ~ .button, p ~ .button-more {
     margin-top: 1rem; }
 
 mark {
@@ -3456,6 +3456,54 @@ a {
   h2, .h2 {
     font-size: 2.375rem; } }
 
+@media (max-width: 1023.98px) {
+  h1, h2, h3, h4, h5, h6 {
+    margin: 2.5rem 0 1.75rem 0; }
+    h1 + h2,
+    h1 + h3,
+    h1 + h4,
+    h1 + h5,
+    h1 + h6, h2 + h2,
+    h2 + h3,
+    h2 + h4,
+    h2 + h5,
+    h2 + h6, h3 + h2,
+    h3 + h3,
+    h3 + h4,
+    h3 + h5,
+    h3 + h6, h4 + h2,
+    h4 + h3,
+    h4 + h4,
+    h4 + h5,
+    h4 + h6, h5 + h2,
+    h5 + h3,
+    h5 + h4,
+    h5 + h5,
+    h5 + h6, h6 + h2,
+    h6 + h3,
+    h6 + h4,
+    h6 + h5,
+    h6 + h6 {
+      margin-top: 1.75rem; }
+  h1, .h1 {
+    font-size: 2.875rem; }
+  h2, .h2 {
+    font-size: 2rem; } }
+
+@media (max-width: 767.98px) {
+  h1, .h1 {
+    font-size: 2rem; }
+  h2, .h2 {
+    font-size: 1.5rem; } }
+
+@media (max-width: 575.98px) {
+  h1, .h1 {
+    font-size: 1.75rem; }
+  h2, .h2 {
+    font-size: 1.375rem; }
+  p ~ .button, p ~ .button-more {
+    margin-top: 0.75rem; } }
+
 /*========== Layout ==========*/
 .wrapper {
   height: 100%;
@@ -3530,6 +3578,19 @@ a {
       margin-bottom: 100px; }
       .section:first-child {
         padding-top: 100px; } }
+  @media (max-width: 1023.98px) {
+    .section {
+      margin-bottom: 80px; } }
+  @media (max-width: 767.98px) {
+    .section {
+      margin-bottom: 70px; }
+      .section:first-child {
+        padding-top: 90px; } }
+  @media (max-width: 575.98px) {
+    .section {
+      margin-bottom: 60px; }
+      .section:first-child {
+        padding-top: 80px; } }
 
 @media (max-width: 767.98px) {
   .container {
@@ -3648,6 +3709,13 @@ a {
     transform: scale(1.3); }
   .pagination__button_style-1.active::after {
     background-color: var(--color-light); }
+
+@media (max-width: 575.98px) {
+  .pagination__item:not(:last-child) {
+    margin-right: 16px; }
+  .pagination__button {
+    padding: 6px;
+    margin: -6px; } }
 
 .trigger-round {
   position: fixed;
@@ -3938,7 +4006,8 @@ a {
     pointer-events: none; }
     .input__element:-webkit-autofill, .input__element:-webkit-autofill:hover, .input__element:-webkit-autofill:focus {
       -webkit-text-fill-color: var(--color-light);
-      box-shadow: 0 0 0px 1000px var(--color-bg-dark) inset; }
+      box-shadow: 0 0 0px 1000px transparent inset;
+      transition: background-color 5000s ease-in-out 0s; }
     .input__element::placeholder {
       color: var(--color-muted);
       transition: opacity 0.25s ease-in-out; }
@@ -4121,7 +4190,6 @@ a {
 
 /*========== Blocks ==========*/
 .home {
-  margin: 0 !important;
   position: relative; }
   .home__category-list {
     position: absolute;
@@ -4272,16 +4340,16 @@ a {
       align-items: center; } }
   @media (max-width: 575.98px) {
     .home-banner__container {
-      padding-bottom: 90px;
-      padding-top: 100px; }
+      padding-bottom: 68px;
+      padding-top: 90px; }
     .home-banner__slogan {
-      top: 100px; }
+      top: 90px; }
     .home-banner__slide-titles {
       font-size: 2rem;
       height: 2.5rem;
-      margin-bottom: 28px; }
+      margin-bottom: 22px; }
     .home-banner__pagination {
-      bottom: 40px; } }
+      bottom: 30px; } }
 
 .logo {
   display: block;
@@ -4290,22 +4358,24 @@ a {
     display: block;
     width: 100%; }
 
-.home-about {
-  padding: 120px 0;
-  margin: 0 !important; }
-  .home-about__content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start; }
+.home-about__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start; }
+
+.home-about__button.touch .icon, .home-about__button.hover .icon {
+  transform: translateX(4px) rotate(90deg); }
+
+@media (min-width: 1280px) {
   .home-about__title {
-    margin: 0;
-    line-height: 1.25; }
-  .home-about__button.touch .icon, .home-about__button.hover .icon {
-    transform: translateX(4px) rotate(90deg); }
-  @media (max-width: 1599.98px) {
-    .home-about {
-      padding: 100px 0; } }
+    line-height: 1.25;
+    margin: 0; } }
+
+@media (max-width: 575.98px) {
+  .home-about__button {
+    margin-right: 0;
+    margin-left: auto; } }
 
 .contacts {
   position: relative; }

@@ -145,6 +145,17 @@
       }
     }
   }
+  @include media-breakpoint-down(sm) {
+    &__item {
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+    }
+    &__button {
+      padding: 6px;
+      margin: -6px;
+    }
+  }
 }
 
 .trigger-round {

@@ -1,5 +1,4 @@
 .home {
-  margin: 0 !important;
   position: relative;
   &__category-list {
     position: absolute;
@@ -191,21 +190,21 @@
   }
   @include media-breakpoint-down(sm) {
     &__container {
-      padding-bottom: 90px;
-      padding-top: 100px;
+      padding-bottom: 68px;
+      padding-top: 90px;
     }
     &__slogan {
-      top: 100px;
+      top: 90px;
     }
     &__slide {
       &-titles {
         font-size: 2rem;
         height: 2.5rem;
-        margin-bottom: 28px;
+        margin-bottom: 22px;
       }
     }
     &__pagination {
-      bottom: 40px;
+      bottom: 30px;
     }
   }
 }
@@ -220,17 +219,11 @@
 }
 
 .home-about {
-  padding: 120px 0;
-  margin: 0 !important;
   &__content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-  }
-  &__title {
-    margin: 0;
-    line-height: 1.25;
   }
   &__button {
     &.touch, &.hover {
@@ -239,8 +232,17 @@
       }
     }
   }
-  @include media-breakpoint-down(xxl) {
-    padding: 100px 0;
+  @include media-breakpoint-up(xl) {
+    &__title {
+      line-height: 1.25;
+      margin: 0;
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__button {
+      margin-right: 0;
+      margin-left: auto;
+    }
   }
 }
 

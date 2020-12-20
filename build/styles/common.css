@@ -4209,13 +4209,20 @@ a {
   height: 100%;
   top: 0;
   left: 0; }
-  .home-banner__scene {
+  .home-banner__background {
     position: absolute;
     height: calc(100% - 1px);
     width: 100%;
     top: 0;
     left: 0;
-    background-color: var(--color-bg-darker); }
+    background-color: var(--color-bg-darker);
+    overflow: hidden; }
+  .home-banner__scene, .home-banner__images, .home-banner__images .image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0; }
   .home-banner:after {
     content: '';
     display: block;

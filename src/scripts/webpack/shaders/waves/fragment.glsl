@@ -25,5 +25,5 @@ void main() {
 
   vec4 img = texture2D(img, vec2(vUv.x + cos(c)*mouse.x*0.05, vUv.y + cos(c)*mouse.y*0.05));
 
-  gl_FragColor = (img*c*c)/3.5;
+  gl_FragColor = (img*c*c)/2.5;
 }

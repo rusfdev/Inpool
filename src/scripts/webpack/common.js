@@ -149,9 +149,7 @@ const Transitions = {
       if(Pages[namespace]) {
         Pages[namespace].init();
       }
-
       Parralax.check();
-      
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
@@ -194,10 +192,9 @@ const Pages = {
     init: function() {
       Splitting();
       HomeBanner.init();
-      desktopConceptionsSlider.init();
-      /* 
-      this.scene = new BackgroundScene(App.$container.querySelector('.section-image__scene'))
-      this.scene.init(); */
+      if(window.innerWidth>=brakepoints.lg) {
+        desktopConceptionsSlider.init();
+      }
       //slider
       this.tslider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
       this.tslider.init();
@@ -205,9 +202,6 @@ const Pages = {
     destroy: function() {
       HomeBanner.destroy();
       desktopConceptionsSlider.destroy();
-      /* 
-      this.scene.destroy();
-      delete this.scene; */
       //slider
       this.tslider.destroy();
       delete this.tslider;
@@ -241,7 +235,7 @@ const Pages = {
       //scene
       this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
       this.scene.init();
-
+      //scales
       this.scales = {
         init: function() {
           this.lines = [];
@@ -569,9 +563,13 @@ const Parralax = {
           h1 = window.innerHeight,
           h2 = $this.getBoundingClientRect().height,
           scroll = PageScroll.offset.y,
-          factor = +$this.getAttribute('data-parralax');
-  
-      let val = ((scroll+h1/2)-(y+scroll+h2/2))*factor;
+          factor = +$this.getAttribute('data-parralax'),
+          val;
+      if($this.getAttribute('data-parralax-top')==null) {
+        val = ((scroll+h1/2) - (y+scroll+h2/2)) * factor;
+      } else {
+        val = scroll * factor;
+      }
       gsap.set($this, {y:val})
     })
   }
@@ -587,6 +585,7 @@ const HomeBanner = {
     this.$images = this.$images_container.querySelectorAll('.image');
     this.index = 0;
     this.started = false;
+
     //visibility
     this.checkVisibilityEvent = ()=> {
       let h = this.$parent.getBoundingClientRect().height,
@@ -714,6 +713,11 @@ const HomeBanner = {
     clearInterval(this.checkVisibleInterval);
     clearTimeout(this.timeout);
     this.scene.destroy();
+    for(let child in this) {
+      if(child!=='init' && child!=='start' && child!=='destroy') {
+        delete this[child];
+      }
+    }
   }
 }
 
@@ -1600,17 +1604,52 @@ class TechnologiesSlider {
 
   init() {
     this.index = 0;
-    this.$scene = this.$parent.querySelector('.technologies-slider__scene');
     this.$slider = this.$parent.querySelector('.technologies-slider__slider');
-    this.$images = this.$parent.querySelectorAll('.technologies-slider__image img');
+    this.$images = this.$parent.querySelectorAll('.technologies-slider__image');
     this.$idx = this.$parent.querySelectorAll('.technologies-slider__idx span');
-    this.textures = [];
-    this.$images.forEach(($image, index)=>{
-      this.textures[index] = $image.getAttribute('data-src');
-      $image.style.display = 'none';
-    })
 
-    this.scene = new WaveScene(this.$scene);
+    //desktop
+    if(window.innerWidth >= brakepoints.lg) {
+      this.$scene = this.$parent.querySelector('.technologies-slider__scene');
+      this.textures = [];
+      this.$images.forEach(($image, index)=>{
+        this.textures[index] = $image.querySelector('img').getAttribute('data-src');
+        $image.style.display = 'none';
+      })
+      this.scene = new WaveScene(this.$scene);
+      this.interval = setInterval(()=>{
+        if(!this.enabled) {
+          this.slider.State.set(this.slider.STATES.MOVING);
+        } else {
+          this.slider.State.set(this.slider.STATES.IDLE);
+        }
+      }, 10)
+      this.scene.on('visible', ()=>{
+        if(!this.initialized) {
+          this.initialized = true;
+          this.scene.start(this.textures[this.index]);
+        }
+      })
+      this.scene.on('started', ()=>{
+        this.scene.show(speed);
+        gsap.to(this.$idx[this.index], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+      })
+      this.scene.on('showed', ()=>{
+        this.enabled = true;
+      })
+      this.scene.init();
+    }
+    //mobile 
+    else {
+      this.animations = [];
+      this.$images.forEach(($image, index)=>{
+        this.animations[index] = gsap.timeline({paused:true})
+          .fromTo($image, {scale:1.2}, {scale:1, duration:speed, ease:'power2.out'})
+          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      })
+      this.animations[this.index].play();
+    }
+
     this.slider = new Splide(this.$slider, {
       type: 'loop',
       perPage: 1,
@@ -1622,42 +1661,30 @@ class TechnologiesSlider {
       perMove: 1,
       interval: 1000*autoslide_interval
     })
-    this.interval = setInterval(()=>{
-      if(!this.enabled) {
-        this.slider.State.set(this.slider.STATES.MOVING);
-      } else {
-        this.slider.State.set(this.slider.STATES.IDLE);
-      }
-    }, 10)
-    this.scene.on('visible', ()=>{
-      if(!this.initialized) {
-        this.initialized = true;
-        this.scene.start(this.textures[this.index]);
-      }
-    })
-    this.scene.on('started', ()=>{
-      this.scene.show(speed);
-      gsap.to(this.$idx[this.index], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
-    })
-    this.scene.on('showed', ()=>{
-      this.enabled = true;
-    })
+    
     this.slider.on('move', (newIndex)=>{
       gsap.to(this.$idx[this.index], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
       gsap.to(this.$idx[newIndex], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
       this.enabled = false;
+      //desktop
+      if(this.scene) {
+        this.scene.change(this.textures[newIndex], newIndex, speed*2);
+      } 
+      //mobile 
+      else {
+        this.animations[this.index].reverse();
+        this.animations[newIndex].play();
+      }
       this.index = newIndex;
-      this.scene.change(this.textures[this.index], this.index, speed*2);
     });
 
     this.slider.mount();
-    this.scene.init();
   }
 
   destroy() {
-    this.scene.destroy();
+    if(this.scene) this.scene.destroy();
+    if(this.interval) clearInterval(this.interval);
     this.slider.destroy();
-    clearInterval(this.interval);
   }
 }
 

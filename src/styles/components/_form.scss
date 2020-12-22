@@ -80,4 +80,15 @@
       margin-top: 50px;
     }
   }
+  @include media-breakpoint-down(sm) {
+    &__group {
+      margin-bottom: -24px;
+    }
+    &__item {
+      margin-bottom: 24px;
+    }
+    &__submit {
+      margin-top: 40px;
+    }
+  }
 }

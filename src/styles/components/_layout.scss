@@ -95,7 +95,7 @@
     }
   }
   @include media-breakpoint-down(lg) {
-    margin-bottom: 80px;
+    margin-bottom: 90px;
   }
   @include media-breakpoint-down(md) {
     margin-bottom: 70px;
@@ -124,5 +124,22 @@
   .row > * {
     padding-left: calc(#{$mobile-grid-gutter-width} / 2);
     padding-right: calc(#{$mobile-grid-gutter-width} / 2);
+  }
+}
+
+[data-window] {
+  min-height: 800px;
+  max-height: 1000px;
+  @include media-breakpoint-down(xxl) {
+    min-height: 600px;
+    max-height: 800px;
+  }
+  @include media-breakpoint-down(lg) {
+    min-height: 720px;
+    max-height: 1024px;
+  }
+  @include media-breakpoint-down(sm) {
+    min-height: 520px;
+    max-height: 800px;
   }
 }

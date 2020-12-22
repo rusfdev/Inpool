@@ -307,7 +307,7 @@
   font-size: 90px;
   line-height: 1.1;
   margin-top: 0;
-  margin-bottom: -0.35em;
+  margin-bottom: -0.35em !important;
   letter-spacing: -0.05em;
   @include media-breakpoint-down(xxl) {
     font-size: 72px;

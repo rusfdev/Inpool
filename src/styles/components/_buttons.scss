@@ -4,6 +4,7 @@
   padding: 0 40px;
   color: var(--color-light) !important;
   display: inline-flex;
+  align-items: center;
   font-weight: 400;
   overflow: hidden;
   position: relative;
@@ -25,9 +26,20 @@
     border: none !important;
     backface-visibility: hidden;
   }
+  .icon {
+    margin-left: 30px;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    z-index: 2;
+    transition: transform $trs1;
+  }
   &.touch, &.hover {
     &::before {
       opacity: 1;
+    }
+    .icon {
+      transform: translateX(4px);
     }
   }
   &.focus {

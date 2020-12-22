@@ -23,12 +23,11 @@
   }
   &__bg-title {
     font-size: 110px;
+    white-space: nowrap;
   }
   &__head {
     margin-bottom: 30px;
     &-text {
-      max-width: 320px;
-      margin-left: 880px;
       position: relative;
       z-index: 2;
     }
@@ -42,16 +41,15 @@
   }
   &__slider {
     &-wrapper {
-      padding: 90px 0;
-      height: 100vh;
-      .container {
-        height: 100%;
-      }
+      padding-top: 90px;
+      padding-bottom: 90px;
     }
   }
   &__slides {
     position: relative;
-    height: 100%;
+  }
+  &__bottom {
+    position: relative;
   }
   &__scale {
     width: 130px;
@@ -59,7 +57,7 @@
     border-radius: 2px;
     background-color: var(--color-muted);
     position: absolute;
-    bottom: 0;
+    bottom: 90px;
     left: 734px;
     span {
       display: block;
@@ -67,30 +65,103 @@
       background-color: var(--color-light);
     }
   }
+  @include media-breakpoint-up(lg) {
+    &__slider {
+      &-wrapper {
+        height: 100vh;
+      }
+    }
+    &__slides {
+      height: 100%;
+    }
+  }
   @include media-breakpoint-down(xxl) {
     &__bg-title {
       font-size: 105px;
     }
-    &__head {
-      &-text {
-        margin-left: 770px;
-      }
-    }
     &__slider {
       &-wrapper {
-        padding: 80px 0;
+        padding-top: 80px;
+        padding-bottom: 80px;
       }
     }
     &__scale {
-      left: 680px;
+      bottom: 80px;
+    }
+    &__scale {
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
   @include media-breakpoint-between(xl, xxl) {
     @media (max-height:620px) {
       &__slider {
         &-wrapper {
-          padding: 60px 0;
+          padding-top: 60px;
+          padding-bottom: 60px;
         }
+      }
+      &__scale {
+        bottom: 60px;
+      }
+    }
+  }
+  @include media-breakpoint-down(xl) {
+    &__slider {
+      &-wrapper {
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+    }
+    &__scale {
+      bottom: 60px;
+    }
+    &__bg-title {
+      font-size: 86px;
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    background-color: var(--color-bg-darker);
+    padding: 90px 0;
+    &__bg-title {
+      font-size: 74px;
+    }
+    &__slider {
+      &-wrapper {
+        max-width: 100% !important;
+        padding: 90px 0;
+        overflow: auto;
+      }
+    }
+    &__slides {
+      display: flex;
+      justify-content: space-between;
+      width: 4300px;
+    }
+    &__head {
+      margin-bottom: 0;
+    }
+    &__scale {
+      position: relative;
+      bottom: 0;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    padding: 70px 0;
+    &__slider {
+      &-wrapper {
+        padding: 70px 0;
+      }
+    }
+  } 
+  @include media-breakpoint-down(sm) {
+    padding: 60px 0;
+    &__bg-title {
+      font-size: 52px;
+    }
+    &__slider {
+      &-wrapper {
+        padding: 60px 0;
       }
     }
   }
@@ -98,13 +169,8 @@
 
 
 .conceptions-slide {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  max-width: 100% !important;
+  margin: 0 !important;
   &__content {
     position: relative;
     height: 100%;
@@ -139,24 +205,24 @@
     position: absolute;
     line-height: 1.25;
     &_1 {
-      transform: translateX(calc(50% - 0.625em)) rotate(90deg);
+      transform: translateX(calc(50% - 0.625em)) rotate(-90deg);
       right: 74px;
       top: calc(28% - 0.625em);
     }
     &_2 {
-      transform: translateX(calc(50% - 1.875em)) rotate(90deg);
+      transform: translateX(calc(50% - 1.875em)) rotate(-90deg);
       right: 0;
       top: calc(32.5% - 1.875em);
       width: 190px;
     }
     &_3 {
-      transform: translateX(calc(50% - 0.625em)) rotate(90deg);
+      transform: translateX(calc(50% - 0.625em)) rotate(-90deg);
       right: 1062px;
-      top: calc(130px - 0.625em);
+      top: calc(120px - 0.625em);
       width: 260px;
     }
     &_4 {
-      transform: translateX(calc(50% - 1.25em)) rotate(90deg);
+      transform: translateX(calc(50% - 1.25em)) rotate(-90deg);
       right: 1184px;
       top: calc(35% - 1.25em);
       width: 260px;
@@ -233,23 +299,17 @@
     bottom: 40px;
     margin: 0;
     text-transform: uppercase;
-    &_1 {
-      left: 548px;
-    }
-    &_2 {
-      left: 540px;
-    }
-    &_3 {
-      left: 544px;
-    }
-    &_4 {
-      left: 524px;
-    }
+    white-space: nowrap;
+    width: 520px;
+    text-align: center;
+    left: 516px;
   }
   &__button {
     position: absolute;
     right: 80px;
-    bottom: 58px;
+    bottom: 44px;
+    padding-left: 30px;
+    padding-right: 20px;
   }
   &__index {
     position: absolute;
@@ -262,14 +322,14 @@
       top: -30px;
       left: 315px;
       .conceptions-slide__count {
-        margin-left: -0.5em;
+        margin-left: -0.4em;
       }
     }
     &_2 {
       top: -30px;
       left: 142px;
       .conceptions-slide__count {
-        margin-left: 0.35em;
+        margin-left: 0.25em;
       }
     }
     &_3 {
@@ -314,6 +374,16 @@
     line-height: 1;
     transform: translateY(0.35em);
   }
+  @include media-breakpoint-up(lg) {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 0;
+  }
   @include media-breakpoint-down(xxl) {
     &__value {
       font-size: 240px;
@@ -322,16 +392,10 @@
       &_1 {
         top: -20px;
         left: 290px;
-        .conceptions-slide__count {
-          margin-left: -0.4em;
-        }
       }
       &_2 {
         top: -20px;
         left: 140px;
-        .conceptions-slide__count {
-          margin-left: 0.25em;
-        }
       }
       &_3 {
         bottom: 10%;
@@ -339,7 +403,7 @@
       }
       &_4 {
         top: -20px;
-        left: 640px;
+        left: 700px;
       }
     }
     &__text {
@@ -362,6 +426,7 @@
       }
     }
     &__m-image {
+      position: absolute;
       &_1 {
         width: 484px;
         height: 60%;
@@ -378,7 +443,7 @@
         left: 308px;
       }
       &_4 {
-        width: 486px;
+        width: 560px;
         height: 70%;
         left: 204px;
       }
@@ -391,7 +456,7 @@
       &_3 {
         width: calc(78px + #{$xl-field});
         left: 1122px;
-        bottom: 22%;
+        bottom: 24%;
         height: 45%;
       }
     }
@@ -403,33 +468,103 @@
       }
       &_2 {
         right: 0;
-        top: 45%;
+        top: 36%;
       }
       &_3 {
         right: 920px;
       }
       &_4 {
-        right: 1062px;
+        right: 1045px;
       }
     }
     &__title {
       bottom: 30px;
-      &_1 {
-        left: 530px;
-      }
-      &_2 {
-        left: 532px;
-      }
-      &_3 {
-        left: 532px;
-      }
-      &_4 {
-        left: 504px;
-      }
+      left: 50%;
+      width: auto;
+      transform: translateX(-50%);
     }
     &__button {
       right: 0;
-      bottom: 44px;
+      bottom: 32px;
     }
+  }
+  @include media-breakpoint-down(xl) {
+    &__button {
+      bottom: 30px;
+    }
+    &__value {
+      font-size: 212px;
+    }
+    &__s-image {
+      &_1 {
+        width: calc(180px + #{$lg-field});
+        transform: translateX($lg-field-negative);
+      }
+    }
+    &__slogan {
+      &_3 {
+        left: 12px;
+        right: auto;
+      }
+      &_4 {
+        right: 780px;
+      }
+    }
+    &__index {
+      &_1 {
+        left: 120px;
+      }
+      &_2 {
+        left: 58px;
+      }
+      &_3 {
+        bottom: 25%;
+      }
+      &_4 {
+        left: 580px;
+      }
+    }
+    &__text {
+      width: 240px;
+      &_1 {
+        top: calc(50% + 40px);
+      }
+      &_3 {
+        left: auto;
+        right: 0;
+        top: calc(52% + 40px);
+      }
+      &_4 {
+        left: 710px;
+      }
+    }
+    &__m-image {
+      &_1 {
+        left: auto;
+        right: 60px;
+        height: 50%;
+        width: 440px;
+      }
+      &_2 {
+        left: 394px;
+        width: 420px;
+        height: 65%;
+      }
+      &_3 {
+        height: 52%;
+      }
+      &_4 {
+        height: 70%;
+        width: 460px;
+        left: 166px;
+      }
+    }
+    &__title {
+      width: 480px;
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    height: 600px;
+    flex: 0 0 1000px;
   }
 }

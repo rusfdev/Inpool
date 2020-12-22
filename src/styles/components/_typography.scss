@@ -127,13 +127,13 @@ a {
 }
 
 @include media-breakpoint-down(xxl) {
-  h1,h2,h3,h4,h5,h6 {
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     margin: 2.75rem 0 2.25rem 0;
-    & + h2,
-    & + h3,
-    & + h4,
-    & + h5,
-    & + h6 {
+    & + h2, .h2,
+    & + h3, .h3,
+    & + h4, .h4,
+    & + h5, .h5,
+    & + h6, .h6 {
       margin-top: 2.25rem;
     }
   }
@@ -146,14 +146,20 @@ a {
   }
 }
 
+@include media-breakpoint-down(xl) {
+  h1, .h1 {
+    font-size: 3.25rem;
+  }
+}
+
 @include media-breakpoint-down(lg) {
-  h1,h2,h3,h4,h5,h6 {
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     margin: 2.5rem 0 1.75rem 0;
-    & + h2,
-    & + h3,
-    & + h4,
-    & + h5,
-    & + h6 {
+    & + h2, .h2,
+    & + h3, .h3,
+    & + h4, .h4,
+    & + h5, .h5,
+    & + h6, .h6 {
       margin-top: 1.75rem;
     }
   }
@@ -173,6 +179,9 @@ a {
   }
 }
 @include media-breakpoint-down(sm) {
+  h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    margin: 2rem 0 1.5rem 0;
+  }
   h1, .h1 {
     font-size: 1.75rem;
   }

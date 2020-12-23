@@ -7,9 +7,9 @@
   z-index: 100;
   width: 100%;
   transition: background-color $trs2;
-  &__logo {
-    transition: opacity $trs2, visibility $trs2;
-  }
+  /* &__logo {
+    transition: opacity $trs2, visibility $trs2, transform $trs2out;
+  } */
   &_fixed {
     background-color: var(--color-bg-transparent);
     .header__container {
@@ -57,10 +57,11 @@
       .header__container {
         height: 80px;
       }
-      .header__logo {
+      /* .header__logo {
         opacity: 0;
         visibility: hidden;
-      }
+        transform: translateX(-100vw);
+      } */
     }
   }
 }

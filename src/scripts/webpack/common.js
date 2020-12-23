@@ -111,11 +111,12 @@ const App = {
     DistortionImages.init();
     Validation.init();
     Popup.init();
-    SetParams.init();
 
     if(!mobile()) {
       Cursor.init();
       Parralax.init();
+    } else {
+      mobileWindow.init();
     }
 
     Preloader.finish(()=>{
@@ -138,8 +139,8 @@ const Transitions = {
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
     if(Scroll.type=='custom') Scroll.scrollbar.track.yAxis.element.classList.remove('show');
+    if(mobileWindow.initialized) mobileWindow.check();
     Nav.change(App.name);
-    SetParams.check();
     setTimeout(()=> {
       if(Pages[namespace]) Pages[namespace].init();
       if(Parralax.initialized) Parralax.check();
@@ -493,12 +494,12 @@ const Nav = {
       .set(this.$nav, {autoAlpha:1})
       .to(this.$toggle_lines[1], {autoAlpha:0, duration:speed/2, ease:'power2.inOut'})
       .to(this.$toggle_lines[1], {xPercent:-100, duration:speed/2, ease:'power2.in'}, `-=${speed/2}`)
-      .to(this.$toggle_lines[0], {rotate:45, y:8.5, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
-      .to(this.$toggle_lines[2], {rotate:-45, y:-8.5, duration:speed, ease:'power2.out'}, `-=${speed}`)
+      .to(this.$toggle_lines[0], {rotate:45, y:8.5, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
+      .to(this.$toggle_lines[2], {rotate:-45, y:-8.5, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
       //
-      .fromTo(this.$bg, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.out'}, `-=${speed}`)
-      .fromTo(this.$container, {xPercent:100}, {xPercent:0, duration:speed, ease:'power2.out'}, `-=${speed}`)
-      .fromTo(this.$nav_items, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2, from:'random'}}, `-=${speed}`)
+      .fromTo(this.$bg, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
+      .fromTo(this.$container, {xPercent:100}, {xPercent:0, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
+      .fromTo(this.$nav_items, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.4, ease:'power2.inOut', stagger:{amount:speed*0.1, from:'random'}}, `-=${speed/2}`)
 
     this.$toggle.addEventListener('mouseenter', (event)=>{this.checkToggleButton(event)})
     this.$toggle.addEventListener('mouseleave', (event)=>{this.checkToggleButton(event)})
@@ -539,13 +540,13 @@ const Nav = {
   open: function() {
     $header.classList.add('header_nav-opened');
     this.state=true;
-    this.animation.timeScale(1).play();
+    this.animation.play();
     disablePageScroll();
   },
   close: function() {
     $header.classList.remove('header_nav-opened');
     this.state=false;
-    this.animation.timeScale(2).reverse();
+    this.animation.reverse();
     enablePageScroll();
   },
   setSize: function() {
@@ -1775,19 +1776,16 @@ const DistortionImages = {
   }
 }
 
-const SetParams = {
+const mobileWindow = {
   init: function() {
+    this.initialized = true;
     this.$el = document.createElement('div');
     this.$el.style.cssText = 'position:fixed;height:100%;';
     $body.insertAdjacentElement('beforeend', this.$el);
-    window.addEventListener('resize', ()=>{
-      this.check();
-    })
   }, 
   check: function() {
-    let $elements = document.querySelectorAll('[data-window]'),
+    let $elements = document.querySelectorAll('[data-window-mobile]'),
         h = this.$el.getBoundingClientRect().height;
-
     $elements.forEach(($element)=>{
       $element.style.height = `${h}px`;
     })

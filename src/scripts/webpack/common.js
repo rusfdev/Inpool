@@ -102,20 +102,21 @@ const App = {
     this.$container = document.querySelector('[data-barba="container"]');
     this.namespace = this.$container.getAttribute('data-barba-namespace');
     this.name = this.$container.getAttribute('data-name');
-    
-    lazySizes.init();
-    if(!mobile()) {
-      Cursor.init();
-    }
+    //functions
     Scroll.init();
+    lazySizes.init();
     TouchHoverEvents.init();
     Header.init();
     Nav.init();
     DistortionImages.init();
     Validation.init();
     Popup.init();
-    Parralax.init();
-    SetSize.init();
+    SetParams.init();
+
+    if(!mobile()) {
+      Cursor.init();
+      Parralax.init();
+    }
 
     Preloader.finish(()=>{
       Transitions.active = true;
@@ -136,37 +137,26 @@ const Transitions = {
 
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
-    if(Scroll.type=='custom') {
-      Scroll.scrollbar.track.yAxis.element.classList.remove('show');
-    }
+    if(Scroll.type=='custom') Scroll.scrollbar.track.yAxis.element.classList.remove('show');
     Nav.change(App.name);
-
-    SetSize.check();
-
+    SetParams.check();
     setTimeout(()=> {
-      if(Pages[namespace]) {
-        Pages[namespace].init();
-      }
-      Parralax.check();
+      if(Pages[namespace]) Pages[namespace].init();
+      if(Parralax.initialized) Parralax.check();
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
         this.active = false;
       })
     }, speed*250)
-
   },
   /* EXIT */
   exit: function($container, namespace) {
     this.active = true;
     $wrapper.classList.add('disabled');
     $header.classList.remove('header_fixed');
-    if(!mobile() && !dev) {
-      Cursor.loading();
-    }
-    if(Nav.state) {
-      Nav.close();
-    }
+    if(!mobile() && !dev) Cursor.loading();
+    if(Nav.state) Nav.close();
     Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
@@ -177,7 +167,6 @@ const Transitions = {
         Scroll.scrollTop(0, 0);
         barba.done();
       })
-
   }
 }
 
@@ -600,6 +589,7 @@ const Header = {
 
 const Parralax = {
   init: function() {
+    this.initialized = true;
     Scroll.addListener(()=>{
       this.check();
     })
@@ -1785,11 +1775,14 @@ const DistortionImages = {
   }
 }
 
-const SetSize = {
+const SetParams = {
   init: function() {
     this.$el = document.createElement('div');
     this.$el.style.cssText = 'position:fixed;height:100%;';
     $body.insertAdjacentElement('beforeend', this.$el);
+    window.addEventListener('resize', ()=>{
+      this.check();
+    })
   }, 
   check: function() {
     let $elements = document.querySelectorAll('[data-window]'),

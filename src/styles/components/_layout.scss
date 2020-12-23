@@ -1,20 +1,24 @@
 .wrapper {
-  width: 100%;
   position: relative;
   &.disabled {
     pointer-events: none;
-    & > .scrollbar-track-y {
+    .content > .scrollbar-track-y {
       &.show {
         opacity: 0;
       }
     }
   }
-  .scroll-content {
-    min-height: 100%;
+}
+
+.content {
+  & > .scroll-content, &:not([data-scrollbar]) {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
   & > .scrollbar-track-y {
+    position: fixed;
+    z-index: 10000;
     background-color: transparent;
     padding: 24px 10px;
     width: 24px;
@@ -66,7 +70,6 @@
 
 .main {
   flex: 1 1 100%;
-  min-height: 100vh;
   opacity: 0;
   visibility: hidden;
   overflow: hidden;

@@ -37,15 +37,13 @@ html(lang='ru')
         circle.trigger-round-circle
     
     .wrapper(data-barba="wrapper" style='visibility:hidden;opacity:0;')
-      //- header
       include ../blocks/header
-      //- nav
       include ../blocks/nav
-      main.main(data-barba="container", data-barba-namespace=namespace, data-name=name)
-        block content
-      include ../blocks/footer
+      .content
+        main.main(data-barba="container", data-barba-namespace=namespace, data-name=name)
+          block content
+        include ../blocks/footer
 
-    //-popups
     include ../blocks/popups
   
     link(href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap' rel='stylesheet')

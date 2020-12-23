@@ -19,6 +19,7 @@
     background: var(--gradient-accent);
     transition: opacity $trs1;
     opacity: 0.85;
+    border-radius: inherit;
   }
   span:not([class]) {
     position: relative;

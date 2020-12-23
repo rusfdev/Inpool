@@ -1,47 +1,48 @@
-nav.nav(data-window)
+nav.nav
   .nav__bg
-  .nav__container
-    .nav__block.container
-      .nav__content
-        ul.nav__list
-          li.nav__item.nav__animate.no-flickr
-            a(href=portfolio data-name=portfolio_name).nav__link 
-              span Наши работы
-          li.nav__item.nav__animate.no-flickr
-            a(href=equipment data-name=equipment_name).nav__link 
-              span Дополнительное оборудование
-          li.nav__item.nav__animate.no-flickr
-            a(href=technology data-name=technology_name).nav__link 
-              span Технологии
-          li.nav__item.nav__animate.no-flickr
-            a(href=contacts data-name=contacts_name).nav__link 
-              span Контакты
+  .nav__container(data-scroll-lock-fill-gap)
+    .nav__wrap(data-window)
+      .nav__block.container
+        .nav__content
+          ul.nav__list
+            li.nav__item.nav__animate.no-flickr
+              a(href=portfolio data-name=portfolio_name).nav__link 
+                span Наши работы
+            li.nav__item.nav__animate.no-flickr
+              a(href=equipment data-name=equipment_name).nav__link 
+                span Дополнительное оборудование
+            li.nav__item.nav__animate.no-flickr
+              a(href=technology data-name=technology_name).nav__link 
+                span Технологии
+            li.nav__item.nav__animate.no-flickr
+              a(href=contacts data-name=contacts_name).nav__link 
+                span Контакты
 
-        .nav__content-bottom
-          ul.socials.nav__socials
-            li.socials__item.nav__animate.no-flickr
-              a(href="#").socials__link
-                | Инстаграм
-                svg.icon
-                  use(xlink:href='./img/icons/socials-sprite.svg#instagram')
-            li.socials__item.nav__animate.no-flickr
-              a(href="#").socials__link
-                | Фейсбук
-                svg.icon
-                  use(xlink:href='./img/icons/socials-sprite.svg#facebook')
-          
-          .nav__slogan.nav__animate.no-flickr INPOOL CONCEPT - это совокупность лучших 
-      
-      ul.category-list
-        li.category-list__item.nav__animate.no-flickr
-          a(href=power data-name=power_name).category-list__link
-            span Inpool<br> power
-        li.category-list__item.nav__animate.no-flickr
-          a(href=energy data-name=energy_name).category-list__link
-            span Inpool<br> energy
-        li.category-list__item.nav__animate.no-flickr
-          a(href=family data-name=family_name).category-list__link
-            span Inpool<br> family
-        li.category-list__item.nav__animate.no-flickr
-          a(href=balance data-name=balance_name).category-list__link
-            span Inpool<br> balance
+          .nav__content-bottom
+            ul.socials.nav__socials
+              li.socials__item.nav__animate.no-flickr
+                a(href="#").socials__link
+                  | Инстаграм
+                  svg.icon
+                    use(xlink:href='./img/icons/socials-sprite.svg#instagram')
+              li.socials__item.nav__animate.no-flickr
+                a(href="#").socials__link
+                  | Фейсбук
+                  svg.icon
+                    use(xlink:href='./img/icons/socials-sprite.svg#facebook')
+            
+            .nav__slogan.nav__animate.no-flickr INPOOL CONCEPT - это совокупность лучших 
+        
+        ul.category-list
+          li.category-list__item.nav__animate.no-flickr
+            a(href=power data-name=power_name).category-list__link
+              span Inpool<br> power
+          li.category-list__item.nav__animate.no-flickr
+            a(href=energy data-name=energy_name).category-list__link
+              span Inpool<br> energy
+          li.category-list__item.nav__animate.no-flickr
+            a(href=family data-name=family_name).category-list__link
+              span Inpool<br> family
+          li.category-list__item.nav__animate.no-flickr
+            a(href=balance data-name=balance_name).category-list__link
+              span Inpool<br> balance

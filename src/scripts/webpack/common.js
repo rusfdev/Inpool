@@ -40,6 +40,7 @@ import Inputmask from "inputmask";
 const validate = require("validate.js");
 import Splide from '@splidejs/splide';
 import SwipeListener from 'swipe-listener';
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 
 const brakepoints = {
   sm: 576,
@@ -53,6 +54,7 @@ const speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 
 const $wrapper = document.querySelector('.wrapper');
+const $content = document.querySelector('.content');
 const $header = document.querySelector('.header');
 const $body = document.body;
 const $html = document.documentElement;
@@ -61,6 +63,10 @@ const $html = document.documentElement;
 const bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg');
 const bg_dark = getComputedStyle(document.documentElement).getPropertyValue('--color-bg-darker');
 
+//get width
+const contentWidth = ()=> {
+  return $wrapper.getBoundingClientRect().width;
+}
 //check device
 function mobile() {
   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
@@ -316,7 +322,8 @@ const Scroll = {
     $html.style.cssText = 'height:100%;width:100%;position:fixed;'
     $body.style.height = '100%';
     $wrapper.style.height = '100%';
-    this.scrollbar = Scrollbar.init($wrapper, {
+    $content.style.height = '100%';
+    this.scrollbar = Scrollbar.init($content, {
       damping: 0.1,
       thumbMinSize: 150
     })
@@ -522,15 +529,9 @@ const Nav = {
     })
 
     this.setSize();
-    window.addEventListener('resize', (event)=>{
+    window.addEventListener('resize', ()=>{
       this.setSize()
     });
-    if(Scroll.type=='custom') {
-      Scroll.addListener(()=>{
-        this.$nav.style.top = `${Scroll.y}px`;
-      })
-      this.$nav.style.top = `${Scroll.y}px`;
-    }
   },
   checkToggleButton: function(event) {
     if(!this.opened) {
@@ -550,19 +551,19 @@ const Nav = {
     $header.classList.add('header_nav-opened');
     this.state=true;
     this.animation.timeScale(1).play();
+    disablePageScroll();
   },
   close: function() {
     $header.classList.remove('header_nav-opened');
     this.state=false;
     this.animation.timeScale(2).reverse();
+    enablePageScroll();
   },
   setSize: function() {
     if(window.innerWidth>brakepoints.md) {
-      let w = window.innerWidth,
-          cw = document.querySelector('.container').getBoundingClientRect().width,
-          w2 = (w-cw)/2,
+      let cw = document.querySelector('.container').getBoundingClientRect().width,
+          w2 = (contentWidth()-cw)/2,
           nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
-      
       this.$container.style.width = `${nw+w2}px`;
     } 
   },
@@ -587,10 +588,6 @@ const Header = {
     this.check();
   }, 
   check: function() {
-    if(Scroll.type=='custom') {
-      $header.style.top = `${Scroll.y}px`;
-    }
-
     if(Scroll.y>0 && !this.fixed) {
       this.fixed = true;
       $header.classList.add('header_fixed');
@@ -1193,12 +1190,14 @@ const Popup = {
             });
           } else {
             this.newAnimation.play();
+            disablePageScroll();
           }
           
           this.oldAnimation = this.newAnimation;
         }
       } 
       else if($button && $button.getAttribute('data-popup')=='close') {
+        enablePageScroll();
         let $popup = $button.closest('.popup'),
             $form = $popup.querySelector('form');
         this.oldAnimation.timeScale(1.5).reverse();
@@ -1789,22 +1788,15 @@ const DistortionImages = {
 const SetSize = {
   init: function() {
     this.$el = document.createElement('div');
-    this.$val = document.createElement('div');
-    this.$el.style.cssText = 'pointer-events:none;position:fixed;height:100%;top:0;left:0;width:100%;z-index:1000000;background-color:rgba(0,0,0,0.3);color:fff;display:flex;justify-content:center;align-items:center;';
-    this.$el.insertAdjacentElement('beforeend', this.$val);
+    this.$el.style.cssText = 'position:fixed;height:100%;';
     $body.insertAdjacentElement('beforeend', this.$el);
-
-    window.addEventListener('resize',()=>{this.check()})
-    Scroll.addListener(()=>{this.check()});
   }, 
   check: function() {
     let $elements = document.querySelectorAll('[data-window]'),
         h = this.$el.getBoundingClientRect().height;
 
-    this.$val.textContent = h;
     $elements.forEach(($element)=>{
       $element.style.height = `${h}px`;
-      
     })
   }
 }

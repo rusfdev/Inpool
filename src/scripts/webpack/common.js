@@ -55,6 +55,7 @@ const autoslide_interval = 7; //seconds
 const $wrapper = document.querySelector('.wrapper');
 const $header = document.querySelector('.header');
 const $body = document.body;
+const $html = document.documentElement;
 
 //bg
 const bg = getComputedStyle(document.documentElement).getPropertyValue('--color-bg');
@@ -69,18 +70,6 @@ function mobile() {
   }
 }
 
-
-//scroll
-const PageScroll = Scrollbar.init($wrapper, {
-  damping: 0.1,
-  thumbMinSize: 150
-});
-PageScroll.addListener(()=>{
-  localStorage.setItem('scroll', PageScroll.offset.y);
-})
-if(+localStorage.getItem('scroll')>0 && dev) {
-  PageScroll.setPosition(0, +localStorage.getItem('scroll'));
-}
 //scroll btn
 document.addEventListener('click', (event)=>{
   let $btn = event.target!==document?event.target.closest('[data-scroll]'):null;
@@ -89,12 +78,12 @@ document.addEventListener('click', (event)=>{
         y;
     if(target=='bottom') {
       let $parent = $btn.closest('.section');
-      y = $parent.getBoundingClientRect().top + $parent.getBoundingClientRect().height + PageScroll.offset.y;
+      y = $parent.getBoundingClientRect().top + $parent.getBoundingClientRect().height + Scroll.y;
     } else {
       let $target = document.querySelector(target);
-      y = $target.getBoundingClientRect().top + PageScroll.offset.y;
+      y = $target.getBoundingClientRect().top + Scroll.y;
     }
-    gsap.to(PageScroll, {scrollTop:y, duration:speed*1.5, ease:'power2.inOut'})
+    Scroll.scrollTop(y, speed*1.5)
   }
 });
 
@@ -112,6 +101,7 @@ const App = {
     if(!mobile()) {
       Cursor.init();
     }
+    Scroll.init();
     TouchHoverEvents.init();
     Header.init();
     Nav.init();
@@ -140,7 +130,9 @@ const Transitions = {
 
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
-    PageScroll.track.yAxis.element.classList.remove('show');
+    if(Scroll.type=='custom') {
+      Scroll.scrollbar.track.yAxis.element.classList.remove('show');
+    }
     Nav.change(App.name);
 
     SetSize.check();
@@ -169,20 +161,16 @@ const Transitions = {
     if(Nav.state) {
       Nav.close();
     }
-    let y = Math.max(PageScroll.offset.y-window.innerHeight/2, 0);
+    Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
-      .to(PageScroll, {scrollTop:y, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .to($body, {css:{backgroundColor:bg}, duration:speed, ease:'none'}, `-=${speed}`)
-
-    this.animation.eventCallback('onComplete', ()=>{
-      if(Pages[namespace]) {
-        Pages[namespace].destroy();
-      }
-      Header.fixed = false;
-      PageScroll.scrollTop = 0;
-      barba.done();
-    })
+      .eventCallback('onComplete', ()=>{
+        if(Pages[namespace]) Pages[namespace].destroy();
+        Header.fixed = false;
+        Scroll.scrollTop(0, 0);
+        barba.done();
+      })
 
   }
 }
@@ -314,6 +302,89 @@ const Preloader = {
       }
     })
 
+  }
+}
+
+const Scroll = {
+  init: function() {
+    this.y = 0;
+    if(mobile()) this.native();
+    else this.custom(); 
+  },
+  custom: function() {
+    this.type='custom';
+    $html.style.cssText = 'height:100%;width:100%;position:fixed;'
+    $body.style.height = '100%';
+    $wrapper.style.height = '100%';
+    this.scrollbar = Scrollbar.init($wrapper, {
+      damping: 0.1,
+      thumbMinSize: 150
+    })
+    this.scrollbar.addListener(()=>{
+      if(dev) localStorage.setItem('scroll', this.scrollbar.offset.y);
+      this.y = this.scrollbar.offset.y;
+    })
+    //old scroll
+    let sy = +localStorage.getItem('scroll');
+    if(sy>0 && dev) {
+      this.scrollbar.setPosition(0, sy);
+    }
+  },
+  native: function() {
+    this.type='native';
+    $body.style.overflow = 'auto';
+    window.addEventListener('scroll', ()=>{
+      this.y = window.pageYOffset;
+    })
+  },
+  scrollTop: function(y, speed) {
+    if(speed>0) this.inScroll=true;
+    //custom
+    if(this.type=='custom') {
+      this.animation = gsap.to(this.scrollbar, {scrollTop:y, duration:speed, ease:'power2.inOut'});
+      if(speed>0) {
+        this.animation.eventCallback('onComplete', ()=>{
+          this.inScroll=false;
+        })
+      }
+    } 
+    //native
+    else {
+      let scroll = {y:this.y};
+      if(speed>0) {
+        this.animation = gsap.to(scroll, {y:y, duration:speed, ease:'power2.inOut', onComplete:()=>{
+          this.inScroll=false;
+          cancelAnimationFrame(this.frame);
+        }})
+        this.checkScroll = ()=>{
+          window.scrollTo(0, scroll.y);
+          this.frame = requestAnimationFrame(()=>{this.checkScroll()});
+        }
+        this.checkScroll();
+      } else {
+        window.scrollTo(0, y);
+      }
+      
+    }
+  },
+  stop: function() {
+    this.inScroll=false;
+    if(this.animation) this.animation.pause();
+    if(this.frame) cancelAnimationFrame(this.frame);
+  },
+  addListener: function(func) {
+    if(this.type=='custom') {
+      this.scrollbar.addListener(func);
+    } else {
+      window.addEventListener('scroll', func);
+    }
+  }, 
+  removeListener: function(func) {
+    if(this.type=='custom') {
+      this.scrollbar.removeListener(func);
+    } else {
+      window.removeListener(func);
+    }
   }
 }
 
@@ -454,10 +525,12 @@ const Nav = {
     window.addEventListener('resize', (event)=>{
       this.setSize()
     });
-    this.$nav.style.top = `${PageScroll.offset.y}px`;
-    PageScroll.addListener(()=>{
-      this.$nav.style.top = `${PageScroll.offset.y}px`;
-    })
+    if(Scroll.type=='custom') {
+      Scroll.addListener(()=>{
+        this.$nav.style.top = `${Scroll.y}px`;
+      })
+      this.$nav.style.top = `${Scroll.y}px`;
+    }
   },
   checkToggleButton: function(event) {
     if(!this.opened) {
@@ -508,51 +581,29 @@ const Nav = {
 
 const Header = {
   init: function() {
-    this.height = $header.getBoundingClientRect().height;
-    this.scrollY = 0;
-    this.isVisible = true;
-    this.fixed = false;
-
-    this.animation = gsap.timeline({paused:true})
-      .to($header, {yPercent:-100, duration:speed, ease:'power2.in'})
-
-    window.addEventListener('resize', ()=>{
-      this.height = $header.getBoundingClientRect().height;
-    })
-    PageScroll.addListener(()=>{
+    Scroll.addListener(()=>{
       this.check();
     })
     this.check();
   }, 
   check: function() {
-    let y = PageScroll.offset.y,
-        h = window.innerHeight/2;
+    if(Scroll.type=='custom') {
+      $header.style.top = `${Scroll.y}px`;
+    }
 
-    $header.style.top = `${y}px`;
-
-    if(y>0 && !this.fixed) {
+    if(Scroll.y>0 && !this.fixed) {
       this.fixed = true;
       $header.classList.add('header_fixed');
-    } else if(y==0 && this.fixed) {
+    } else if(Scroll.y==0 && this.fixed) {
       this.fixed = false;
       $header.classList.remove('header_fixed');
     }
-
-    if(((this.scrollY<y && this.scrollY>h) || desktopConceptionsSlider.fixed) && !Transitions.active && this.isVisible && !Nav.opened) {
-      this.isVisible = false;
-      this.animation.timeScale(2).play();
-    } else if((Transitions.active && !this.isVisible) || ((this.scrollY>y && !desktopConceptionsSlider.fixed && !this.isVisible))) {
-      this.isVisible = true;
-      this.animation.timeScale(1).reverse();
-    }    
-
-    this.scrollY = y;
   }
 }
 
 const Parralax = {
   init: function() {
-    PageScroll.addListener(()=>{
+    Scroll.addListener(()=>{
       this.check();
     })
   },
@@ -562,7 +613,7 @@ const Parralax = {
       let y = $this.getBoundingClientRect().y,
           h1 = window.innerHeight,
           h2 = $this.getBoundingClientRect().height,
-          scroll = PageScroll.offset.y,
+          scroll = Scroll.y,
           factor = +$this.getAttribute('data-parralax'),
           val;
       if($this.getAttribute('data-parralax-top')==null) {
@@ -860,7 +911,7 @@ class BackgroundVideo {
     this.resizeEvent();
     this.checkPauseEvent();
     window.addEventListener('resize', this.resizeEvent);
-    PageScroll.addListener(this.checkPauseEvent)
+    Scroll.addListener(this.checkPauseEvent)
     document.addEventListener("visibilitychange", this.checkPauseEvent);
     
     this.$video.addEventListener('play', this.playEvent)
@@ -900,7 +951,7 @@ class BackgroundVideo {
     this.$video.removeEventListener('pause', this.pauseEvent)
     this.$video.removeEventListener('ended', this.endedEvent);
     window.removeEventListener('resize', this.resizeEvent);
-    PageScroll.removeListener(this.checkPauseEvent)
+    Scroll.removeListener(this.checkPauseEvent)
     document.removeEventListener("visibilitychange", this.checkPauseEvent);
   }
 
@@ -958,9 +1009,9 @@ const HomeScreenVideo = {
   open: function() {
     this.state = true;
     this.openAnimation.play();
+    Scroll.scrollTop(0, speed);
     gsap.timeline()
-      .to(PageScroll, {scrollTop:0, duration:speed, ease:'power2.inOut'})
-      .to(this.$player, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .to(this.$player, {autoAlpha:0, duration:speed, ease:'power2.inOut'})
       .to(this.$player, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
     setTimeout(()=>{
       this.video.$video.volume = 1;
@@ -1171,11 +1222,11 @@ class Scale {
     this.listener = ()=> {
       this.check();
     }
-    PageScroll.addListener(this.listener);
+    Scroll.addListener(this.listener);
     this.check();
   }
   check() {
-    let sy = PageScroll.offset.y,
+    let sy = Scroll.y,
         ty = this.$line.getBoundingClientRect().y,
         h = window.innerHeight;
 
@@ -1198,7 +1249,7 @@ class Scale {
     }
   }
   destroy() {
-    PageScroll.removeListener(this.listener);
+    Scroll.removeListener(this.listener);
   }
 }
 
@@ -1364,34 +1415,37 @@ const desktopConceptionsSlider = {
   },
 
   checkScrolling: function() {
-    this.scrolling = (event)=> {
-      let y = PageScroll.offset.y,
+    this.scrolling = ()=> {
+      let y = Scroll.y,
           t = this.$slider.getBoundingClientRect().y,
           scroll = y-(t+y-this.h);
+
+      //clear
+      if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
           
       if(scroll>=0 && scroll<=this.max_scroll) {
         if(scroll>=this.h) {
           this.animation.seek(1+(scroll-this.h)*this.factor);
           this.fixed = true;
-          gsap.set(this.$container, {y:scroll-this.h})
-          if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
-          this.autoscroll_timeout = setTimeout(()=>{
-            let points = [1, 3, 5, 7], value;
-            for(let index in points) {
-              if(Math.abs(points[index] - this.animation.time())<1) {
-                value = (y-scroll) + this.h + (points[index]-1)/this.factor;
+          gsap.set(this.$container, {y:scroll-this.h});
+          //autoscroll
+          if(!Scroll.inScroll) {
+            this.autoscroll_timeout = setTimeout(()=>{
+              let points = [1, 3, 5, 7], value;
+              for(let index in points) {
+                if(Math.abs(points[index] - this.animation.time())<1) {
+                  value = (y-scroll) + this.h + (points[index]-1)/this.factor;
+                }
               }
-            }
-            this.autoscroll = gsap.to(PageScroll, {scrollTop:value, duration:speed, ease:'power1.inOut', onComplete:()=>{
-              clearTimeout(this.autoscroll_timeout);
-            }})
-          }, 100)
+              Scroll.scrollTop(value, speed);
+            }, 100)
+          }
         } else {
           this.animation.seek(scroll/this.h);
           if(this.fixed) {
+            console.log('fixxxxx')
             this.fixed = false;
             gsap.set(this.$container, {y:0})
-            if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
           }
         }
       } 
@@ -1400,7 +1454,6 @@ const desktopConceptionsSlider = {
         this.fixed = false;
         this.animation.seek(7);
         gsap.set(this.$container, {y:this.max_scroll-this.h})
-        if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
       } 
       
       else if(scroll<0 && this.animation.progress()!==0) {
@@ -1412,15 +1465,13 @@ const desktopConceptionsSlider = {
         this.colorAnimation.seek(time);
       } else if(scroll>this.max_scroll && scroll<=this.max_scroll+this.h/2 && !Transitions.active) {
         let time = 1-(scroll-this.max_scroll)/this.h*2;
-        console.log(time)
         this.colorAnimation.seek(time);
       }
     }
 
     this.mouseWheelListener = ()=> {
-      if(this.autoscroll) {
-        this.autoscroll.pause();
-        this.autoscroll = false;
+      if(Scroll.inScroll) {
+        Scroll.stop();
       }
     }
 
@@ -1428,17 +1479,15 @@ const desktopConceptionsSlider = {
     this.scrollListener = (event)=> {
       this.scrolling(event);
     }
-    PageScroll.addListener(this.scrollListener);
-    this.$slider.addEventListener('wheel', this.mouseWheelListener)
+    Scroll.addListener(this.scrollListener);
+    window.addEventListener('wheel', this.mouseWheelListener)
   },
   destroy: function() {
     window.removeEventListener('resize', this.sizing)
-    if(this.autoscroll_timeout) {
-      clearTimeout(this.autoscroll_timeout);
-    }
-    this.$slider.removeEventListener('wheel', this.mouseWheelListener)
+    window.removeEventListener('wheel', this.mouseWheelListener)
+    if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
     if(this.scrollListener) {
-      PageScroll.removeListener(this.scrollListener);
+      Scroll.removeListener(this.scrollListener);
       this.fixed = false;
     }
     for(let slide_index in this.slides) {
@@ -1739,15 +1788,23 @@ const DistortionImages = {
 
 const SetSize = {
   init: function() {
-    window.addEventListener('resize', ()=>{
-      this.check();
-    })
+    this.$el = document.createElement('div');
+    this.$val = document.createElement('div');
+    this.$el.style.cssText = 'pointer-events:none;position:fixed;height:100%;top:0;left:0;width:100%;z-index:1000000;background-color:rgba(0,0,0,0.3);color:fff;display:flex;justify-content:center;align-items:center;';
+    this.$el.insertAdjacentElement('beforeend', this.$val);
+    $body.insertAdjacentElement('beforeend', this.$el);
+
+    window.addEventListener('resize',()=>{this.check()})
+    Scroll.addListener(()=>{this.check()});
   }, 
   check: function() {
     let $elements = document.querySelectorAll('[data-window]'),
-        h = $wrapper.getBoundingClientRect().height;
+        h = this.$el.getBoundingClientRect().height;
+
+    this.$val.textContent = h;
     $elements.forEach(($element)=>{
       $element.style.height = `${h}px`;
+      
     })
   }
 }

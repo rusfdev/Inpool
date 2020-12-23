@@ -27,7 +27,6 @@ let $prelaoder = document.querySelector('.preloader'),
   }
 
 }, 100); */
-
 $prelaoder.classList.add('active');
 $chars.forEach(($char, index)=>{
   setTimeout(() => {

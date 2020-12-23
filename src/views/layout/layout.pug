@@ -29,13 +29,13 @@ html(lang='ru')
     //theme
     link(rel="stylesheet" href="./styles/theme.css")
 
-  body
-
+  body(style='overflow:hidden;')
     include ../blocks/preloader
     //- курсор
     .trigger-round
       svg.trigger-round-icon
         circle.trigger-round-circle
+    
     .wrapper(data-barba="wrapper" style='visibility:hidden;opacity:0;')
       //- header
       include ../blocks/header

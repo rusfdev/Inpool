@@ -3227,11 +3227,7 @@ template {
 
 /*========== Basic ==========*/
 html {
-  font-size: 16px;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: fixed; }
+  font-size: 16px; }
 
 body {
   font-family: "Montserrat", sans-serif;
@@ -3560,7 +3556,6 @@ a {
 
 /*========== Layout ==========*/
 .wrapper {
-  height: 100%;
   width: 100%;
   position: relative; }
   .wrapper.disabled {
@@ -3611,6 +3606,7 @@ a {
 
 .main {
   flex: 1 1 100%;
+  min-height: 100vh;
   opacity: 0;
   visibility: hidden;
   overflow: hidden; }
@@ -3671,7 +3667,7 @@ a {
   @media (max-width: 575.98px) {
     [data-window] {
       min-height: 520px;
-      max-height: 800px; } }
+      max-height: 700px; } }
 
 /*========== Components ==========*/
 .background {

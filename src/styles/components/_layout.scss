@@ -32,7 +32,7 @@
       opacity: 0;
       transition: opacity $trs1;
     }
-    &.touch, &.hover {
+    &[data-touch], &[data-hover] {
       &:after {
         opacity: 1;
       }
@@ -51,7 +51,7 @@
         background-color: var(--color-text);
         transition: background-color $trs1;
       }
-      &.touch, &.hover {
+      &[data-touch], &[data-hover] {
         &:after {
           background-color: var(--color-light);
         }
@@ -115,7 +115,7 @@
 }
 
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
   .container {
     padding-right: $mobile-container-padding-x;
     padding-left: $mobile-container-padding-x;

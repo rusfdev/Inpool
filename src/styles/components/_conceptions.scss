@@ -174,7 +174,6 @@
   &__content {
     position: relative;
     height: 100%;
-    //background-color: rgba(255, 255, 255, 0.05);
   }
   &__dec {
     position: absolute;
@@ -210,15 +209,15 @@
       top: calc(28% - 0.625em);
     }
     &_2 {
-      transform: translateX(calc(50% - 1.875em)) rotate(-90deg);
+      transform: translateX(calc(50% - 1.25em)) rotate(-90deg);
       right: 0;
       top: calc(32.5% - 1.875em);
-      width: 190px;
+      width: 200px;
     }
     &_3 {
       transform: translateX(calc(50% - 0.625em)) rotate(-90deg);
-      right: 1062px;
-      top: calc(120px - 0.625em);
+      right: 1075px;
+      top: calc(104px - 0.625em);
       width: 260px;
     }
     &_4 {
@@ -231,7 +230,7 @@
   &__m-image {
     background-color: transparent;
     &_1 {
-      width: 446px;
+      width: 448px;
       height: 56%;
       left: 710px;
     }
@@ -241,7 +240,7 @@
       left: 590px;
     }
     &_3 {
-      width: 564px;
+      width: 530px;
       height: 50%;
       left: 356px;
     }
@@ -272,25 +271,26 @@
   &__text {
     display: block;
     position: absolute;
-    width: 300px;
     margin: 0;
     &_1 {
       left: 354px;
       top: calc(56% - 1em);
+      width: 300px;
     }
     &_2 {
       left: 0;
       top: 55%;
+      width: 340px;
     }
     &_3 {
-      left: 980px;
+      left: 922px;
       top: calc(50% - 2.25em);
-      width: 210px;
+      width: 280px;
     }
     &_4 {
-      left: 980px;
+      left: 955px;
       top: calc(50% - 1.5em);
-      width: 210px;
+      width: 305px;
     }
   }
   &__title {
@@ -306,10 +306,8 @@
   }
   &__button {
     position: absolute;
-    right: 80px;
+    right: 0;
     bottom: 44px;
-    padding-left: 30px;
-    padding-right: 20px;
   }
   &__index {
     position: absolute;
@@ -407,7 +405,6 @@
       }
     }
     &__text {
-      width: 260px;
       &_1 {
         left: 268px;
         top: 60%;
@@ -422,7 +419,7 @@
       }
       &_4 {
         top: 55%;
-        left: 820px;
+        left: 800px;
       }
     }
     &__m-image {
@@ -471,10 +468,10 @@
         top: 36%;
       }
       &_3 {
-        right: 920px;
+        right: 930px;
       }
       &_4 {
-        right: 1045px;
+        right: 1028px;
       }
     }
     &__title {
@@ -525,7 +522,6 @@
       }
     }
     &__text {
-      width: 240px;
       &_1 {
         top: calc(50% + 40px);
       }

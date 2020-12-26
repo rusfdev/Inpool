@@ -1,26 +1,24 @@
 .header {
-  //display: none;
   flex-shrink: 0;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
   width: 100%;
-  transition: background-color $trs2;
-  /* &__logo {
-    transition: opacity $trs2, visibility $trs2, transform $trs2out;
-  } */
+  transition: background-color $trs2, transform $trs2;
   &_fixed {
     background-color: var(--color-bg-transparent);
-    .header__container {
-      height: 70px;
+    &:not(.header_nav-opened) {
+      .header__container {
+        height: 70px;
+      }
     }
+  }
+  &_hidden {
+    transform: translateY(-100%);
   }
   &_nav-opened {
     background-color: transparent;
-    .header__container {
-      height: 130px;
-    }
   }
   &__container {
     height: 130px;
@@ -33,35 +31,15 @@
     &__container {
       height: 100px;
     }
-    &_nav-opened {
-      .header__container {
-        height: 100px;
-      }
-    }
   }
   @include media-breakpoint-down(md) {
     &__container {
       height: 90px;
     }
-    &_nav-opened {
-      .header__container {
-        height: 90px;
-      }
-    }
   }
   @include media-breakpoint-down(sm) {
     &__container {
       height: 80px;
-    }
-    &_nav-opened {
-      .header__container {
-        height: 80px;
-      }
-      /* .header__logo {
-        opacity: 0;
-        visibility: hidden;
-        transform: translateX(-100vw);
-      } */
     }
   }
 }

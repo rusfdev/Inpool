@@ -60,13 +60,20 @@
   }
   &__item {
     margin-bottom: 35px;
+    transition: opacity $trs1;
   }
   &__submit {
-    margin-top: 65px;
+    margin-top: 60px;
     text-align: center;
     .button {
       max-width: 168px;
       margin: 0 auto;
+    }
+  }
+  &.loading {
+    .form__item {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
   @include media-breakpoint-down(xxl) {

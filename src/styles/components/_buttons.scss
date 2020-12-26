@@ -5,9 +5,11 @@
   color: var(--color-light) !important;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-weight: 400;
   overflow: hidden;
   position: relative;
+  white-space: nowrap;
   &::before {
     content: '';
     display: block;
@@ -35,7 +37,7 @@
     z-index: 2;
     transition: transform $trs1;
   }
-  &.touch, &.hover {
+  &[data-touch], &[data-hover] {
     &::before {
       opacity: 1;
     }
@@ -43,10 +45,39 @@
       transform: translateX(4px);
     }
   }
-  &.focus {
+  &[data-focus] {
     &::before {
       opacity: 0.6;
     }
+  }
+  &_submit {
+    span, svg {
+      transition: opacity $trs1;
+    }
+    svg {
+      position: absolute;
+      height: 10px;
+      width: 60px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+      color: inherit;
+      opacity: 0;
+    }
+    &.loading {
+      pointer-events: none;
+      span {
+        opacity: 0;
+      }
+      svg {
+        opacity: 1;
+      }
+    }
+  }
+  &_ico {
+    justify-content: space-between;
+    padding: 0 20px 0 30px;
   }
 }
 
@@ -63,13 +94,13 @@
     color: var(--color-darkened);
     transition: color $trs1, transform $trs1;
   }
-  &.touch, &.hover {
+  &[data-touch], &[data-hover] {
     .icon {
       color: var(--color-text);
       transform: translateX(4px);
     }
   }
-  &.focus {
+  &[data-focus] {
     color: var(--color-accent);
     .icon {
       color: var(--color-accent);

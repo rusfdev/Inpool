@@ -1,0 +1,58 @@
+.modal.modal-succes#succes
+  .modal__wrapper(data-scroll-lock-scrollable)
+    .modal-block
+      button.modal-close.modal-block__close(data-modal='close' aria-label='close')
+      .modal-succes__container
+        h2.h1.modal-succes__title.modal__title Спасибо!
+        svg.modal-succes__icon(width='65' height='59' viewBox='0 0 65 59' fill='none' stroke='currentColor' xmlns='http://www.w3.org/2000/svg')
+          path(d='M1.5 36.8079L20.1349 56.7611L63.4635 1.23926' stroke-width='2')
+        p Ваша заявка успешно отправлена. На указанный номер скоро позвонит наш менеджер и расскажет подробнее об iNPOOL Concept
+
+.modal.modal-message#info
+  .modal__wrapper(data-scroll-lock-scrollable)
+    .modal-block
+      button.modal-close.modal-block__close(data-modal='close' aria-label='close')
+      .modal-message__container
+        p Принципиальное отличие INPOOL ASM Control от других систем управления бассейном: 
+        ol
+          li Вся система управления бассейном в одном месте. Конфигурируется под каждый проект индивидуально.
+          li Управление температурой воды.
+          li Управление освещением, которое понятно ребенку.
+          li Функция PARTY - включает музыку и освещение в бассейне одновременно по вашему сценарию.
+          li Вывод параметров станции дезинфекции (активный кислород, содержание хлора, PH и температура).
+          li Управление автоматическим покрытием жалюзи.
+          li Доступ к информации по аварийным ситуациям.
+          li Ночной режим энергосбережения.
+          li Аттракционы
+
+.modal.modal-form#modal-form
+  .modal__wrapper(data-scroll-lock-scrollable)
+    .modal-block
+      button.modal-close.modal-block__close(data-modal='close' aria-label='close')
+      .modal-form__head
+        h2.modal__title Получите персональное предложение!
+        p INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных 
+      .row.justify-content-center
+        form.form.modal-form__form.js-validation.col-lg-8.col-md-10
+          .row
+            .form__group.col-12
+              .form__item
+                label.input
+                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name').input__element
+              .form__item
+                label.input
+                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone').input__element
+            .form__submit.col-12
+              button.button.button_submit(type='submit')
+                span Отправить
+                svg(viewBox='0 0 120 30' fill='currentColor')
+                  circle(cx='15' cy='15' r='15')
+                    animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+                    animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
+                  circle(cx='60' cy='15' r='9' fill-opacity='0.3')
+                    animate(attributeName='r' from='9' to='9' begin='0s' dur='0.8s' values='9;15;9' calcMode='linear' repeatCount='indefinite')
+                    animate(attributeName='fill-opacity' from='0.5' to='0.5' begin='0s' dur='0.8s' values='.5;1;.5' calcMode='linear' repeatCount='indefinite')
+                  circle(cx='105' cy='15' r='15')
+                    animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+                    animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
+      

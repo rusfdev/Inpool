@@ -40,7 +40,7 @@ import Inputmask from "inputmask";
 const validate = require("validate.js");
 import Splide from '@splidejs/splide';
 import SwipeListener from 'swipe-listener';
-import { disablePageScroll, enablePageScroll } from 'scroll-lock';
+import { disablePageScroll, enablePageScroll, getScrollState } from 'scroll-lock';
 
 const brakepoints = {
   sm: 576,
@@ -110,14 +110,14 @@ const App = {
     Nav.init();
     DistortionImages.init();
     Validation.init();
-    Popup.init();
+    Modal.init();
 
     if(!mobile()) {
       Cursor.init();
-      Parralax.init();
     } else {
       mobileWindow.init();
     }
+    Parralax.init();
 
     Preloader.finish(()=>{
       Transitions.active = true;
@@ -155,7 +155,7 @@ const Transitions = {
   exit: function($container, namespace) {
     this.active = true;
     $wrapper.classList.add('disabled');
-    $header.classList.remove('header_fixed');
+    $header.classList.remove('header_fixed', 'header_hidden');
     if(!mobile() && !dev) Cursor.loading();
     if(Nav.state) Nav.close();
     Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
@@ -416,7 +416,6 @@ const TouchHoverEvents = {
         break;
       }
     }
-    
 
     //touchstart
     if(event.type=='touchstart') {
@@ -424,7 +423,7 @@ const TouchHoverEvents = {
       if(this.timeout) clearTimeout(this.timeout);
       if($targets[0]) {
         for(let $target of document.querySelectorAll(this.targets)) $target.classList.remove('touch');
-        for(let $target of $targets) $target.classList.add('touch');
+        for(let $target of $targets) $target.setAttribute('data-touch', '');
       }
     } 
     //touchend
@@ -434,7 +433,7 @@ const TouchHoverEvents = {
         setTimeout(()=>{
           for(let $target of $targets) {
             $target.dispatchEvent(new CustomEvent("customTouchend"));
-            $target.classList.remove('touch');
+            $target.removeAttribute('data-touch');
           }
         }, this.touchEndDelay)
       }
@@ -442,21 +441,20 @@ const TouchHoverEvents = {
     
     //mouseenter
     if(event.type=='mouseenter' && !this.touched && $targets[0] && $targets[0]==event.target) {
-      $targets[0].classList.add('hover');
-      Cursor.enter();
+      $targets[0].setAttribute('data-hover', '');
     }
     //mouseleave
     else if(event.type=='mouseleave' && !this.touched && $targets[0] && $targets[0]==event.target) {
-      $targets[0].classList.remove('hover', 'focus');
-      Cursor.leave();
+      $targets[0].removeAttribute('data-focus');
+      $targets[0].removeAttribute('data-hover');
     }
     //mousedown
     if(event.type=='mousedown' && !this.touched && $targets[0]) {
-      $targets[0].classList.add('focus');
+      $targets[0].setAttribute('data-focus', '');
     } 
     //mouseup
     else if(event.type=='mouseup' && !this.touched  && $targets[0]) {
-      $targets[0].classList.remove('focus');
+      $targets[0].removeAttribute('data-focus');
     }
   }
 }
@@ -541,16 +539,17 @@ const Nav = {
     $header.classList.add('header_nav-opened');
     this.state=true;
     this.animation.play();
-    disablePageScroll();
+    if(getScrollState()) disablePageScroll();
   },
   close: function() {
     $header.classList.remove('header_nav-opened');
     this.state=false;
-    this.animation.reverse();
-    enablePageScroll();
+    this.animation.reverse().eventCallback('onReverseComplete', ()=>{
+      enablePageScroll();
+    });
   },
   setSize: function() {
-    if(window.innerWidth>brakepoints.md) {
+    if(window.innerWidth>=brakepoints.md) {
       let cw = document.querySelector('.container').getBoundingClientRect().width,
           w2 = (contentWidth()-cw)/2,
           nw = this.$container.querySelector('.nav__block').getBoundingClientRect().width;
@@ -578,6 +577,12 @@ const Header = {
     this.check();
   }, 
   check: function() {
+    if(window.innerWidth>=brakepoints.lg && desktopConceptionsSlider.fixed && !Transitions.active) {
+      $header.classList.add('header_hidden');
+    } else {
+      $header.classList.remove('header_hidden');
+    }
+
     if(Scroll.y>0 && !this.fixed) {
       this.fixed = true;
       $header.classList.add('header_fixed');
@@ -687,10 +692,10 @@ const HomeBanner = {
         let $image = this.$images[index];
         gsap.set($image, {autoAlpha:0});
         let image_in = gsap.timeline()
-          .fromTo($image, {scale:1}, {scale:1.2, duration:speed, ease:'power2.in'})
+          .fromTo($image, {scale:1.05}, {scale:1.2, duration:speed, ease:'power2.in'})
           .fromTo($image, {autoAlpha:1}, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
         let image_out = gsap.timeline()
-          .fromTo($image, {scale:1.2}, {scale:1, duration:speed, ease:'power2.out'})
+          .fromTo($image, {scale:1.2}, {scale:1.05, duration:speed, ease:'power2.out'})
           .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
         this.animations_enter[index].add(image_out, `>-${speed}`)
         this.animations_exit[index].add(image_in, `>-${speed}`)
@@ -1028,7 +1033,9 @@ const Validation = {
     //validation
     this.namspaces = {
       name: 'name',
-      phone: 'phone'
+      phone: 'phone',
+      email: 'email',
+      message: 'message'
     }
     this.constraints = {
       name: {
@@ -1056,25 +1063,59 @@ const Validation = {
           pattern: /^\+7 \d{3}\ \d{3}\-\d{4}$/,
           message: '^Введите корректный номер телефона'
         }
+      },
+      email: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваш email'
+        },
+        email: {
+          message: '^Неправильный формат email-адреса' 
+        }
+      },
+      message: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваше сообщение'
+        },
+        length: {
+          minimum: 5,
+          tooShort: "^Сообщение слишком короткое (минимум %{count} символов)",
+          maximum: 100,
+          tooLong: "^Сообщение слишком длинное (максимум %{count} символов)"
+        }
       }
     };
     this.mask = Inputmask({
       mask: "+7 999 999-9999",
       showMaskOnHover: false,
       clearIncomplete: false
-    }).mask('[name="phone"]');
+    }).mask("[data-validate='phone']");
 
     document.addEventListener('submit', (event)=>{
       event.preventDefault();
       let $form = event.target;
       if($form.classList.contains('js-validation') && this.checkValid($form)) {
-        //submit
+        let $submit = $form.querySelector('.button_submit');
+        $form.classList.add('loading');
+        $submit.classList.add('loading');
+        //test
+        setTimeout(()=>{
+          $form.classList.remove('loading');
+          $submit.classList.remove('loading');
+          this.reset($form);
+          let modal = document.querySelector('#succes');
+          Modal.open(modal);
+          setTimeout(()=>{
+            Modal.close(modal);
+          }, 3000)
+        }, 2000)
       }
     })
     document.addEventListener('input', (event)=>{
       let $input = event.target,
           $form = $input.closest('form');
-      if($form && $form.classList.contains('js-validation')) {
+      if($form.classList.contains('js-validation')) {
         this.checkValid($form, $input);
       }
     })
@@ -1109,7 +1150,10 @@ const Validation = {
         }
         if(flag && $input.parentNode.classList.contains('error')) {
           $input.parentNode.classList.remove('error');
-          $input.parentNode.querySelector('.input__message').remove();
+          let $msg = $input.parentNode.querySelector('.input__message');
+          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
+            $msg.remove();
+          })
         }
       } 
       else {
@@ -1120,7 +1164,7 @@ const Validation = {
               if(!$input.parentNode.classList.contains('error')) {
                 $input.parentNode.classList.add('error');
                 $input.parentNode.insertAdjacentHTML('beforeend', `<span class="input__message">${resault[key][0]}</span>`);
-                gsap.to($input.parentNode.querySelector('.input__message'), {autoAlpha:1, duration:0.25, ease:'power2.out'})
+                gsap.to($input.parentNode.querySelector('.input__message'), {autoAlpha:1, duration:0.3, ease:'power2.inOut'})
               } else {
                 $input.parentNode.querySelector('.input__message').textContent = `${resault[key][0]}`;
               }
@@ -1132,8 +1176,12 @@ const Validation = {
     } else {
       $inputs.forEach(($input)=>{
         $input.parentNode.classList.remove('error');
-        let $message = $input.parentNode.querySelector('.input__message');
-        if($message) $message.remove();
+        let $msg = $input.parentNode.querySelector('.input__message');
+        if($msg) {
+          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
+            $msg.remove();
+          })
+        }
       })
       return true;
     }
@@ -1142,15 +1190,94 @@ const Validation = {
     let $inputs = $form.querySelectorAll('input, textarea');
     $inputs.forEach(($input)=>{
       $input.value = '';
-      if($input.parentNode.classList.contains('error')) {
-        $input.parentNode.classList.remove('error');
-        $input.parentNode.querySelector('.input__message').remove();
+      let $parent = $input.parentNode;
+      if($parent.classList.contains('focused')) {
+        $parent.classList.remove('focused');
+      }
+      if($parent.classList.contains('error')) {
+        $parent.classList.remove('error');
+        let $msg = $input.parentNode.querySelector('.input__message');
+        if($msg) {
+          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
+            $msg.remove();
+          })
+        }
       }
     })
   }
 }
 
-const Popup = {
+const Modal = {
+  init: function() {
+    gsap.registerEffect({
+      name: "modal",
+      effect: ($modal, $content) => {
+        let anim = gsap.timeline({paused:true})
+          .fromTo($modal, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+          .fromTo($content, {y:20}, {y:0, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
+        return anim;
+      },
+      extendTimeline: true
+    });
+    
+    document.addEventListener('click', (event)=>{
+      let $open = event.target.closest('[data-modal="open"]'),
+          $close = event.target.closest('[data-modal="close"]'),
+          $wrap = event.target.closest('.modal'),
+          $block = event.target.closest('.modal-block');
+      //open
+      if($open) {
+        event.preventDefault();
+        let $modal = document.querySelector(`${$open.getAttribute('href')}`);
+        this.open($modal);
+      }
+      //close 
+      else if($close || (!$block && $wrap)) {
+        this.close(this.$active);
+      }
+    })
+
+  }, 
+  open: function($modal) {
+    let play = ()=> {
+      this.$active = $modal;
+      disablePageScroll();
+      let $content = $modal.querySelector('.modal-block');
+      this.animation = gsap.effects.modal($modal, $content);
+      this.animation.play();
+      //succes
+      if($modal.classList.contains('modal-succes')) {
+        let $icon = $modal.querySelector('path'),
+            w = $icon.getTotalLength();
+        gsap.timeline()
+          .set($icon, {autoAlpha:0})
+          .set($icon, {css:{'stroke-dasharray':w}}, `+=${speed*0.25}`)
+          .set($icon, {autoAlpha:1})
+          .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
+      }
+    }
+
+    if($modal) {
+      if(this.$active) this.close(this.$active, play);
+      else play();
+    }
+  }, 
+  close: function($modal, callback) {
+    if($modal && this.$active) {
+      delete this.$active;
+      this.animation.timeScale(2).reverse().eventCallback('onReverseComplete', ()=>{
+        delete this.animation;
+        enablePageScroll();
+        if(callback) callback();
+      })
+      //reset form
+      let $form = $modal.querySelector('form');
+      if($form) Validation.reset($form);
+    }
+  }
+}
+
+/* const Popup = {
   init: function() {
     
     document.addEventListener('click', (event)=>{
@@ -1198,7 +1325,7 @@ const Popup = {
     })
 
   }
-}
+} */
 
 class Scale {
   constructor($line, $value, value) {
@@ -1433,7 +1560,6 @@ const desktopConceptionsSlider = {
         } else {
           this.animation.seek(scroll/this.h);
           if(this.fixed) {
-            console.log('fixxxxx')
             this.fixed = false;
             gsap.set(this.$container, {y:0})
           }

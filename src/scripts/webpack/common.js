@@ -143,7 +143,7 @@ const Transitions = {
     Nav.change(App.name);
     setTimeout(()=> {
       if(Pages[namespace]) Pages[namespace].init();
-      if(Parralax.initialized) Parralax.check();
+      //if(Parralax.initialized) Parralax.check();
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
@@ -596,13 +596,11 @@ const Header = {
 const Parralax = {
   init: function() {
     this.initialized = true;
-    Scroll.addListener(()=>{
-      this.check();
-    })
+    this.check();
   },
   check: function() {
     let $items = App.$container.querySelectorAll('[data-parralax]');
-    $items.forEach(($this, index)=>{
+    $items.forEach(($this)=>{
       let y = $this.getBoundingClientRect().y,
           h1 = window.innerHeight,
           h2 = $this.getBoundingClientRect().height,
@@ -614,8 +612,9 @@ const Parralax = {
       } else {
         val = scroll * factor;
       }
-      gsap.set($this, {y:val})
+      $this.style.transform = `translateY(${val}px)`;
     })
+    requestAnimationFrame(()=>{this.check()})
   }
 }
 
@@ -1276,56 +1275,6 @@ const Modal = {
     }
   }
 }
-
-/* const Popup = {
-  init: function() {
-    
-    document.addEventListener('click', (event)=>{
-      let $button = event.target!==document?event.target.closest('[data-popup]'):null;
-      if($button && $button.getAttribute('data-popup')=='open') {
-        event.preventDefault();
-        let href = $button.getAttribute('href'), 
-            $popup = document.querySelector(`${href}`);
-        //popup is
-        if($popup) {
-          let $content = $popup.querySelector('.popup-block__container');
-          this.newAnimation = gsap.timeline({paused:true})
-            .fromTo($popup, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
-            .fromTo($content, {y:20}, {y:0, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
-          
-          if($popup.classList.contains('popup-succes')) {
-            let $icon = $popup.querySelector('path'),
-                w = $icon.getTotalLength();
-            let timeline = gsap.timeline()
-              .set($icon, {css:{'stroke-dasharray':w}})
-              .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
-            this.newAnimation.add(timeline, `-=${speed}`)
-          }
-
-          if(this.oldAnimation) {
-            this.oldAnimation.timeScale(1.5).reverse().eventCallback('onReverseComplete', ()=>{
-              this.newAnimation.play();
-            });
-          } else {
-            this.newAnimation.play();
-            disablePageScroll();
-          }
-          
-          this.oldAnimation = this.newAnimation;
-        }
-      } 
-      else if($button && $button.getAttribute('data-popup')=='close') {
-        enablePageScroll();
-        let $popup = $button.closest('.popup'),
-            $form = $popup.querySelector('form');
-        this.oldAnimation.timeScale(1.5).reverse();
-        this.oldAnimation = false;
-        if($form) Validation.reset($form);
-      }
-    })
-
-  }
-} */
 
 class Scale {
   constructor($line, $value, value) {

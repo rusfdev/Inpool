@@ -143,7 +143,7 @@ const Transitions = {
     Nav.change(App.name);
     setTimeout(()=> {
       if(Pages[namespace]) Pages[namespace].init();
-      //if(Parralax.initialized) Parralax.check();
+      if(Parralax.initialized) Parralax.check();
       this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
       this.animation.eventCallback('onComplete', ()=>{
         $wrapper.classList.remove('disabled');
@@ -596,7 +596,9 @@ const Header = {
 const Parralax = {
   init: function() {
     this.initialized = true;
-    this.check();
+    Scroll.addListener(()=>{
+      requestAnimationFrame(()=>{this.check();})
+    })
   },
   check: function() {
     let $items = App.$container.querySelectorAll('[data-parralax]');
@@ -612,9 +614,8 @@ const Parralax = {
       } else {
         val = scroll * factor;
       }
-      $this.style.transform = `translateY(${val}px)`;
+      $this.style.transform = `translate3d(0, ${val}px, 0)`;
     })
-    requestAnimationFrame(()=>{this.check()})
   }
 }
 

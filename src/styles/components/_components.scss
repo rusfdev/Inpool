@@ -197,7 +197,7 @@
       transform: scale(7);
       opacity: 0.15;
     }
-    &[data-focus] {
+    &.focus {
       &:after {
         transform: scale(5.25);
       }
@@ -207,7 +207,7 @@
     }
   }
 
-  &[data-focus] {
+  &.focus {
     &:after {
       transition: $trs1;
     }
@@ -268,18 +268,16 @@
       display: block;
       cursor: pointer;
       margin: -5px;
+      padding: 5px;
       width: 20px;
       height: 20px;
       position: relative;
       &::before {
         content: '';
         display: block;
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        width: 10px;
-        height: 10px;
-        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
         border: 1.5px solid var(--color-muted);
         background-color: var(--color-muted);
         transition: border-color $trs1, background-color $trs1, transform $trs1;
@@ -297,6 +295,19 @@
           background-color: transparent;
           border-color: var(--color-light);
         }
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__pagination {
+      li {
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
+      }
+      button {
+        padding: 6px;
+        margin: -6px;
       }
     }
   }

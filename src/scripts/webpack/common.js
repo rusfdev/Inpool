@@ -49,7 +49,7 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = true;
+const dev = false;
 const speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 
@@ -112,12 +112,12 @@ const App = {
     Validation.init();
     Modal.init();
 
-    if(!mobile()) {
-      Cursor.init();
-    } else {
+    if(mobile()) {
       mobileWindow.init();
+    } else {
+      Cursor.init();
+      Parralax.init();
     }
-    Parralax.init();
 
     Preloader.finish(()=>{
       Transitions.active = true;
@@ -442,11 +442,13 @@ const TouchHoverEvents = {
     //mouseenter
     if(event.type=='mouseenter' && !this.touched && $targets[0] && $targets[0]==event.target) {
       $targets[0].setAttribute('data-hover', '');
+      Cursor.enter();
     }
     //mouseleave
     else if(event.type=='mouseleave' && !this.touched && $targets[0] && $targets[0]==event.target) {
       $targets[0].removeAttribute('data-focus');
       $targets[0].removeAttribute('data-hover');
+      Cursor.leave();
     }
     //mousedown
     if(event.type=='mousedown' && !this.touched && $targets[0]) {
@@ -769,6 +771,7 @@ const Cursor = {
   init: function() {
     this.$parent = document.querySelector('.trigger-round');
     this.$element = document.querySelector('.trigger-round-circle');
+    this.initialized = true;
 
     this.width = this.$parent.getBoundingClientRect().width;
     this.height = this.$parent.getBoundingClientRect().height;
@@ -855,7 +858,6 @@ class BackgroundScene {
       if(!this.flag) {
         this.flag = true;
         this.scene.start(this.$scene.getAttribute('data-src'));
-        this.scene.renderer.domElement.setAttribute('data-parralax', '0.35');
       }
     })
     this.scene.on('started', ()=>{
@@ -1242,6 +1244,7 @@ const Modal = {
     let play = ()=> {
       this.$active = $modal;
       disablePageScroll();
+      $header.classList.add('header_modal-opened');
       let $content = $modal.querySelector('.modal-block');
       this.animation = gsap.effects.modal($modal, $content);
       this.animation.play();
@@ -1266,6 +1269,7 @@ const Modal = {
     if($modal && this.$active) {
       delete this.$active;
       this.animation.timeScale(2).reverse().eventCallback('onReverseComplete', ()=>{
+        $header.classList.remove('header_modal-opened');
         delete this.animation;
         enablePageScroll();
         if(callback) callback();
@@ -1722,10 +1726,11 @@ class TechnologiesSlider {
     this.$slider = this.$parent.querySelector('.technologies-slider__slider');
     this.$images = this.$parent.querySelectorAll('.technologies-slider__image');
     this.$idx = this.$parent.querySelectorAll('.technologies-slider__idx span');
+    this.$scene = this.$parent.querySelector('.technologies-slider__scene');
 
     //desktop
     if(window.innerWidth >= brakepoints.lg) {
-      this.$scene = this.$parent.querySelector('.technologies-slider__scene');
+      this.speed = speed*1000;
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
@@ -1756,6 +1761,7 @@ class TechnologiesSlider {
     }
     //mobile 
     else {
+      this.speed = speed*500;
       this.animations = [];
       this.$images.forEach(($image, index)=>{
         this.animations[index] = gsap.timeline({paused:true})
@@ -1771,7 +1777,7 @@ class TechnologiesSlider {
       arrows: false,
       pagination: true,
       easing: 'ease-in-out',
-      speed: speed*1000,
+      speed: this.speed,
       autoplay: true,
       perMove: 1,
       interval: 1000*autoslide_interval

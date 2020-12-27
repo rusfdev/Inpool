@@ -79,6 +79,11 @@
     justify-content: space-between;
     padding: 0 20px 0 30px;
   }
+  @include media-breakpoint-down(sm) {
+    &_ico {
+      padding: 0 24px 0 30px;
+    }
+  }
 }
 
 .button-more {

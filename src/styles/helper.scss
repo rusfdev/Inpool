@@ -37,7 +37,7 @@ $trs: .25s ease-in-out;
       color: inherit;
       transition: transform $trs;
     }
-    &.touch, &.hover {
+    &[data-touch], &[data-hover] {
       color: $color-active;
     }
   }
@@ -83,7 +83,7 @@ $trs: .25s ease-in-out;
       border-radius: 2px;
       text-decoration: none;
       border: none;
-      &.touch, &.hover {
+      &[data-touch], &[data-hover] {
         background-color: $color-hover;
       }
       &.active {

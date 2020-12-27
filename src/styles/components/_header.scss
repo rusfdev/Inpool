@@ -5,13 +5,17 @@
   left: 0;
   z-index: 100;
   width: 100%;
-  transition: background-color $trs2, transform $trs2;
+  transition: background-color $trs2, transform $trs2, opacity $trs2;
   &_fixed {
     background-color: var(--color-bg-transparent);
     &:not(.header_nav-opened) {
       .header__container {
+        transition: height $trs2in;
         height: 70px;
       }
+    }
+    &.header_modal-opened {
+      opacity: 0;
     }
   }
   &_hidden {
@@ -25,7 +29,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: height $trs2;
+    transition: height $trs2out;
   }
   @include media-breakpoint-down(xxl) {
     &__container {

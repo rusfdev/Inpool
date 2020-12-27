@@ -1206,11 +1206,12 @@
   padding: 84px 0 70px 0;
   padding-bottom: 70px;
   &__scene {
+    position: absolute;
     height: calc(100% - 84px);
     top: 84px;
-    left: 0;
     width: 100%;
-    position: absolute;
+    left: 0;
+    overflow: hidden;
   }
   &__image {
     position: absolute;
@@ -1223,7 +1224,7 @@
   }
   &__content {
     background: var(--color-bg-transparent);
-    padding: 30px 32px 40px 32px;
+    padding: 30px 32px 36px 32px;
     width: 400px;
     margin-top: -84px;
   }
@@ -1236,7 +1237,7 @@
   }
   &__idx {
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     right: 0;
     line-height: 1;
     height: 1em;
@@ -1270,11 +1271,46 @@
     &-title {
       font-size: 1rem;
       margin: 0 0 1rem 0;
-      font-weight: 500;
+      font-weight: 400;
     }
   }
   &__button {
     margin-top: 30px;
     width: 100%;
+  }
+  @include media-breakpoint-down(lg) {
+    padding: 90px 0;
+    &__scene {
+      height: 100%;
+      top: 0;
+    }
+    &__content {
+      margin: 0;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    padding: 70px 0;
+  }
+  @include media-breakpoint-down(sm) {
+    padding: 50px 0;
+    &__content {
+      width: 100%;
+      padding: 24px 20px 34px 20px;
+    }
+    &__button {
+      margin: 34px 0 0 0;
+    }
+    &__title {
+      margin-bottom: 76px;
+    }
+    &__slider {
+      padding-bottom: 42px;
+      .splide__track {
+        margin: 0 -10px;
+      }
+      .splide__slide {
+        padding: 0 10px;
+      }
+    }
   }
 }

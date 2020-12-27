@@ -30,7 +30,7 @@
       height: 18px;
       color: inherit;
       transition: transform 0.25s ease-in-out; }
-    .helper__trigger.touch, .helper__trigger.hover {
+    .helper__trigger[data-touch], .helper__trigger[data-hover] {
       color: #ca2323; }
   .helper__container {
     position: relative;
@@ -69,7 +69,7 @@
     border-radius: 2px;
     text-decoration: none;
     border: none; }
-    .helper__section-button.touch, .helper__section-button.hover {
+    .helper__section-button[data-touch], .helper__section-button[data-hover] {
       background-color: #000; }
     .helper__section-button.active {
       pointer-events: none;

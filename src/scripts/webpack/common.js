@@ -1776,7 +1776,6 @@ class TechnologiesSlider {
       perPage: 1,
       arrows: false,
       pagination: true,
-      easing: 'ease-in-out',
       speed: this.speed,
       autoplay: true,
       perMove: 1,

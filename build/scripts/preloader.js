@@ -12,7 +12,7 @@ $prelaoder.classList.add('active');
 $chars.forEach(function ($char, index) {
   setTimeout(function () {
     $char.classList.add('active');
-  }, 500 * Math.random());
+  }, 100 + 1000 * Math.random());
 });
 setTimeout(function () {
   $square.classList.add('active');

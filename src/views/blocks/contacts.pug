@@ -7,21 +7,30 @@ section.section.contacts
         .contacts-block 
           .container  
             h6.contacts-block__title Наши контакты
-            .contacts-block__values
-              h2.contacts-block__value Москва
+            .contacts__select
+              //h2.contacts-block__value Москва
+              select.select 
+                option(value='Москва' selected) Москва
+                option(value='Санкт-Петербург') Санкт-Петербург
+                option(value='Краснодар') Краснодар
+                option(value='Тула') Тула
+                option(value='Липецк') Липецк
+                option(value='Воронеж') Воронеж
+                option(value='Орёл') Орёл
+                option(value='Казань') Казань
+                option(value='Екатеринбург') Екатеринбург
+                
             .contacts-block__contents
               //content
               .contacts-block__content
                 .contacts-block__item WATER ELEMENTS
                 .contacts-block__item 
-                  a(href="tel:+74953746744")
-                    span +7 495 374 67 44
+                  a(href="tel:+74953746744") +7 495 374 67 44
                 .contacts-block__item 115419, Москва, ул.Шаболовка, 34с5. БЦ Матрикс
                 .contacts-block__item 
-                  a(href="https://waterelements.ru/" rel='nofollow' target='_blank')
-                    span waterelements.ru
+                  a(href="https://waterelements.ru/" rel='nofollow' target='_blank') waterelements.ru
     if contacts_page!==true
       .contacts__button
-        a(href="javascript:void(0);").button
+        a(href="#modal-form" data-modal='open').button
           span Заказать обратный звонок
 

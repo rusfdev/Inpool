@@ -287,10 +287,6 @@
       font-weight: 500;
       font-family: $font1;
       margin: 0 0 70px 0;
-      color: var(--color-muted);
-    }
-    &__values {
-      margin: 0 0 35px 0;
     }
     &__value {
       margin: 0;
@@ -306,10 +302,151 @@
       padding: 0 50px 15px 0;
     }
   }
+  &__select {
+    margin: 0 0 35px 0;
+    .ss-main {
+      color: var(--color-text);
+      display: block;
+      .ss-single-selected {
+        border-radius: 0;
+        border: 0;
+        background-color: transparent;
+        padding: 0;
+        height: auto;
+        width: auto;
+        display: inline-flex;
+        align-items: flex-end;
+        line-height: 1.25;
+        font-size: 2.625rem;
+        font-family: $font2;
+        .placeholder {
+          line-height: inherit;
+        }
+        .ss-arrow {
+          margin: 0 0 0.25em 0.25em;
+          height: 0.5em;
+          width: 0.5em;
+          flex-shrink: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: transform $trs1;
+          span {
+            padding: 0.13em;
+            border-color: var(--color-text);
+            margin: 0 0 0.1em 0 !important;
+            transform: rotate(45deg) !important;
+          }
+        }
+        &.ss-open-below {
+          .ss-arrow {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      .ss-content {
+        background-color: var(--color-bg-select);
+        border-radius: 5px;
+        border: none;
+        transition: transform $trs1, opacity $trs1, visibility $trs1;
+        color: var(--color-light);
+        overflow: hidden;
+        max-width: 280px;
+        margin: 10px 0;
+        transform: scaleY(1) translateY(10px);
+        visibility: hidden;
+        &.ss-open {
+          visibility: visible;
+          transform: scaleY(1) translateY(0);
+        }
+        .ss-search {
+          padding: 0;
+          margin: 0;
+          input {
+            font-weight: 300;
+            border: none;
+            padding: 0;
+            height: auto;
+            background-color: transparent;
+            border-radius: 0;
+            display: block;
+            color: var(--color-text);
+            padding: 0 18px;
+            line-height: 50px;
+            box-shadow: none !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &::-webkit-search-decoration,
+            &::-webkit-search-cancel-button,
+            &::-webkit-search-results-button,
+            &::-webkit-search-results-decoration { 
+              display: none;
+            }
+            &::placeholder {
+              transition: opacity $trs1;
+            }
+            &:focus {
+              &::placeholder {
+                opacity: 0;
+              }
+            }
+          }
+        }
+        .ss-list {
+          max-height: 10000px;
+          .ss-option {
+            padding: 5px 18px;
+            transition: background-color $trs1;
+            &:hover, &.ss-highlighted {
+              color: inherit;
+              background-color: transparent;
+            }
+            &.ss-disabled {
+              cursor: default;
+              pointer-events: none;
+              background-color: transparent;
+              color: inherit;
+            }
+            &.ss-option-selected {
+              background-color: var(--color-active-option);
+            }
+            &[data-touch], &[data-hover] {
+              background-color: var(--color-active-option);
+            }
+          }
+        }
+        
+      }
+    }
+    .scroll {
+      max-height: 204px;
+      overflow: auto;
+    }
+    .scrollbar-track-y {
+      width: 16px;
+      padding: 6px;
+      pointer-events: none;
+      opacity: 1;
+      &:after {
+        border-radius: 4px;
+      }
+    }
+  }
   @include media-breakpoint-up(sm) {
     &-block {
       .container {
         padding: 0;
+      }
+    }
+  }
+  @include media-breakpoint-down(xxl) {
+    &-block {
+      padding: 40px;
+      &__content {
+        margin: 0 -40px -15px 0;
+      }
+      &__item {
+        padding: 0 40px 15px 0;
       }
     }
   }

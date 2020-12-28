@@ -18,7 +18,7 @@
       opacity: 0;
     }
   }
-  &_hidden {
+  &_hidden:not(.header_nav-opened) {
     transform: translateY(-100%);
   }
   &_nav-opened {

@@ -4,8 +4,9 @@
 @import "../../node_modules/normalize.css/normalize";
 //bootstrap-grid
 @import "../../node_modules/bootstrap/scss/bootstrap-grid";
-//
+//libs
 @import "../../node_modules/@splidejs/splide/dist/css/splide-core.min";
+@import "../../node_modules/slim-select/dist/slimselect";
 
 /*========== Basic ==========*/
 @import "./components/basic";

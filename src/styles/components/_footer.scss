@@ -24,10 +24,11 @@
 }
 
 .dev-label {
-  &__link {
+  a {
     font-size: 0;
     display: inline-block;
     transform: translateY(5%);
+    border: none;
   }
   svg {
     height: 15px;

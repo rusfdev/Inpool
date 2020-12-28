@@ -110,10 +110,10 @@ a {
     border-bottom: 1px solid var(--color-light);
     &[data-touch], &[data-hover] {
       color: var(--color-light);
+      border-color: transparent;
     }
     &[data-focus] {
       color: var(--color-accent);
-      border-color: transparent;
     }
   }
 }

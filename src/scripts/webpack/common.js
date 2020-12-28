@@ -41,6 +41,7 @@ const validate = require("validate.js");
 import Splide from '@splidejs/splide';
 import SwipeListener from 'swipe-listener';
 import { disablePageScroll, enablePageScroll, getScrollState } from 'scroll-lock';
+import SlimSelect from 'slim-select';
 
 const brakepoints = {
   sm: 576,
@@ -135,12 +136,12 @@ const Transitions = {
     App.$container = $container;
     App.namespace = namespace;
     App.name = App.$container.getAttribute('data-name');
-
     window.dispatchEvent(new Event("change"));
     window.$container = $container;
     if(Scroll.type=='custom') Scroll.scrollbar.track.yAxis.element.classList.remove('show');
     if(mobileWindow.initialized) mobileWindow.check();
     Nav.change(App.name);
+    Select.init();
     setTimeout(()=> {
       if(Pages[namespace]) Pages[namespace].init();
       if(Parralax.initialized) Parralax.check();
@@ -158,6 +159,7 @@ const Transitions = {
     $header.classList.remove('header_fixed', 'header_hidden');
     if(!mobile() && !dev) Cursor.loading();
     if(Nav.state) Nav.close();
+    Select.destroy();
     Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
@@ -177,7 +179,9 @@ const Pages = {
       Splitting();
       HomeBanner.init();
       if(window.innerWidth>=brakepoints.lg) {
-        desktopConceptionsSlider.init();
+        let $dcslider = document.querySelector('.conceptions');
+        this.dcslider = new desktopConceptionsSlider($dcslider);
+        this.dcslider.init();
       }
       //slider
       this.tslider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
@@ -185,7 +189,10 @@ const Pages = {
     },
     destroy: function() {
       HomeBanner.destroy();
-      desktopConceptionsSlider.destroy();
+      if(this.dcslider) {
+        this.dcslider.destroy();
+        delete this.dcslider;
+      }
       //slider
       this.tslider.destroy();
       delete this.tslider;
@@ -267,6 +274,39 @@ const Pages = {
   }
 }
 
+const Select = {
+  init: function() {
+    this.selects = {};
+    let $select = App.$container.querySelectorAll('.select');
+    $select.forEach(($element, index)=>{
+      this.selects[index] = new SlimSelect({
+        select: $element,
+        searchText: 'Совпадений не найдено...',
+        searchPlaceholder: 'Поиск по городам',
+        showContent: 'down',
+        selectByGroup: true
+      })
+
+      let $scroll = document.createElement('div');
+      $scroll.classList.add('scroll');
+      this.selects[index].slim.content.insertAdjacentElement('beforeEnd', $scroll);
+      $scroll.insertAdjacentElement('beforeEnd', this.selects[index].slim.list);
+      if(!mobile()) {
+        this.selects[index].scrollbar = Scrollbar.init($scroll, {
+          damping: 0.1
+        })
+      }
+    })
+  },
+  destroy: function() {
+    for(let key in this.selects) {
+      if(this.selects[key].scrollbar) this.selects[key].scrollbar.destroy();
+      this.selects[key].destroy();
+    }
+    delete this.selects;
+  }
+}
+
 const Preloader = {
   min_loading_time: speed*2, 
   finish_speed: speed, 
@@ -275,12 +315,11 @@ const Preloader = {
       this.min_loading_time = 0;
       this.finish_speed = 0;
     }
+
     let delay = Math.max(this.min_loading_time-loading_duration/1000, 0);
 
     this.animation = gsap.timeline({paused:true})
-      .set([$prelaoder, /* $images, */ $chars, $square], {css:{transition:'none'}})
-      //.set($square, {autoAlpha:1}) 
-      //.to($images, {autoAlpha:0, duration:this.finish_speed, ease:'power2.inOut'})
+      .set([$prelaoder, $chars, $square], {css:{transition:'none'}})
       .to($square, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut'})
       .to($chars, {autoAlpha:0, duration:this.finish_speed*0.75, ease:'power2.inOut', stagger:{amount:this.finish_speed*0.25, from:'random'}}, `-=${this.finish_speed}`)
       .set($prelaoder, {autoAlpha:0})
@@ -387,7 +426,7 @@ const Scroll = {
 
 //hover/touch custom events
 const TouchHoverEvents = {
-  targets: 'a, button, label, tr, .jsTouchHover, .scrollbar-thumb, .scrollbar-track',
+  targets: 'a, button, label, tr, .jsTouchHover, .scrollbar-thumb, .scrollbar-track, .ss-option',
   touched: false,
   touchEndDelay: 100, //ms
   init: function() {
@@ -479,12 +518,14 @@ const Nav = {
     ]
     this.animation = gsap.timeline({paused:true, 
       onStart:()=>{
+        disablePageScroll();
         this.opened = true;
         this.$toggle_items.forEach(($item, index)=>{
           $item.setAttribute('d', this.button_forms[1])
         })
       }, 
       onReverseComplete:()=>{
+        enablePageScroll();
         this.opened = false;
         this.$toggle_items.forEach(($item, index)=>{
           $item.setAttribute('d', this.button_forms[0])
@@ -524,10 +565,12 @@ const Nav = {
     });
   },
   checkToggleButton: function(event) {
+    console.log(this.opened)
     if(!this.opened) {
-      if((event.type=='mouseenter' && !TouchHoverEvents.touched) || event.type=='touchstart') {
+      if((event.type=='mouseenter' && !TouchHoverEvents.touched)) {
         this.$toggle_items.forEach(($item, index)=>{
-          $item.setAttribute('d', this.button_forms[2])
+          $item.setAttribute('d', this.button_forms[2]);
+          console.log('kek')
         })
       } 
       else if(event.type=='mouseleave' || event.type=='customTouchend') {
@@ -541,14 +584,11 @@ const Nav = {
     $header.classList.add('header_nav-opened');
     this.state=true;
     this.animation.play();
-    if(getScrollState()) disablePageScroll();
   },
   close: function() {
     $header.classList.remove('header_nav-opened');
     this.state=false;
-    this.animation.reverse().eventCallback('onReverseComplete', ()=>{
-      enablePageScroll();
-    });
+    this.animation.reverse();
   },
   setSize: function() {
     if(window.innerWidth>=brakepoints.md) {
@@ -579,12 +619,6 @@ const Header = {
     this.check();
   }, 
   check: function() {
-    if(window.innerWidth>=brakepoints.lg && desktopConceptionsSlider.fixed && !Transitions.active) {
-      $header.classList.add('header_hidden');
-    } else {
-      $header.classList.remove('header_hidden');
-    }
-
     if(Scroll.y>0 && !this.fixed) {
       this.fixed = true;
       $header.classList.add('header_fixed');
@@ -1117,7 +1151,7 @@ const Validation = {
     document.addEventListener('input', (event)=>{
       let $input = event.target,
           $form = $input.closest('form');
-      if($form.classList.contains('js-validation')) {
+      if($form && $form.classList.contains('js-validation')) {
         this.checkValid($form, $input);
       }
     })
@@ -1324,9 +1358,12 @@ class Scale {
   }
 }
 
-const desktopConceptionsSlider = {
-  init: function() {
-    this.$parent = App.$container.querySelector('.conceptions');
+class desktopConceptionsSlider {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+
+  init() {
     this.$slider = this.$parent.querySelector('.conceptions__slider');
     this.$container = this.$parent.querySelector('.conceptions__slider-container');
     this.$wrapper = this.$parent.querySelector('.conceptions__slider-wrapper');
@@ -1340,26 +1377,21 @@ const desktopConceptionsSlider = {
         .fromTo($body, {css:{backgroundColor:bg}}, {css:{backgroundColor:bg_dark}, duration:this.speed, ease:'none'})
 
     this.create_desktop_animation(()=>{
-      this.sizing(()=>{
-        this.checkScrolling();
+      this.sizingEvent(()=>{
+        this.initScrolling();
       });
     });
+  }
 
-    this.sizingEvent = ()=> {
-      this.sizing();
-    }
-    window.addEventListener('resize', this.sizingEvent);
-  },
-
-  sizing: function(callback) {
+  sizingEvent(callback) {
     this.h = this.$slider.getBoundingClientRect().height;
-    this.factor = 1/(this.h/2); // seconds/scroll
+    this.factor = 1/(this.h/2);
     this.max_scroll = this.h+6/this.factor;
     this.$parent.style.paddingBottom = `${this.max_scroll-this.h}px`;
     if(callback) callback();
-  },
+  }
 
-  create_desktop_animation: function(callback) {
+  create_desktop_animation(callback) {
     this.animation = gsap.timeline({paused:true})
 
     this.$slides.forEach(($slide, slide_index)=>{
@@ -1483,93 +1515,100 @@ const desktopConceptionsSlider = {
     this.animation.add(finalanimations, `>-${this.duration}`);
 
     if(callback) callback();
-  },
+  }
 
-  checkScrolling: function() {
-    this.scrolling = ()=> {
-      let y = Scroll.y,
-          t = this.$slider.getBoundingClientRect().y,
-          scroll = y-(t+y-this.h);
+  initScrolling() {
+    this.mouseWheelListener = ()=> {
+      if(Scroll.inScroll) Scroll.stop();
+    }
+    this.scrollListener = (event)=> {
+      this.scrollEvent(event);
+    }
+    this.sizingListener = ()=> {
+      this.sizingEvent();
+    }
+    Scroll.addListener(this.scrollListener);
+    window.addEventListener('resize', this.sizingListener);
+    window.addEventListener('wheel', this.mouseWheelListener);
+  }
 
-      //clear
-      if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
-          
-      if(scroll>=0 && scroll<=this.max_scroll) {
-        if(scroll>=this.h) {
-          this.animation.seek(1+(scroll-this.h)*this.factor);
-          this.fixed = true;
-          gsap.set(this.$container, {y:scroll-this.h});
-          //autoscroll
-          if(!Scroll.inScroll) {
-            this.autoscroll_timeout = setTimeout(()=>{
-              let points = [1, 3, 5, 7], value;
-              for(let index in points) {
-                if(Math.abs(points[index] - this.animation.time())<1) {
-                  value = (y-scroll) + this.h + (points[index]-1)/this.factor;
-                }
+  scrollEvent() {
+    let y = Scroll.y,
+        t = this.$slider.getBoundingClientRect().y,
+        scroll = Math.ceil(y-(t+y-this.h));
+
+    //clear
+    if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
+        
+    if(scroll>=0 && scroll<=this.max_scroll) {
+
+      if(scroll>=this.h) {
+        this.animation.seek(1+(scroll-this.h)*this.factor);
+        this.fixed = true;
+        gsap.set(this.$container, {y:scroll-this.h});
+        //autoscroll
+        if(!Scroll.inScroll) {
+          this.autoscroll_timeout = setTimeout(()=>{
+            let points = [1, 3, 5, 7], value;
+            for(let index in points) {
+              if(Math.abs(points[index] - this.animation.time())<1) {
+                value = (y-scroll) + this.h + (points[index]-1)/this.factor;
               }
-              Scroll.scrollTop(value, speed);
-            }, 100)
-          }
-        } else {
-          this.animation.seek(scroll/this.h);
-          if(this.fixed) {
-            this.fixed = false;
-            gsap.set(this.$container, {y:0})
-          }
+            }
+            Scroll.scrollTop(value, speed);
+          }, 100)
         }
-      } 
-
-      else if(scroll>this.max_scroll && this.animation.progress()!==1) {
-        this.fixed = false;
-        this.animation.seek(7);
-        gsap.set(this.$container, {y:this.max_scroll-this.h})
-      } 
-      
-      else if(scroll<0 && this.animation.progress()!==0) {
-        this.animation.seek(0);
+      } else {
+        this.animation.seek(scroll/this.h);
+        if(this.fixed) {
+          this.fixed = false;
+          gsap.set(this.$container, {y:0});
+        }
       }
+    } 
 
-      if(scroll>this.h/2 && scroll<=this.h && !Transitions.active) {
+    else if(scroll>this.max_scroll && this.animation.progress()!==1) {
+      this.fixed = false;
+      this.animation.seek(7);
+      gsap.set(this.$container, {y:this.max_scroll-this.h})
+    } 
+    
+    else if(scroll<0 && this.animation.progress()!==0) {
+      this.animation.seek(0);
+    }
+
+    if(!Transitions.active) {
+      if(scroll>this.h/2 && scroll<=this.h) {
         let time = (scroll/this.h*2)-1;
         this.colorAnimation.seek(time);
-      } else if(scroll>this.max_scroll && scroll<=this.max_scroll+this.h/2 && !Transitions.active) {
+      } else if(scroll>this.max_scroll && scroll<=this.max_scroll+this.h/2) {
         let time = 1-(scroll-this.max_scroll)/this.h*2;
         this.colorAnimation.seek(time);
       }
     }
 
-    this.mouseWheelListener = ()=> {
-      if(Scroll.inScroll) {
-        Scroll.stop();
-      }
+    if(!Transitions.active && this.fixed) {
+      $header.classList.add('header_hidden');
+    } else if(!this.fixed) {
+      $header.classList.remove('header_hidden');
     }
 
-    this.scrolling();
-    this.scrollListener = (event)=> {
-      this.scrolling(event);
-    }
-    Scroll.addListener(this.scrollListener);
-    window.addEventListener('wheel', this.mouseWheelListener)
-  },
-  destroy: function() {
+  }
+
+  destroy() {
     window.removeEventListener('resize', this.sizing)
     window.removeEventListener('wheel', this.mouseWheelListener)
-    if(this.autoscroll_timeout) clearTimeout(this.autoscroll_timeout);
-    if(this.scrollListener) {
-      Scroll.removeListener(this.scrollListener);
-      this.fixed = false;
-    }
+    Scroll.removeListener(this.scrollListener);
+    clearTimeout(this.autoscroll_timeout);
     for(let slide_index in this.slides) {
-      if(this.slides[slide_index].scenes) {
-        for(let scene_index in this.slides[slide_index].scenes) {
-          this.slides[slide_index].scenes[scene_index].destroy();
-        }
+      for(let scene_index in this.slides[slide_index].scenes) {
+        this.slides[slide_index].scenes[scene_index].destroy();
       }
     }
-    
   }
+
 }
+
 
 class PortfolioSlider {
   constructor($slider) {
@@ -1787,9 +1826,7 @@ class TechnologiesSlider {
       gsap.to(this.$idx[newIndex], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
       this.enabled = false;
       //desktop
-      if(this.scene) {
-        this.scene.change(this.textures[newIndex], newIndex, speed*2);
-      } 
+      if(this.scene) this.scene.change(this.textures[newIndex], newIndex, speed*1.5);
       //mobile 
       else {
         this.animations[this.index].reverse();

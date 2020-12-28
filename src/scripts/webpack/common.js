@@ -151,7 +151,8 @@ const Transitions = {
 
     if(Pages[namespace]) Pages[namespace].init();
 
-    this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
+    this.animation = gsap.timeline({paused:true}).to($container, {duration:speed*1.4 ,autoAlpha:1, ease:'power2.inOut'});
+    setTimeout(()=>{this.animation.play()}, 100)
     this.animation.eventCallback('onComplete', ()=>{
       $wrapper.classList.remove('disabled');
       this.active = false;

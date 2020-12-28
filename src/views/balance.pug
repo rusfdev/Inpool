@@ -5,37 +5,40 @@ block variables
   -var namespace = 'conception';
   -var name = balance_name;
 block content
-  section.section.home-screen
-    .video-scene
-      //image
-      .image.image_cover.video-scene__image
-        img(data-src="./img/balance/home.jpg", alt="bg" data-parralax='0.35').lazyload
-      //contols
-      .video-scene__controls.container
-        a(href="javascript:void(0);").video-scene__close
-        .video-scene__timeline
-          span
-      video.video-scene__player(data-parralax='0.35')
-        source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
-    .home-screen__gradient
+  section.section.home-screen.home-standart
+    .home-screen__gradient.home-standart__gradient
+    .home-screen__background
+      .video-scene
+        .image.image_cover.video-scene__image(data-parralax='0.35' data-parralax-top)
+          img(data-src="./img/balance/home.jpg", alt="bg").lazyload
+        .video-scene__controls.container
+          a(href="javascript:void(0);").video-scene__close
+          .video-scene__timeline
+            span
+        .video-scene__wrapper(data-parralax='0.35' data-parralax-top)
+          video.video-scene__player
+            source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
+    
     .container.home-screen__container
-      .row.home-screen__content
-        .home-screen__left.col-xl-6
-          span.home-screen__idx 04
-          h1.home-screen__title.text-uppercase Inpool BALANCE
-          p.home-screen__slogan гармония и удовольствие
-        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
-          p INPOOL BALANCE - SPA-бассейны для оздоровления и восстановления сил
-        .home-screen__play.col-xxl-4.col-xl-5
-          a(href="javascript:void(0);").home-screen__play-btn
+      .row.home-standart__content
+        .home-standart__left.col-xl-6
+          span.home-standart__idx(data-parralax='-0.1') 04
+          h1.home-standart__title.text-uppercase Inpool BALANCE
+          p.home-standart__slogan SPA-бассейн для сохранения вашей молодости и красоты
+        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4
+          a(href="javascript:void(0);").home-standart__play-btn
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#play')
             span Посмотрите видео-презентацию<br> об INPOOL BALANCE
 
-      button.home-screen__scroll-bottom(aria-label='scroll-bottom' data-scroll='bottom')
+      button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
-  
+
+      //categories
+      -var bclass = 'home-screen__category-list';
+      include blocks/bcategories
+
   section.section.conception-items
     .container
       .row.conception-items__container
@@ -61,13 +64,20 @@ block content
   section.section.conceptions-slider
     .container
       .row
-        .conceptions-slider__d-images.col-xxl-7.col-xl-6
-          .conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-1
-
-        .conceptions-slider__slides.col-xxl-4.col-xl-5.offset-xl-1
+        .h2.bg-title.offset-xxl-6.col-xxl-6.offset-xl-7.col-xl-5(data-parralax='-0.1') Технологии
+      .row
+        .conceptions-slider__slides.col-xxl-4.col-xl-5
           .splide
             .splide__track
               .splide__list
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
+                    img(data-src="./img/jet.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL JET
+                  .conceptions-slider__slide-text
+                    p Технология активного противотока 
+                    p Уникальная система противотоков с эффектом плавания в открытом море.
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
@@ -76,7 +86,7 @@ block content
                   .conceptions-slider__slide-text
                     p Система интеллектуального управления бассейном.
                     p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
-                    a(href="#asm-info" data-popup='open').button 
+                    a(href="#info" data-modal='open').button 
                       span Подробнее
                 //slide
                 .splide__slide.conceptions-slider__slide
@@ -105,14 +115,6 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
-                    img(data-src="./img/jet.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL JET
-                  .conceptions-slider__slide-text
-                    p Технология активного противотока 
-                    p Уникальная система противотоков с эффектом плавания в открытом море.
-                //slide
-                .splide__slide.conceptions-slider__slide
-                  .image.image_cover
                     img(data-src="./img/decor.jpg", alt="image")
                   h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
                   .conceptions-slider__slide-text
@@ -124,11 +126,14 @@ block content
                   h2.conceptions-slider__slide-title LED освещение
                   .conceptions-slider__slide-text
                     p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
-  
+
+        .conceptions-slider__d-images.col-xxl-7.col-xl-6.offset-xl-1
+          .scene.conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2
+
   section.section.conceptions-about
     .container
       .row
-        h2.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL<br> BALANCE, если Вы
+        .h2.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL<br> BALANCE, если Вы
       .row.conceptions-about__container
         //item
         .conceptions-about__item.col-xl-4
@@ -160,14 +165,14 @@ block content
 
   section.section.conceptions-final
     .container
-      span.conceptions-final__slogan.conceptions-final__slogan_style-1 INPOOL BALANCE – комфорт, гармония<br> и удовольствие каждый день
+      span.conceptions-final__slogan.conceptions-final__slogan_style-1 С INPOOL BALANCE ваши молодость и<br> красота неподвластны времени 
       .row
-        h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL BALANCE – сила внутренней гармонии
+        .h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL BALANCE – сила внутренней гармонии
       .row
         .conceptions-final__content.col-xl-4.offset-xl-1
           h2.conceptions-final__title От 80 000 €
           p Зарядитесь энергией воды ранним утром, а поздним вечером снимите напряжение после насыщенного дня
-          a(href="#form-popup" data-popup='open').button.conceptions-final__button
+          a(href="#modal-form" data-modal='open').button.conceptions-final__button
             span Это для меня
         .conceptions-final__m-image.col-xxl-5.col-xl-6
           .image.image_cover.js-distortion

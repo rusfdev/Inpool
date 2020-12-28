@@ -183,9 +183,11 @@
       }
     }
     &.active {
-      color: var(--color-accent);
-      font-weight: 400;
       pointer-events: none;
+      font-weight: 400;
+      span {
+        border-color: var(--color-light);
+      }
     }
   }
 }

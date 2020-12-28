@@ -30,12 +30,6 @@
     background-position-y: bottom;
   }
 }
-//scene
-.scene {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--color-bg-images);
-}
 //images
 .image {
   display: block;
@@ -73,14 +67,10 @@
     }
   }
 }
-.image, .scene {
-  canvas {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+
+.scene {
+  background-color: var(--color-bg-images);
+  position: relative;
 }
 
 .js-distortion {
@@ -124,24 +114,20 @@
       height: 100%;
       border-radius: 100%;
       transition: background-color $trs1, transform $trs1;
+      background-color: var(--color-muted);
     }
     &.active {
       pointer-events: none;
     }
-    &_style-1 {
+    &[data-touch], &[data-hover] {
       &::after {
-        background-color: var(--color-muted);
+        background-color: var(--color-text);
+        transform: scale(1.3);
       }
-      &[data-touch], &[data-hover] {
-        &::after {
-          background-color: var(--color-text);
-          transform: scale(1.3);
-        }
-      }
-      &.active {
-        &::after {
-          background-color: var(--color-light);
-        }
+    }
+    &.active {
+      &::after {
+        background-color: var(--color-light);
       }
     }
   }
@@ -318,7 +304,7 @@
   font-size: 90px;
   line-height: 1.1;
   margin-top: 0;
-  margin-bottom: -0.35em !important;
+  margin-bottom: -0.25em !important;
   letter-spacing: -0.05em;
   @include media-breakpoint-down(xxl) {
     font-size: 72px;

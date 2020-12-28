@@ -5,27 +5,32 @@ block variables
   -var namespace = 'technology';
   -var name = technology_name;
 block content
-  section.section.home-screen 
-    .home-screen__scene.scene(data-src='./img/technology/home.jpg')
-    .home-screen__gradient
+  section.section.home-screen.home-standart
+    .home-screen__gradient.home-standart__gradient
+    .home-screen__background
+      .home-screen__scene.scene(data-parralax='0.35' data-parralax-top)
+        .image.image_cover
+          img(data-src='./img/technology/home.jpg', alt="image").lazyload
+      
     .container.home-screen__container
-      .row.home-screen__content
-        .home-screen__left.col-xl-5
-          h1.h2.home-screen__title Оцените технологическое совершенство INPOOL CONCEPT
-        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
-          p INPOOL CONCEPT - это совокупность лучших технологий мировых производителей бассейнов. Мы продумали каждую деталь, чтобы вы могли наслаждаться отдыхом. 
-      button.home-screen__scroll-bottom(aria-label='scroll-bottom' data-scroll='bottom')
+      .row.home-standart__content
+        .home-standart__left.col-xl-6
+          h1.h2.home-standart__title Оцените технологическое совершенство INPOOL&nbsp;CONCEPT
+        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xl-1.col-xl-5
+          p INPOOL&nbsp;CONCEPT - это совокупность лучших технологий мировых производителей бассейнов. Мы продумали каждую деталь, чтобы вы могли наслаждаться отдыхом. 
+
+      button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
 
   section.section.asm-control-preview
     .container
-      h2.bg-title.asm-control-preview__bg-title(data-parralax='-0.1') INPOOL ASM Control
+      .h2.bg-title.asm-control-preview__bg-title(data-parralax='-0.1') INPOOL&nbsp;ASM Control
       .row.section__content.asm-control-preview__content
         .col-xxl-4.col-xl-5.asm-control-preview__text
           h2 Система управления бассейном ASM Control
           p Создавайте индивидуальные сценарии использования бассейна с передовой системой управления INPOOL ASM Control.
-          a(href="#asm-info" data-popup='open').button
+          a(href="#info" data-modal='open').button
             span Подробнее
         .col-xxl-8.col-xl-7.asm-control-preview__image
           .image.image_contain
@@ -65,14 +70,14 @@ block content
     
   section.section.asm-connect-preview
     .container
-      h2.bg-title(data-parralax='-0.1') INPOOL ASM Connect
+      .h2.bg-title(data-parralax='-0.1') INPOOL&nbsp;ASM Connect
       .row.section__content.asm-connect-preview__content
         .col-xxl-4.col-xl-5.asm-connect-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/connect.jpg", alt="image").lazyload
-          p Интеллектуальный инструмент удаленного доступа и диспетчеризации INPOOL ASM Connect позволяет сервисным службам дистанционно наблюдать за основными параметрами и оперативно реагировать на изменения в системе водоподготовки.
+          p Интеллектуальный инструмент удаленного доступа и диспетчеризации INPOOL&nbsp;ASM Connect позволяет сервисным службам дистанционно наблюдать за основными параметрами и оперативно реагировать на изменения в системе водоподготовки.
         .col-xxl-4.offset-xxl-2.col-xl-5.offset-xl-1.asm-connect-preview__content
-          h2 Система удалённого доступа ASM Connect
+          h2 Система удалённого доступа ASM&nbsp;Connect
           p.asm-connect-preview__text Позволяет снижать эксплуатационные затраты до 50%
           ul.asm-connect-preview__list
             li.asm-connect-preview__item(data-value='-20')
@@ -102,29 +107,29 @@ block content
 
   section.section.premium-preview.image-section
     .container
-      h2.bg-title(data-parralax='-0.1') INPOOL Premium
+      .h2.bg-title(data-parralax='-0.1') INPOOL&nbsp;Premium
       .row.section__content
         .col-xl-4.offset-xl-1.image-section__image.premium-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/premium.jpg", alt="image").lazyload
         .col-xxl-4.col-xl-5.offset-xl-1.image-section__text.premium-preview__text
-          h2 Усиленная фильтрации INPOOL Premium
+          h2 Усиленная фильтрации INPOOL&nbsp;Premium
           p Кристальная чистота воды, низкое содержание химикатов, максимальная естественность воды обеспечивается благодаря усиленной фильтрации INPOOL Premium
 
   section.section.aop-preview.image-section
     .container
-      h2.bg-title.text-right(data-parralax='-0.1') AOP INPOOL
+      .h2.bg-title.text-right(data-parralax='-0.1') INPOOL&nbsp;AOP
       .row.align-items-lg-center.section__content
         .col-xl-6.offset-xl-1.order-xl-2.image-section__image.aop-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/aop.jpg", alt="image").lazyload
         .col-xxl-4.offset-xxl-1.col-xl-5.order-xl-1.image-section__text
-          h2.aop-preview__title Пошаговая дезинфекция AOP INPOOL
+          h2 Пошаговая дезинфекции INPOOL&nbsp;AOP
           p С помощью современных разработок в области волновых технологий вы получаете максимальный эффект от дезинфекции при минимальном использовании химических средств, наслаждаясь  природной водой.
 
   section.section.evo-preview.image-section
     .container
-      h2.bg-title(data-parralax='-0.1') INPOOL EVO
+      .h2.bg-title(data-parralax='-0.1') INPOOL&nbsp;EVO
       .row.align-items-lg-center.section__content
         .v-text.offset-xxl-1.evo-preview__v-text
           span Окунитесь в теплую приятную воду<br> сразу по возвращении домой
@@ -132,40 +137,52 @@ block content
           .image.image_cover.js-distortion
             img(data-src="./img/evo.jpg", alt="image").lazyload
         .col-xxl-4.col-xl-5.offset-xl-1.image-section__text
-          h2 Быстрый нагрев INPOOL EVO
-          p С технологией нагрева INPOOL EVO бассейн нагревается за 40 минут пока вы едете домой
+          h2 Быстрый нагрев INPOOL&nbsp;EVO
+          p С технологией нагрева INPOOL&nbsp;EVO бассейн нагревается за 40 минут пока вы едете домой
 
   section.section.jet-preview.image-section
     .container
       .row
-        h2.bg-title.text-right.col-xl-10(data-parralax='-0.1') INPOOL JET
+        .h2.bg-title.text-right.col-xl-10(data-parralax='-0.1') INPOOL&nbsp;JET
       .row.align-items-lg-center.section__content
         .col-xl-5.offset-xl-1.order-xl-2.image-section__image.jet-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/jet.jpg", alt="image").lazyload
         .col-xxl-4.offset-xxl-1.order-xl-1.col-xl-5.image-section__text
-          h2 Система противотоков INPOOL JET
+          h2 Система противотоков INPOOL&nbsp;JET
           p Подходят как для обычного плавания, так и для профессиональных занятий.
 
   section.section.inox-preview.image-section
     .container
-      h2.bg-title(data-parralax='-0.1') INPOOL INOX
+      .h2.bg-title(data-parralax='-0.1') INPOOL&nbsp;INOX
       .row.align-items-lg-center.section__content
         .col-xl-5.image-section__image.inox-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/inox.jpg", alt="image").lazyload
         .col-xxl-4.col-xl-5.offset-xl-1.image-section__text
-          h2 Подводное освещение INPOOL INOX
+          h2 Подводное освещение INPOOL&nbsp;INOX
           p Технология умного светодиодного освещения INPOOL INOX позволяет реализовывать инновационные дизайнерские решения по подводному освещению в бассейне.
 
   section.section.motion-preview.image-section
     .container
       .row
-        h2.bg-title.text-right.col-xxl-11(data-parralax='-0.1') INPOOL MOTION
+        .h2.bg-title.text-right.col-xxl-11(data-parralax='-0.1') INPOOL&nbsp;MOTION
       .row.align-items-lg-center.section__content
-        .col-xl-5.col-xl-4.offset-xl-1.order-xl-2.image-section__image.motion-preview__image
+        .col-xl-4.offset-xl-1.order-xl-2.image-section__image.motion-preview__image
           .image.image_cover.js-distortion
             img(data-src="./img/motion.jpg", alt="image").lazyload
         .col-xxl-4.col-xl-5.offset-xxl-1.order-xl-1.image-section__text
-          h2 Водные аттракционы INPOOL MOTION
+          h2 Водные аттракционы INPOOL&nbsp;MOTION
           p Водопады<br> Гидромассаж<br> Аэромассаж
+
+  section.section.upgrade-preview.image-section
+    .container
+      .row
+        .h2.bg-title.offset-xxl-0.offset-xl-1(data-parralax='-0.1') INPOOL&nbsp;UPGRADE
+      .row.align-items-lg-center.section__content
+        .col-xl-6.offset-xxl-1.image-section__image.upgrade-preview__image
+          .image.image_cover.js-distortion
+            img(data-src="./img/fernando-alvarez-rodriguez-M7GddPqJowg-unsplash 1.jpg", alt="image").lazyload
+        .col-xxl-4.col-xl-5.offset-xl-1.image-section__text
+          h2 Возможность улучшить INPOOL&nbsp;Upgrade
+          p Технология умного светодиодного освещения INPOOL INOX позволяет реализовывать инновационные дизайнерские решения по подводному освещению в бассейне.

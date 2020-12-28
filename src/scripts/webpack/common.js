@@ -136,22 +136,28 @@ const Transitions = {
     App.$container = $container;
     App.namespace = namespace;
     App.name = App.$container.getAttribute('data-name');
+    
     window.dispatchEvent(new Event("change"));
-    window.$container = $container;
+    if(Parralax.initialized) setTimeout(Parralax.check, 100);
     if(Scroll.type=='custom') Scroll.scrollbar.track.yAxis.element.classList.remove('show');
     if(mobileWindow.initialized) mobileWindow.check();
     Nav.change(App.name);
     Select.init();
-    setTimeout(()=> {
-      if(Pages[namespace]) Pages[namespace].init();
-      if(Parralax.initialized) Parralax.check();
-      this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
-      this.animation.eventCallback('onComplete', ()=>{
-        $wrapper.classList.remove('disabled');
-        this.active = false;
-      })
-    }, speed*250)
+    this.mask = Inputmask({
+      mask: "+7 999 999-9999",
+      showMaskOnHover: false,
+      clearIncomplete: false
+    }).mask("[data-validate='phone']");
+
+    if(Pages[namespace]) Pages[namespace].init();
+
+    this.animation = gsap.to($container, {duration:speed*1.5 ,autoAlpha:1, ease:'power2.inOut'});
+    this.animation.eventCallback('onComplete', ()=>{
+      $wrapper.classList.remove('disabled');
+      this.active = false;
+    })
   },
+
   /* EXIT */
   exit: function($container, namespace) {
     this.active = true;
@@ -159,14 +165,14 @@ const Transitions = {
     $header.classList.remove('header_fixed', 'header_hidden');
     if(!mobile() && !dev) Cursor.loading();
     if(Nav.state) Nav.close();
-    Select.destroy();
     Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
+    
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
       .to($body, {css:{backgroundColor:bg}, duration:speed, ease:'none'}, `-=${speed}`)
       .eventCallback('onComplete', ()=>{
         if(Pages[namespace]) Pages[namespace].destroy();
-        Header.fixed = false;
+        Select.destroy();
         Scroll.scrollTop(0, 0);
         barba.done();
       })
@@ -657,12 +663,11 @@ const Parralax = {
 
 const HomeBanner = {
   init: function() {
-    this.$parent = App.$container.querySelector('.home'),
+    this.$parent = App.$container.querySelector('.home-banner'),
     this.$titles = this.$parent.querySelectorAll('.home-banner__slide-title'),
     this.$paginations = this.$parent.querySelectorAll('.pagination__button');
-    this.$scene = this.$parent.querySelector('.home-banner__scene');
-    this.$images_container = this.$parent.querySelector('.home-banner__images');
-    this.$images = this.$images_container.querySelectorAll('.image');
+    this.$scene = this.$parent.querySelector('.home-screen__scene');
+    this.$images = this.$scene.querySelectorAll('.image');
     this.index = 0;
     this.started = false;
 
@@ -684,10 +689,10 @@ const HomeBanner = {
     }, 100)
     //DESKTOP
     if(window.innerWidth >= brakepoints.lg) {
-      this.$images_container.style.display='none';
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
+        $image.style.display = 'none';
       })
       this.scene = new WaveScene(this.$scene);
       this.scene.on('visible', ()=>{
@@ -703,7 +708,6 @@ const HomeBanner = {
     }
     //MOBILE
     else {
-      this.$scene.style.display='none';
       this.start();
     }
     
@@ -864,18 +868,19 @@ const Cursor = {
   loading: function() {
     this.$parent.classList.add('loading');
     gsap.timeline()
-      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed*0.9, ease:'power2.in'})
-      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
+      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed, ease:'power2.in'})
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed, ease:'power2.in'}, `-=${speed}`)
       .to(this.$parent, {autoAlpha:0, duration:speed*0.5, ease:'power2.in'}, `-=${speed*0.5}`)
       .set(this.$element, {css:{'stroke-dashoffset':this.circumference*0.75}})
       //end
-      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'}, `+=${speed*0.25}`)
-      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.5}`)
+      .to(this.$parent, {rotation:1080, duration:speed*1.3, ease:'power2.out'}, `+=${speed*0.2}`)
+      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.3}`)
       .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .set(this.$parent, {rotation:0})
       .eventCallback('onComplete', ()=>{
         this.$parent.classList.remove('loading');
       })
+    
   },
   show: function() {
     gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
@@ -887,17 +892,20 @@ class BackgroundScene {
     this.$scene = $scene;
   }
   init() {
-    this.scene = new WaveScene(this.$scene);
-    this.scene.on('visible', ()=>{
-      if(!this.flag) {
-        this.flag = true;
-        this.scene.start(this.$scene.getAttribute('data-src'));
-      }
-    })
-    this.scene.on('started', ()=>{
-      this.scene.show(speed);
-    })
-    this.scene.init();
+    if(!mobile()) {
+      let $image = this.$scene.querySelector('.image');
+      this.scene = new WaveScene(this.$scene);
+      this.scene.on('visible', ()=>{
+        if(!this.flag) {
+          this.flag = true;
+          this.scene.start($image.querySelector('img').getAttribute('data-src'));
+        }
+      })
+      this.scene.on('started', ()=>{
+        this.scene.show(speed);
+      })
+      this.scene.init();
+    } 
   }
   destroy() {
     this.scene.destroy();
@@ -991,10 +999,10 @@ const HomeScreenVideo = {
     this.state = false;
     this.$scene = App.$container.querySelector('.video-scene');
     this.$player = App.$container.querySelector('.video-scene__player');
-    this.$open = App.$container.querySelector('.home-screen__play');
+    this.$open = App.$container.querySelector('.home-standart__play');
     this.$close = App.$container.querySelector('.video-scene__close');
     this.$container = App.$container.querySelector('.home-screen__container');
-    this.$gradient = App.$container.querySelector('.home-screen__gradient');
+    this.$gradient = App.$container.querySelector('.home-standart__gradient');
     this.controls = App.$container.querySelector('.video-scene__controls');
     this.timeline = App.$container.querySelector('.video-scene__timeline span');
 
@@ -1122,11 +1130,6 @@ const Validation = {
         }
       }
     };
-    this.mask = Inputmask({
-      mask: "+7 999 999-9999",
-      showMaskOnHover: false,
-      clearIncomplete: false
-    }).mask("[data-validate='phone']");
 
     document.addEventListener('submit', (event)=>{
       event.preventDefault();
@@ -1707,7 +1710,6 @@ class CSlider {
       perPage: 1,
       arrows: false,
       pagination: true,
-      easing: 'ease-in-out',
       speed: speed*1000,
       autoplay: true,
       perMove: 1,
@@ -1897,16 +1899,15 @@ const DistortionImages = {
 const mobileWindow = {
   init: function() {
     this.initialized = true;
-    this.$el = document.createElement('div');
-    this.$el.style.cssText = 'position:fixed;height:100%;';
-    $body.insertAdjacentElement('beforeend', this.$el);
+    let $el = document.createElement('div')
+    $el.style.cssText = 'position:fixed;height:100%;';
+    $body.insertAdjacentElement('beforeend', $el);
+    this.h = $el.getBoundingClientRect().height;
+    $el.remove();
   }, 
   check: function() {
-    let $elements = document.querySelectorAll('[data-window-mobile]'),
-        h = this.$el.getBoundingClientRect().height;
-    $elements.forEach(($element)=>{
-      $element.style.height = `${h}px`;
-    })
+    let $el =  App.$container.querySelector('.home-screen');
+    if($el) $el.style.height = `${this.h}px`;
   }
 }
 

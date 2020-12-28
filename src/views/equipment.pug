@@ -5,17 +5,21 @@ block variables
   -var namespace = 'equipment';
   -var name = equipment_name;
 block content
-  section.section.home-screen
-    .home-screen__scene.scene(data-src='./img/equipment.jpg')
-
-    .home-screen__gradient
+  section.section.home-screen.home-standart
+    .home-screen__gradient.home-standart__gradient
+    .home-screen__background
+      .home-screen__scene.scene(data-parralax='0.35' data-parralax-top)
+        .image.image_cover
+          img(data-src="./img/equipment.jpg", alt="image").lazyload
+      
     .container.home-screen__container
-      .row.home-screen__content
-        .home-screen__left.col-xl-5
-          h1.home-screen__title Дополнительное оборудование
-        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
-          p Окунитесь в теплую приятную воду сразу по возвращении домой
-      button.home-screen__scroll-bottom(aria-label='scroll-bottom' data-scroll='bottom')
+      .row.home-standart__content
+        .home-standart__left.col-xl-6
+          h1.home-standart__title Дополнительное оборудование
+        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xl-1.col-xl-5
+          p Дополните выбранный концепт важными деталями
+
+      button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
 
@@ -59,4 +63,4 @@ block content
           h2 Гидромассажные бассейны
           p Гидромассажные бассейны мирового уровня станут центром притяжения всей семьи. Гармоничная комбинация комфортного тепла, оздоровления и безупречного массажа поможет расслабиться после напряженного дня.
 
-          
+  include blocks/form-section

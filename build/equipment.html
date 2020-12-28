@@ -107,10 +107,10 @@
                 </div>
               </div>
               <ul class="category-list">
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html" data-name="power"> <span>Inpool<br> power</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./energy.html" data-name="energy"><span>Inpool<br> energy</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./family.html" data-name="family"><span>Inpool<br> family</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./balance.html" data-name="balance"><span>Inpool<br> balance</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./power.html" data-name="power"> <span>Inpool<br> power</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./energy.html" data-name="energy"><span>Inpool<br> energy</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./family.html" data-name="family"><span>Inpool<br> family</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./balance.html" data-name="balance"><span>Inpool<br> balance</span></a></li>
               </ul>
             </div>
           </div>
@@ -118,19 +118,23 @@
       </nav>
       <div class="content">
         <main class="main" data-barba="container" data-barba-namespace="equipment" data-name="equipment">
-          <section class="section home-screen">
-            <div class="home-screen__scene scene" data-src="./img/equipment.jpg"></div>
-            <div class="home-screen__gradient"></div>
+          <section class="section home-screen home-standart">
+            <div class="home-screen__gradient home-standart__gradient"></div>
+            <div class="home-screen__background">
+              <div class="home-screen__scene scene" data-parralax="0.35" data-parralax-top>
+                <div class="image image_cover"><img class="lazyload" data-src="./img/equipment.jpg" alt="image"></div>
+              </div>
+            </div>
             <div class="container home-screen__container">
-              <div class="row home-screen__content">
-                <div class="home-screen__left col-xl-5">
-                  <h1 class="home-screen__title">Дополнительное оборудование</h1>
+              <div class="row home-standart__content">
+                <div class="home-standart__left col-xl-6">
+                  <h1 class="home-standart__title">Дополнительное оборудование</h1>
                 </div>
-                <div class="home-screen__right offset-xxl-2 col-xxl-4 offset-xxl-1 col-xl-5">
-                  <p>Окунитесь в теплую приятную воду сразу по возвращении домой</p>
+                <div class="home-screen__right offset-xxl-2 col-xxl-4 offset-xl-1 col-xl-5">
+                  <p>Дополните выбранный концепт важными деталями</p>
                 </div>
               </div>
-              <button class="home-screen__scroll-bottom" aria-label="scroll-bottom" data-scroll="bottom">
+              <button class="home-standart__scroll-bottom" aria-label="scroll bottom" data-scroll="bottom">
                 <svg class="icon">
                   <use xlink:href="./img/icons/icons-sprite.svg#bottom-arrow"></use>
                 </svg>
@@ -185,6 +189,49 @@
                 <div class="col-xxl-4 col-xl-5 offset-xxl-1 order-xl-1 image-section__text">
                   <h2>Гидромассажные бассейны</h2>
                   <p>Гидромассажные бассейны мирового уровня станут центром притяжения всей семьи. Гармоничная комбинация комфортного тепла, оздоровления и безупречного массажа поможет расслабиться после напряженного дня.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section form-section">
+            <div class="container">
+              <h2 class="form-section__title">Получите персональную<br> консультацию по INPOOL POWER</h2>
+              <div class="row justify-content-center">
+                <div class="col-xxl-4 col-xl-5">
+                  <form class="form form-section__form js-validation">
+                    <div class="row">
+                      <div class="form__group col-12">
+                        <div class="form__item">
+                          <label class="input contacts__animate-item">Ваше имя
+                            <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                          </label>
+                        </div>
+                        <div class="form__item">
+                          <label class="input contacts__animate-item">Номер вашего телефона
+                            <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form__submit col-12">
+                        <button class="button button_submit" type="submit"><span>Отправить</span>
+                          <svg viewBox="0 0 120 30" fill="currentColor">
+                            <circle cx="15" cy="15" r="15">
+                              <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite"></animate>
+                              <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite"></animate>
+                            </circle>
+                            <circle cx="60" cy="15" r="9" fill-opacity="0.3">
+                              <animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite"></animate>
+                              <animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite"></animate>
+                            </circle>
+                            <circle cx="105" cy="15" r="15">
+                              <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite"></animate>
+                              <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite"></animate>
+                            </circle>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>

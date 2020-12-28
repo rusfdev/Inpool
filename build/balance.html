@@ -107,10 +107,10 @@
                 </div>
               </div>
               <ul class="category-list">
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./power.html" data-name="power"> <span>Inpool<br> power</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./energy.html" data-name="energy"><span>Inpool<br> energy</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./family.html" data-name="family"><span>Inpool<br> family</span></a></li>
-                <li class="category-list__item nav__animate no-flickr"><a class="category-list__link" href="./balance.html" data-name="balance"><span>Inpool<br> balance</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./power.html" data-name="power"> <span>Inpool<br> power</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./energy.html" data-name="energy"><span>Inpool<br> energy</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./family.html" data-name="family"><span>Inpool<br> family</span></a></li>
+                <li class="category-list__item no-flickr nav__animate"><a class="category-list__link" href="./balance.html" data-name="balance"><span>Inpool<br> balance</span></a></li>
               </ul>
             </div>
           </div>
@@ -118,38 +118,44 @@
       </nav>
       <div class="content">
         <main class="main" data-barba="container" data-barba-namespace="conception" data-name="balance">
-          <section class="section home-screen">
-            <div class="video-scene">
-              <!--image-->
-              <div class="image image_cover video-scene__image"><img class="lazyload" data-src="./img/balance/home.jpg" alt="bg" data-parralax="0.35"></div>
-              <!--contols-->
-              <div class="video-scene__controls container"><a class="video-scene__close" href="javascript:void(0);"></a>
-                <div class="video-scene__timeline"><span></span></div>
+          <section class="section home-screen home-standart">
+            <div class="home-screen__gradient home-standart__gradient"></div>
+            <div class="home-screen__background">
+              <div class="video-scene">
+                <div class="image image_cover video-scene__image" data-parralax="0.35" data-parralax-top><img class="lazyload" data-src="./img/balance/home.jpg" alt="bg"></div>
+                <div class="video-scene__controls container"><a class="video-scene__close" href="javascript:void(0);"></a>
+                  <div class="video-scene__timeline"><span></span></div>
+                </div>
+                <div class="video-scene__wrapper" data-parralax="0.35" data-parralax-top>
+                  <video class="video-scene__player">
+                    <source src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4">
+                  </video>
+                </div>
               </div>
-              <video class="video-scene__player" data-parralax="0.35">
-                <source src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4">
-              </video>
             </div>
-            <div class="home-screen__gradient"></div>
             <div class="container home-screen__container">
-              <div class="row home-screen__content">
-                <div class="home-screen__left col-xl-6"><span class="home-screen__idx">04</span>
-                  <h1 class="home-screen__title text-uppercase">Inpool BALANCE</h1>
-                  <p class="home-screen__slogan">гармония и удовольствие</p>
+              <div class="row home-standart__content">
+                <div class="home-standart__left col-xl-6"><span class="home-standart__idx" data-parralax="-0.1">04</span>
+                  <h1 class="home-standart__title text-uppercase">Inpool BALANCE</h1>
+                  <p class="home-standart__slogan">SPA-бассейн для сохранения вашей молодости и красоты</p>
                 </div>
-                <div class="home-screen__right offset-xxl-2 col-xxl-4 offset-xxl-1 col-xl-5">
-                  <p>INPOOL BALANCE — SPA-бассейны для оздоровления и восстановления сил</p>
-                </div>
-                <div class="home-screen__play col-xxl-4 col-xl-5"><a class="home-screen__play-btn" href="javascript:void(0);">
+                <div class="home-standart__play col-xxl-3 offset-xxl-8 offset-xl-7 col-xl-4"><a class="home-standart__play-btn" href="javascript:void(0);">
                     <svg class="icon">
                       <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
                     </svg><span>Посмотрите видео-презентацию<br> об INPOOL BALANCE</span></a></div>
               </div>
-              <button class="home-screen__scroll-bottom" aria-label="scroll-bottom" data-scroll="bottom">
+              <button class="home-standart__scroll-bottom" aria-label="scroll bottom" data-scroll="bottom">
                 <svg class="icon">
                   <use xlink:href="./img/icons/icons-sprite.svg#bottom-arrow"></use>
                 </svg>
               </button>
+              <!--categories-->
+              <ul class="category-list home-screen__category-list">
+                <li class="category-list__item no-flickr"><a class="category-list__link" href="./power.html" data-name="power"> <span>Inpool<br> power</span></a></li>
+                <li class="category-list__item no-flickr"><a class="category-list__link" href="./energy.html" data-name="energy"><span>Inpool<br> energy</span></a></li>
+                <li class="category-list__item no-flickr"><a class="category-list__link" href="./family.html" data-name="family"><span>Inpool<br> family</span></a></li>
+                <li class="category-list__item no-flickr"><a class="category-list__link" href="./balance.html" data-name="balance"><span>Inpool<br> balance</span></a></li>
+              </ul>
             </div>
           </section>
           <section class="section conception-items">
@@ -179,20 +185,29 @@
           <section class="section conceptions-slider">
             <div class="container">
               <div class="row">
-                <div class="conceptions-slider__d-images col-xxl-7 col-xl-6">
-                  <div class="conceptions-slider__d-images-container conceptions-slider__d-images-container_style-1"></div>
-                </div>
-                <div class="conceptions-slider__slides col-xxl-4 col-xl-5 offset-xl-1">
+                <div class="h2 bg-title offset-xxl-6 col-xxl-6 offset-xl-7 col-xl-5" data-parralax="-0.1">Технологии</div>
+              </div>
+              <div class="row">
+                <div class="conceptions-slider__slides col-xxl-4 col-xl-5">
                   <div class="splide">
                     <div class="splide__track">
                       <div class="splide__list">
+                        <!--slide-->
+                        <div class="splide__slide conceptions-slider__slide">
+                          <div class="image image_cover"><img data-src="./img/jet.jpg" alt="image"></div>
+                          <h2 class="conceptions-slider__slide-title">INPOOL JET</h2>
+                          <div class="conceptions-slider__slide-text">
+                            <p>Технология активного противотока </p>
+                            <p>Уникальная система противотоков с эффектом плавания в открытом море.</p>
+                          </div>
+                        </div>
                         <!--slide-->
                         <div class="splide__slide conceptions-slider__slide">
                           <div class="image image_cover"><img data-src="./img/control.jpg" alt="image"></div>
                           <h2 class="conceptions-slider__slide-title">INPOOL ASM Control</h2>
                           <div class="conceptions-slider__slide-text">
                             <p>Система интеллектуального управления бассейном.</p>
-                            <p>Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.</p><a class="button" href="#asm-info" data-popup="open"> <span>Подробнее</span></a>
+                            <p>Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.</p><a class="button" href="#info" data-modal="open"> <span>Подробнее</span></a>
                           </div>
                         </div>
                         <!--slide-->
@@ -224,15 +239,6 @@
                         </div>
                         <!--slide-->
                         <div class="splide__slide conceptions-slider__slide">
-                          <div class="image image_cover"><img data-src="./img/jet.jpg" alt="image"></div>
-                          <h2 class="conceptions-slider__slide-title">INPOOL JET</h2>
-                          <div class="conceptions-slider__slide-text">
-                            <p>Технология активного противотока </p>
-                            <p>Уникальная система противотоков с эффектом плавания в открытом море.</p>
-                          </div>
-                        </div>
-                        <!--slide-->
-                        <div class="splide__slide conceptions-slider__slide">
                           <div class="image image_cover"><img data-src="./img/decor.jpg" alt="image"></div>
                           <h2 class="conceptions-slider__slide-title">Декоративные элементы и бронзовые закладные </h2>
                           <div class="conceptions-slider__slide-text">
@@ -251,13 +257,16 @@
                     </div>
                   </div>
                 </div>
+                <div class="conceptions-slider__d-images col-xxl-7 col-xl-6 offset-xl-1">
+                  <div class="scene conceptions-slider__d-images-container conceptions-slider__d-images-container_style-2"></div>
+                </div>
               </div>
             </div>
           </section>
           <section class="section conceptions-about">
             <div class="container">
               <div class="row">
-                <h2 class="conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL<br> BALANCE, если Вы</h2>
+                <div class="h2 conceptions-about__bg-title bg-title offset-xl-1 col-11" data-parralax="-0.1">Вам подойдёт INPOOL<br> BALANCE, если Вы</div>
               </div>
               <div class="row conceptions-about__container">
                 <!--item-->
@@ -300,14 +309,14 @@
             </div>
           </section>
           <section class="section conceptions-final">
-            <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-1">INPOOL BALANCE — комфорт, гармония<br> и удовольствие каждый день</span>
+            <div class="container"><span class="conceptions-final__slogan conceptions-final__slogan_style-1">С INPOOL BALANCE ваши молодость и<br> красота неподвластны времени </span>
               <div class="row">
-                <h2 class="bg-title offset-xl-1 col-11" data-parralax="-0.1">INPOOL BALANCE — сила внутренней гармонии</h2>
+                <div class="h2 bg-title offset-xl-1 col-11" data-parralax="-0.1">INPOOL BALANCE — сила внутренней гармонии</div>
               </div>
               <div class="row">
                 <div class="conceptions-final__content col-xl-4 offset-xl-1">
                   <h2 class="conceptions-final__title">От 80 000 €</h2>
-                  <p>Зарядитесь энергией воды ранним утром, а поздним вечером снимите напряжение после насыщенного дня</p><a class="button conceptions-final__button" href="#form-popup" data-popup="open"><span>Это для меня</span></a>
+                  <p>Зарядитесь энергией воды ранним утром, а поздним вечером снимите напряжение после насыщенного дня</p><a class="button conceptions-final__button" href="#modal-form" data-modal="open"><span>Это для меня</span></a>
                 </div>
                 <div class="conceptions-final__m-image col-xxl-5 col-xl-6">
                   <div class="image image_cover js-distortion"><img class="lazyload" data-src="./img/balance/4.jpg" alt="image"></div>

@@ -5,38 +5,43 @@ block variables
   -var namespace = 'conception';
   -var name = family_name;
 block content
-  section.section.home-screen
-    .video-scene
-      //image
-      .image.image_cover.video-scene__image
-        img(data-src="./img/family/home.jpg", alt="bg" data-parralax='0.35').lazyload
-      //contols
-      .video-scene__controls.container
-        a(href="javascript:void(0);").video-scene__close
-        .video-scene__timeline
-          span
-
-      video.video-scene__player(data-parralax='0.35')
-        source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
-    .home-screen__gradient
+  section.section.home-screen.home-standart
+    .home-screen__gradient.home-standart__gradient
+    .home-screen__background
+      .video-scene
+        .image.image_cover.video-scene__image(data-parralax='0.35' data-parralax-top)
+          img(data-src="./img/family/home.jpg", alt="bg").lazyload
+        .video-scene__controls.container
+          a(href="javascript:void(0);").video-scene__close
+          .video-scene__timeline
+            span
+        .video-scene__wrapper(data-parralax='0.35' data-parralax-top)
+          video.video-scene__player
+            source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
+    
     .container.home-screen__container
-      .row.home-screen__content
-        .home-screen__left.col-xl-6
-          span.home-screen__idx 03
-          h1.home-screen__title.text-uppercase Inpool FAMILY
-          p.home-screen__slogan дарите близким радость<br> общения и новые эмоции
-        .home-screen__right.offset-xxl-2.col-xxl-4.offset-xxl-1.col-xl-5
+      .row.home-standart__content
+        .home-standart__left.col-xl-6
+          span.home-standart__idx(data-parralax='-0.1') 03
+          h1.home-standart__title.text-uppercase Inpool FAMILY
+          p.home-standart__slogan дарите близким радость общения и новые эмоции
+        .home-screen__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
           p Это не просто бассейн, это место силы для всей семьи, где каждый может создавать индивидуальные сценарии отдыха и развлечений
-        .home-screen__play.col-xxl-4.col-xl-5
-          a(href="javascript:void(0);").home-screen__play-btn
+        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4
+          a(href="javascript:void(0);").home-standart__play-btn
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#play')
             span Посмотрите видео-презентацию<br> об INPOOL FAMILY
 
-      button.home-screen__scroll-bottom(aria-label='scroll-bottom' data-scroll='bottom')
+      button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
         svg.icon
           use(xlink:href='./img/icons/icons-sprite.svg#bottom-arrow')
-  
+
+      //categories
+      -var bclass = 'home-screen__category-list';
+      include blocks/bcategories
+
+
   section.section.conception-items
     .container
       .row.conception-items__container
@@ -65,18 +70,14 @@ block content
   section.section.conceptions-slider
     .container
       .row
-        .conceptions-slider__slides.col-xxl-4.col-xl-5
+        .h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Технологии
+      .row
+        .conceptions-slider__d-images.col-xxl-7.col-xl-6
+          .scene.conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-1
+        .conceptions-slider__slides.col-xxl-4.col-xl-5.offset-xl-1
           .splide
             .splide__track
               .splide__list
-                //slide
-                .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/jet.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL JET
-                  .conceptions-slider__slide-text
-                    p Технология активного противотока 
-                    p Уникальная система противотоков с эффектом плавания в открытом море.
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
@@ -85,7 +86,7 @@ block content
                   .conceptions-slider__slide-text
                     p Система интеллектуального управления бассейном.
                     p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
-                    a(href="#asm-info" data-popup='open').button 
+                    a(href='#info' data-modal='open').button 
                       span Подробнее
                 //slide
                 .splide__slide.conceptions-slider__slide
@@ -114,25 +115,23 @@ block content
                 //slide
                 .splide__slide.conceptions-slider__slide
                   .image.image_cover
+                    img(data-src="./img/jet.jpg", alt="image")
+                  h2.conceptions-slider__slide-title INPOOL JET
+                  .conceptions-slider__slide-text
+                    p Технология активного противотока 
+                    p Уникальная система противотоков с эффектом плавания в открытом море.
+                //slide
+                .splide__slide.conceptions-slider__slide
+                  .image.image_cover
                     img(data-src="./img/decor.jpg", alt="image")
                   h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
                   .conceptions-slider__slide-text
                     p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 
-                //slide
-                .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/led.jpeg", alt="image")
-                  h2.conceptions-slider__slide-title LED освещение
-                  .conceptions-slider__slide-text
-                    p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
-
-        .conceptions-slider__d-images.col-xxl-7.col-xl-6.offset-xl-1
-          .conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2(data-images='./img/jet.jpg, ./img/control.jpg, ./img/connect.jpg, ./img/premium.jpg, ./img/evo.jpg, ./img/bronz.jpg, ./img/led.jpeg')
 
   section.section.conceptions-about
     .container
       .row
-        h2.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL <br> FAMILY, если Вы
+        .h2.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL <br> FAMILY, если Вы
       .row.conceptions-about__container
         //item
         .conceptions-about__item.col-xl-4
@@ -142,7 +141,7 @@ block content
                 img(data-src="./img/family/1.jpg", alt="image").lazyload
           .conceptions-about__item-index 1
           .conceptions-about__item-text
-            p Хотите наполнить атмосферу вашего дома гармонией и удовольствием
+            p Хотите иметь кусочек моря у себя дома
         //item
         .conceptions-about__item.col-xl-4
           .row  
@@ -151,7 +150,7 @@ block content
                 img(data-src="./img/family/2.jpg", alt="image").lazyload
           .conceptions-about__item-index 2
           .conceptions-about__item-text
-            p Хотите иметь кусочек моря у себя дома
+            p Хотите больше времени проводить с семьей
         //item
         .conceptions-about__item.col-xl-4
           .row  
@@ -160,22 +159,22 @@ block content
                 img(data-src="./img/family/3.jpg", alt="image").lazyload
           .conceptions-about__item-index 3
           .conceptions-about__item-text
-            p Хотите создавать индивидуальные сценарии отдыха и развлечений 
+            p Хотите чаще видеться с друзьями, совмещая отдых, общение и занятия спортом
 
   section.section.conceptions-final
     .container
       span.conceptions-final__slogan.conceptions-final__slogan_style-2 INPOOL FAMILY - 10 сценариев<br> отдыха для детей и взрослых
       .row
-        h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL FAMILY – <br> сила вашей любви
+        .h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL FAMILY – <br> сила вашей любви
       .row
         .conceptions-final__m-image.col-xxl-5.offset-xxl-2.col-xl-6.offset-xl-1
           .image.image_cover.js-distortion
             img(data-src="./img/family/4.jpg", alt="image").lazyload
         .conceptions-final__content.col-xl-4.offset-xl-1
           h2.conceptions-final__title От 50 000 €
-          p Хотите создавать индивидуальные сценарии отдыха и развлечений 
-          a(href="#form-popup" data-popup='open').button.conceptions-final__button
-            span Узнать подробнее
+          p Интеллектуальный бассейн для всей семьи
+          a(href="#modal-form" data-modal='open').button.conceptions-final__button
+            span Это мой выбор
 
         .conceptions-final__text.conceptions-final__text_style-2.col-xl-3.offset-xl-6
           p Бассейны INPOOL FAMILY - это центр притяжения для всей семьи. Мы создали этот концепт для того, чтобы в вашей семье было больше общения и развлечений

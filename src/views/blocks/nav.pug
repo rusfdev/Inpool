@@ -33,16 +33,5 @@ nav.nav
             
             .nav__slogan.nav__animate.no-flickr INPOOL CONCEPT – интеллектуальные концепции бассейнов
         
-        ul.category-list
-          li.category-list__item.nav__animate.no-flickr
-            a(href=power data-name=power_name).category-list__link 
-              span Inpool<br> power
-          li.category-list__item.nav__animate.no-flickr
-            a(href=energy data-name=energy_name).category-list__link
-              span Inpool<br> energy
-          li.category-list__item.nav__animate.no-flickr
-            a(href=family data-name=family_name).category-list__link
-              span Inpool<br> family
-          li.category-list__item.nav__animate.no-flickr
-            a(href=balance data-name=balance_name).category-list__link
-              span Inpool<br> balance
+        -var biclass = 'nav__animate';
+        include bcategories

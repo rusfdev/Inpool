@@ -149,25 +149,7 @@
   z-index: 2000;
   width: 42px;
   height: 42px;
-  margin-top: -21px;
-  margin-left: -21px;
   pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 6px;
-    background-color: var(--color-text);
-    top: 50%;
-    left: 50%;
-    transition: opacity $trs1, transform $trs1;
-    margin-top: -3px;
-    margin-left: -3px;
-  }
   &-icon {
     width: 100%;
     height: 100%;
@@ -175,60 +157,95 @@
     fill: transparent;
     stroke: var(--color-text);
     transform: rotate(-90deg);
-    transition: opacity $trs1, stroke-width $trs2, transform $trs2;
   }
-  &.hover {
+
+  &_desktop {
+    margin-top: -21px;
+    margin-left: -21px;
+    opacity: 0;
+    visibility: hidden;
+    .trigger-round-icon {
+      transition: opacity $trs1, stroke-width $trs2, transform $trs2;
+    }
     &:after {
-      transition: opacity $trs1, transform $trs2;
-      transform: scale(7);
-      opacity: 0.15;
+      content: '';
+      display: block;
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      background-color: var(--color-text);
+      top: 50%;
+      left: 50%;
+      transition: opacity $trs1, transform $trs1;
+      margin-top: -3px;
+      margin-left: -3px;
+    }
+    &.hover {
+      &:after {
+        transition: opacity $trs1, transform $trs2;
+        transform: scale(7);
+        opacity: 0.15;
+      }
+      &.focus {
+        &:after {
+          transform: scale(5.25);
+        }
+      }
+      .trigger-round-icon {
+        opacity: 0;
+      }
     }
     &.focus {
       &:after {
-        transform: scale(5.25);
+        transition: $trs1;
+      }
+      .trigger-round-icon {
+        transition: $trs1;
+      }
+      .trigger-round-icon {
+        transform: rotate(-90deg) scale(0.75);
+        stroke-width: 2.66px;
       }
     }
-    .trigger-round-icon {
-      opacity: 0;
+    &.move {
+      .trigger-round-icon {
+        transform: rotate(-90deg) scale(0.5);
+        stroke-width: 4px;
+      }
+    }
+    &.loading {
+      .trigger-round-icon {
+        transform: rotate(-90deg) scale(1);
+        stroke-width: 2px;
+      }
+      &:after {
+        opacity: 0;
+      }
+    }
+    &.hidden {
+      &:after {
+        opacity: 0;
+      }
+      .trigger-round-icon {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0);
+      }
     }
   }
 
-  &.focus {
-    &:after {
-      transition: $trs1;
-    }
-    .trigger-round-icon {
-      transition: $trs1;
-    }
-    .trigger-round-icon {
-      transform: rotate(-90deg) scale(0.75);
-      stroke-width: 2.66px;
-    }
-  }
-  &.move {
-    .trigger-round-icon {
-      transform: rotate(-90deg) scale(0.5);
-      stroke-width: 4px;
-    }
-  }
-
-  &.loading {
-    .trigger-round-icon {
-      transform: rotate(-90deg) scale(1);
-      stroke-width: 2px;
-    }
-    &:after {
-      opacity: 0;
-    }
-  }
-
-  &.hidden {
-    &:after {
-      opacity: 0;
-    }
+  &_mobile {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     .trigger-round-icon {
       opacity: 0;
-      transform: rotate(-90deg) scale(0);
+      transition: opacity $trs2;
+    }
+    &.loading {
+      .trigger-round-icon {
+        opacity: 1;
+      }
     }
   }
 }

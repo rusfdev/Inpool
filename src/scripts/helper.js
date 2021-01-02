@@ -8,7 +8,7 @@ const Helper = {
     this.$trigger = this.$block.querySelector('.helper__trigger');
 
     this.set_active_page();
-    window.addEventListener('change', ()=>{this.set_active_page();});
+    window.addEventListener('enter', ()=>{this.set_active_page();});
 
     this.$trigger.addEventListener('click', ()=>{
       if(!this.state) {

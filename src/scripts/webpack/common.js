@@ -8,7 +8,6 @@ document.addEventListener('lazybeforeunveil', function(e){
     e.target.style.backgroundImage = `url('${bg}')`;
   }
 });
-
 //barba
 import barba from '@barba/core';
 barba.init({
@@ -112,20 +111,42 @@ const App = {
     DistortionImages.init();
     Validation.init();
     Modal.init();
+    Cursor.init();
+
+    window.addEventListener('enter', ()=>{
+      if(Pages[this.namespace]) Pages[this.namespace].init();
+      Select.init();
+      Inputmask({
+        mask: "+7 999 999-9999",
+        showMaskOnHover: false,
+        clearIncomplete: false
+      }).mask("[data-validate='phone']");
+    })
+
+    window.addEventListener('enter_finish', ()=>{
+      $wrapper.classList.remove('disabled');
+    })
+
+    window.addEventListener('exit', ()=>{
+      $wrapper.classList.add('disabled');
+      $header.classList.remove('header_fixed', 'header_hidden');
+    })
+
+    window.addEventListener('exit_finish', ()=>{
+      if(Pages[this.namespace]) Pages[this.namespace].destroy();
+      Select.destroy();
+      Scroll.scrollTop(0, 0);
+    })
 
     if(mobile()) {
       mobileWindow.init();
     } else {
-      Cursor.init();
       Parralax.init();
     }
 
     Preloader.finish(()=>{
       Transitions.active = true;
       Transitions.enter(this.$container, this.namespace);
-      if(!dev) {
-        Cursor.show();
-      }
     });
   }
 }
@@ -136,45 +157,29 @@ const Transitions = {
     App.$container = $container;
     App.namespace = namespace;
     App.name = App.$container.getAttribute('data-name');
-    
-    window.dispatchEvent(new Event("change"));
-    if(Parralax.initialized) setTimeout(Parralax.check, 100);
-    if(Scroll.type=='custom') Scroll.scrollbar.track.yAxis.element.classList.remove('show');
-    if(mobileWindow.initialized) mobileWindow.check();
-    Nav.change(App.name);
-    Select.init();
-    this.mask = Inputmask({
-      mask: "+7 999 999-9999",
-      showMaskOnHover: false,
-      clearIncomplete: false
-    }).mask("[data-validate='phone']");
-
-    if(Pages[namespace]) Pages[namespace].init();
-
-    this.animation = gsap.timeline({paused:true}).to($container, {duration:speed*1.4 ,autoAlpha:1, ease:'power2.inOut'});
-    setTimeout(()=>{this.animation.play()}, 100)
-    this.animation.eventCallback('onComplete', ()=>{
-      $wrapper.classList.remove('disabled');
-      this.active = false;
-    })
+    //event
+    window.dispatchEvent(new Event("enter"));
+    //animation
+    setTimeout(()=>{
+      this.animation = gsap.timeline()  
+        .to($container, {duration:speed*1.4 ,autoAlpha:1, ease:'power2.inOut'})
+        .eventCallback('onComplete', ()=>{
+          this.active = false;
+          window.dispatchEvent(new Event("enter_finish"));
+        })
+    }, 100);
   },
-
   /* EXIT */
-  exit: function($container, namespace) {
+  exit: function($container) {
     this.active = true;
-    $wrapper.classList.add('disabled');
-    $header.classList.remove('header_fixed', 'header_hidden');
-    if(!mobile() && !dev) Cursor.loading();
-    if(Nav.state) Nav.close();
-    Scroll.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
-    
+    //event
+    window.dispatchEvent(new Event("exit"));
+    //animation
     this.animation = gsap.timeline()
       .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
       .to($body, {css:{backgroundColor:bg}, duration:speed, ease:'none'}, `-=${speed}`)
       .eventCallback('onComplete', ()=>{
-        if(Pages[namespace]) Pages[namespace].destroy();
-        Select.destroy();
-        Scroll.scrollTop(0, 0);
+        window.dispatchEvent(new Event("exit_finish"));
         barba.done();
       })
   }
@@ -219,20 +224,26 @@ const Pages = {
   equipment: {
     init: function() {
       //scene
-      this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
-      this.scene.init();
+      if(!mobile()) {
+        this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
+        this.scene.init();
+      }
     },
     destroy: function() {
       //scene
-      this.scene.destroy();
-      delete this.scene;
+      if(this.scene) {
+        this.scene.destroy();
+        delete this.scene;
+      }
     }
   },
   technology: {
     init: function() {
       //scene
-      this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
-      this.scene.init();
+      if(!mobile()) {
+        this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
+        this.scene.init();
+      }
       //scales
       this.scales = {
         init: function() {
@@ -256,8 +267,10 @@ const Pages = {
     },
     destroy: function() {
       //scene
-      this.scene.destroy();
-      delete this.scene;
+      if(this.scene) {
+        this.scene.destroy();
+        delete this.scene;
+      }
       //scales
       this.scales.destroy();
       delete this.scales;
@@ -352,6 +365,9 @@ const Scroll = {
     this.y = 0;
     if(mobile()) this.native();
     else this.custom(); 
+    window.addEventListener('exit', ()=>{
+      this.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
+    })
   },
   custom: function() {
     this.type='custom';
@@ -372,12 +388,20 @@ const Scroll = {
     if(sy>0 && dev) {
       this.scrollbar.setPosition(0, sy);
     }
+    window.addEventListener('enter', ()=>{
+      this.scrollbar.track.yAxis.element.classList.remove('show');
+    })
   },
   native: function() {
     this.type='native';
-    $body.style.overflow = 'auto';
     window.addEventListener('scroll', ()=>{
       this.y = window.pageYOffset;
+    })
+    window.addEventListener('enter_finish', ()=>{
+      $body.style.overflow = 'auto';
+    })
+    window.addEventListener('exit', ()=>{
+      $body.style.overflow = 'hidden';
     })
   },
   scrollTop: function(y, speed) {
@@ -426,7 +450,7 @@ const Scroll = {
     if(this.type=='custom') {
       this.scrollbar.removeListener(func);
     } else {
-      window.removeListener(func);
+      window.removeEventListener('scroll', func);
     }
   }
 }
@@ -488,13 +512,13 @@ const TouchHoverEvents = {
     //mouseenter
     if(event.type=='mouseenter' && !this.touched && $targets[0] && $targets[0]==event.target) {
       $targets[0].setAttribute('data-hover', '');
-      Cursor.enter();
+      if(Cursor.desktop) Cursor.enter();
     }
     //mouseleave
     else if(event.type=='mouseleave' && !this.touched && $targets[0] && $targets[0]==event.target) {
       $targets[0].removeAttribute('data-focus');
       $targets[0].removeAttribute('data-hover');
-      Cursor.leave();
+      if(Cursor.desktop) Cursor.leave();
     }
     //mousedown
     if(event.type=='mousedown' && !this.touched && $targets[0]) {
@@ -570,9 +594,14 @@ const Nav = {
     window.addEventListener('resize', ()=>{
       this.setSize()
     });
+    window.addEventListener('enter', ()=>{
+      this.change(App.name);
+    })
+    window.addEventListener('exit', ()=>{
+      if(this.state) this.close();
+    })
   },
   checkToggleButton: function(event) {
-    console.log(this.opened)
     if(!this.opened) {
       if((event.type=='mouseenter' && !TouchHoverEvents.touched)) {
         this.$toggle_items.forEach(($item, index)=>{
@@ -641,6 +670,11 @@ const Parralax = {
     this.initialized = true;
     Scroll.addListener(()=>{
       requestAnimationFrame(()=>{this.check();})
+    })
+    window.addEventListener('enter', ()=>{
+      setTimeout(()=>{
+        this.check();
+      }, 100);
     })
   },
   check: function() {
@@ -797,7 +831,7 @@ const HomeBanner = {
   destroy: function() {
     clearInterval(this.checkVisibleInterval);
     clearTimeout(this.timeout);
-    this.scene.destroy();
+    if(this.scene) this.scene.destroy();
     for(let child in this) {
       if(child!=='init' && child!=='start' && child!=='destroy') {
         delete this[child];
@@ -810,8 +844,6 @@ const Cursor = {
   init: function() {
     this.$parent = document.querySelector('.trigger-round');
     this.$element = document.querySelector('.trigger-round-circle');
-    this.initialized = true;
-
     this.width = this.$parent.getBoundingClientRect().width;
     this.height = this.$parent.getBoundingClientRect().height;
     this.c = this.width/2;
@@ -821,42 +853,63 @@ const Cursor = {
     this.$element.setAttribute('r', this.r);
     this.circumference = 2*Math.PI*this.r;
     this.$element.setAttribute("style", `stroke-dasharray:${this.circumference};stroke-dashoffset:0;`);
-    this.flag = true;
-    let xStart, yStart;
 
-    document.addEventListener('mousemove',(event)=>{
-      let x = event.clientX,
-          y = event.clientY,
-          moveSpeed,
-          timeout;
-      //move event
-      moveSpeed = Math.sqrt((x-xStart)*(x-xStart)+(y-yStart)*(y-yStart));
-      if(this.flag==true) {
-        if(moveSpeed>5) {
-          clearTimeout(timeout);
-          this.$parent.classList.add('move');
-          timeout = setTimeout(()=>{
-            this.$parent.classList.remove('move');
-          }, 250)
-        } 
-        xStart = x;
-        yStart = y;
+    if(mobile()) {
+      this.mobile = true;
+      this.$parent.classList.add('trigger-round_mobile');
+    } 
+    
+    else {
+      this.desktop = true;
+      this.$parent.classList.add('trigger-round_desktop');
+      this.flag = true;
+      let xStart, yStart;
+      document.addEventListener('mousemove',(event)=>{
+        let x = event.clientX,
+            y = event.clientY,
+            moveSpeed,
+            timeout;
+        //move event
+        moveSpeed = Math.sqrt((x-xStart)*(x-xStart)+(y-yStart)*(y-yStart));
+        if(this.flag==true) {
+          if(moveSpeed>5) {
+            clearTimeout(timeout);
+            this.$parent.classList.add('move');
+            timeout = setTimeout(()=>{
+              this.$parent.classList.remove('move');
+            }, 250)
+          } 
+          xStart = x;
+          yStart = y;
+        }
+        //move
+        gsap.timeline()
+          .to(this.$parent, {duration:speed/2,x:x,y:y,ease:'power2.out'})
+      });
+      document.addEventListener('mousedown',(event)=>{
+        this.$parent.classList.add('focus');
+      })
+      document.addEventListener('mouseup',(event)=>{
+        this.$parent.classList.remove('focus');
+      })
+      document.addEventListener('mouseleave', (event)=>{
+        this.$parent.classList.add('hidden');
+      })
+      document.addEventListener('mouseenter', (event)=>{
+        this.$parent.classList.remove('hidden');
+      })
+    }
+
+    window.addEventListener('exit', ()=>{
+      if(!dev) Cursor.loading_start();
+    })
+    window.addEventListener('enter', ()=>{
+      if(!this.initialized) {
+        if(this.desktop && !dev) gsap.to(this.$parent, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'});
+        this.initialized = true;
+      } else {
+        if(!dev) this.loading_finish();
       }
-      //move
-      gsap.timeline()
-        .to(this.$parent, {duration:speed/2,x:x,y:y,ease:'power2.out'})
-    });
-    document.addEventListener('mousedown',(event)=>{
-      this.$parent.classList.add('focus');
-    })
-    document.addEventListener('mouseup',(event)=>{
-      this.$parent.classList.remove('focus');
-    })
-    document.addEventListener('mouseleave', (event)=>{
-      this.$parent.classList.add('hidden');
-    })
-    document.addEventListener('mouseenter', (event)=>{
-      this.$parent.classList.remove('hidden');
     })
 
   },
@@ -866,25 +919,30 @@ const Cursor = {
   leave: function() {
     this.$parent.classList.remove('hover');
   },
-  loading: function() {
+  loading_start: function() {
     this.$parent.classList.add('loading');
     gsap.timeline()
-      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed, ease:'power2.in'})
-      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed, ease:'power2.in'}, `-=${speed}`)
+      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed*0.9, ease:'power2.in'})
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
       .to(this.$parent, {autoAlpha:0, duration:speed*0.5, ease:'power2.in'}, `-=${speed*0.5}`)
       .set(this.$element, {css:{'stroke-dashoffset':this.circumference*0.75}})
-      //end
-      .to(this.$parent, {rotation:1080, duration:speed*1.3, ease:'power2.out'}, `+=${speed*0.2}`)
-      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.3}`)
-      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-      .set(this.$parent, {rotation:0})
-      .eventCallback('onComplete', ()=>{
-        this.$parent.classList.remove('loading');
-      })
     
   },
-  show: function() {
-    gsap.to(this.$parent, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+  loading_finish: function() {
+    let anim = gsap.timeline()
+      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'})
+      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.5}`)
+      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .set(this.$parent, {rotation:0})
+    if(this.mobile) {
+      setTimeout(()=>{
+        this.$parent.classList.remove('loading');
+      }, speed*1000)
+    } else {
+      anim.eventCallback('onComplete', ()=>{
+        this.$parent.classList.remove('loading');
+      })
+    }
   }
 }
 
@@ -1277,6 +1335,10 @@ const Modal = {
       }
     })
 
+    window.addEventListener('exit', ()=>{
+      if(this.$active) this.close(this.$active);
+    })
+
   }, 
   open: function($modal) {
     let play = ()=> {
@@ -1613,7 +1675,6 @@ class desktopConceptionsSlider {
 
 }
 
-
 class PortfolioSlider {
   constructor($slider) {
     this.$slider = $slider;
@@ -1899,12 +1960,14 @@ const DistortionImages = {
 
 const mobileWindow = {
   init: function() {
-    this.initialized = true;
     let $el = document.createElement('div')
     $el.style.cssText = 'position:fixed;height:100%;';
     $body.insertAdjacentElement('beforeend', $el);
     this.h = $el.getBoundingClientRect().height;
     $el.remove();
+    window.addEventListener('enter', ()=>{
+      this.check();
+    })
   }, 
   check: function() {
     let $el =  App.$container.querySelector('.home-screen');

@@ -10,7 +10,7 @@ var Helper = {
     this.$block = document.querySelector('.helper');
     this.$trigger = this.$block.querySelector('.helper__trigger');
     this.set_active_page();
-    window.addEventListener('change', function () {
+    window.addEventListener('enter', function () {
       _this.set_active_page();
     });
     this.$trigger.addEventListener('click', function () {

@@ -34,7 +34,8 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 //
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
-import Scrollbar from 'smooth-scrollbar';
+import Scrollbar, { ScrollbarPlugin } from 'smooth-scrollbar';
+
 import Inputmask from "inputmask";
 const validate = require("validate.js");
 import Splide from '@splidejs/splide';
@@ -1690,16 +1691,17 @@ class mobileConceptionsSlider {
     this.$slides = this.$parent.querySelectorAll('.conceptions-slide');
     this.$scale = this.$parent.querySelector('.conceptions__scale span');
     this.slides = {};
+    
 
-    this.scrollbar = Scrollbar.init(this.$wrapper, {
+    /* this.scrollbar = Scrollbar.init(this.$wrapper, {
       damping: 0.1
-    })
+    }) */
 
     this.$scale.style.width = '0';
-    this.scrollbar.addListener((event)=>{
+    /* this.scrollbar.addListener((event)=>{
       let value = event.offset.x/event.limit.x*100;
       this.$scale.style.width = `${value}%`;
-    })
+    }) */
 
   }
 }

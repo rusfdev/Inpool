@@ -180,6 +180,8 @@
     &__slider {
       &-wrapper {
         padding: 70px 0;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
       }
     }
     &__scale {

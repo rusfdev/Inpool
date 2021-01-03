@@ -85,25 +85,25 @@ gulp.task("webpack_scripts", function() {
         maxAssetSize: 1000
       },
       module: {
-        rules: [{
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-          options: {
-            presets: ["@babel/preset-env", {'plugins': ['@babel/plugin-proposal-class-properties']}]
-          }
-        }]
-      },
-      module: {
-        rules: [{
-          test: /\.(frag|vert|glsl)$/,
-          use: [
-            { 
-              loader: 'glsl-shader-loader',
-              options: {}  
+        rules: [
+          {
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+              presets: ["@babel/preset-env", {'plugins': ['@babel/plugin-proposal-class-properties']}]
             }
-          ]
-        }]
+          },
+          {
+            test: /\.(frag|vert|glsl)$/,
+            use: [
+              { 
+                loader: 'glsl-shader-loader',
+                options: {}  
+              }
+            ]
+          }
+        ]
       }
     }))
     .pipe(gulp.dest("./build/scripts/"))
@@ -122,25 +122,25 @@ gulp.task("webpack_scripts_production", function() {
         maxAssetSize: 1000
       },
       module: {
-        rules: [{
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-          options: {
-            presets: ["@babel/preset-env", {'plugins': ['@babel/plugin-proposal-class-properties']}]
-          }
-        }]
-      },
-      module: {
-        rules: [{
-          test: /\.(frag|vert|glsl)$/,
-          use: [
-            { 
-              loader: 'glsl-shader-loader',
-              options: {}  
+        rules: [
+          {
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+              presets: ["@babel/preset-env", {'plugins': ['@babel/plugin-proposal-class-properties']}]
             }
-          ]
-        }]
+          },
+          {
+            test: /\.(frag|vert|glsl)$/,
+            use: [
+              { 
+                loader: 'glsl-shader-loader',
+                options: {}  
+              }
+            ]
+          }
+        ]
       }
     }))
     .pipe(gulp.dest("./build/scripts/"))

@@ -146,7 +146,7 @@
         overflow: hidden;
       }
       &-wrapper {
-        overflow: scroll;
+        overflow: auto;
         -webkit-overflow-scrolling: touch;
         max-width: 100% !important;
         padding: 90px 0 110px 0;
@@ -522,7 +522,7 @@
     }
     &__button {
       right: 0;
-      bottom: 32px;
+      bottom: 34px;
     }
   }
   @include media-breakpoint-down(xl) {
@@ -602,6 +602,7 @@
     }
     &__title {
       width: 480px;
+      font-size: 3.25rem;
     }
   }
   @include media-breakpoint-down(lg) {
@@ -609,6 +610,7 @@
     flex: 0 0 1000px;
     &__title {
       bottom: 2px;
+      font-size: 2.875rem;
     }
     &__button {
       bottom: 0;
@@ -696,6 +698,7 @@
       width: 260px;
       transform: translate(0);
       bottom: -2px;
+      font-size: 1.875rem;
     }
     &__text {
       width: 288px;

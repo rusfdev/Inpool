@@ -191,26 +191,24 @@ const Pages = {
     init: function() {
       Splitting();
       HomeBanner.init();
-
+      //
       let $dcslider = document.querySelector('.conceptions');
       if(window.innerWidth>=brakepoints.lg) {
         this.dcslider = new desktopConceptionsSlider($dcslider);
-        this.dcslider.init();
       } else {
         this.dcslider = new mobileConceptionsSlider($dcslider);
-        this.dcslider.init();
       }
+      this.dcslider.init();
       //slider
       this.tslider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
       this.tslider.init();
     },
     destroy: function() {
       HomeBanner.destroy();
-      if(this.dcslider) {
-        this.dcslider.destroy();
-        delete this.dcslider;
-      }
-      //slider
+      //
+      this.dcslider.destroy();
+      delete this.dcslider;
+      //
       this.tslider.destroy();
       delete this.tslider;
     }
@@ -1690,13 +1688,17 @@ class mobileConceptionsSlider {
     this.$scale = this.$parent.querySelector('.conceptions__scale span');
 
     this.$scale.style.width = '0';
-    this.$wrapper.addEventListener('scroll', (event)=>{
+    this.event = ()=> {
       let w1 = contentWidth(),
           w2 = this.$content.getBoundingClientRect().width,
           x = this.$content.getBoundingClientRect().x;
       let value = -x/(w2-w1)*100;
       this.$scale.style.width = `${value}%`;
-    })
+    }
+    this.$wrapper.addEventListener('scroll', this.event)
+  }
+  destroy() {
+    this.$wrapper.removeEventListener('scroll', this.event)
   }
 }
 

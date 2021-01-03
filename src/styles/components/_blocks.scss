@@ -449,6 +449,7 @@
       color: var(--color-text);
       display: block;
       .ss-single-selected {
+        max-width: 100%;
         border-radius: 0;
         border: 0;
         background-color: transparent;
@@ -462,6 +463,10 @@
         font-family: $font2;
         .placeholder {
           line-height: inherit;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
         }
         .ss-arrow {
           margin: 0 0 0.25em 0.25em;
@@ -594,6 +599,34 @@
       &__item {
         padding: 0 40px 15px 0;
       }
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    margin-bottom: 55px;
+  }
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 40px;
+    &-block {
+      margin-right: -$mobile-container-padding-x;
+      margin-left: -$mobile-container-padding-x;
+      margin-top: -160px;
+      padding: 25px 0 40px 0;
+      &__title {
+        margin-bottom: 50px;
+      }
+      &__content {
+        margin: 0 -20px -16px 0;
+      }
+      &__item {
+        padding: 0 20px 16px 0;
+        min-width: 170px;
+      }
+    }
+    &__select .ss-main .ss-single-selected {
+      font-size: 2rem;
+    }
+    &__button {
+      margin-top: 40px;
     }
   }
 }

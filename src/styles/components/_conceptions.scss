@@ -59,6 +59,7 @@
     position: absolute;
     bottom: 90px;
     left: 734px;
+    overflow: hidden;
     span {
       display: block;
       height: 100%;
@@ -196,9 +197,11 @@
   @include media-breakpoint-down(sm) {
     padding: 60px 0;
     &__slider {
+      &-scroller {
+        margin-top: -10px;
+      }
       &-wrapper {
         padding: 70px 0 80px 0;
-        margin-top: -10px;
       }
     }
   }

@@ -7,18 +7,44 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  &__left {
-    display: flex;
-    align-items: center;
-  }
-  &__logo {
-    margin-right: 150px;
+    flex-wrap: wrap;
   }
   @include media-breakpoint-down(xxl) {
     padding: 100px 0 50px 0;
+  }
+  @include media-breakpoint-down(xl) {
+    padding: 60px 0;
+    &__copyright {
+      order: 3;
+    }
+    &__socials {
+      order: 2;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    &__copyright {
+      width: 100%;
+      text-align: center;
+      margin: 20px 0 0 0;
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    padding: 60px 0 35px 0;
+    &__container {
+      justify-content: center;
+    }
+    &__copyright {
+      margin: 0;
+    }
     &__logo {
-      margin-right: 100px;
+      order: 2;
+      margin: 0 0 10px 0;
+    }
+    &__socials {
+      order: 1;
+      width: 100%;
+      justify-content: center;
+      margin: 0 0 30px 0;
     }
   }
 }
@@ -33,5 +59,14 @@
   svg {
     height: 15px;
     width: 73px;
+  }
+  @include media-breakpoint-down(xl) {
+    width: 100%;
+    text-align: center;
+    margin: 40px 0 0 0;
+    order: 4;
+  }
+  @include media-breakpoint-down(sm) {
+    margin: 25px 0 0 0;
   }
 }

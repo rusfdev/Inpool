@@ -106,7 +106,6 @@ a {
   text-decoration: none;
   transition: color $trs1, border-color $trs1;
   &:not([class]) {
-    display: inline-block;
     border-bottom: 1px solid var(--color-light);
     &[data-touch], &[data-hover] {
       color: var(--color-light);

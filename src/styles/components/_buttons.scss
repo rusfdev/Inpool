@@ -80,6 +80,7 @@
     padding: 0 20px 0 30px;
   }
   @include media-breakpoint-down(sm) {
+    padding: 0 30px;
     &_ico {
       padding: 0 24px 0 30px;
     }

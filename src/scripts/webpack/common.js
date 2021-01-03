@@ -50,7 +50,7 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = false;
+const dev = true;
 const speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 
@@ -1685,24 +1685,18 @@ class mobileConceptionsSlider {
     this.$parent = $parent;
   }
   init() {
-    this.$slider = this.$parent.querySelector('.conceptions__slider');
-    this.$container = this.$parent.querySelector('.conceptions__slider-container');
     this.$wrapper = this.$parent.querySelector('.conceptions__slider-wrapper');
-    this.$slides = this.$parent.querySelectorAll('.conceptions-slide');
+    this.$content = this.$parent.querySelector('.conceptions__slides');
     this.$scale = this.$parent.querySelector('.conceptions__scale span');
-    this.slides = {};
-    
-
-    /* this.scrollbar = Scrollbar.init(this.$wrapper, {
-      damping: 0.1
-    }) */
 
     this.$scale.style.width = '0';
-    /* this.scrollbar.addListener((event)=>{
-      let value = event.offset.x/event.limit.x*100;
+    this.$wrapper.addEventListener('scroll', (event)=>{
+      let w1 = contentWidth(),
+          w2 = this.$content.getBoundingClientRect().width,
+          x = this.$content.getBoundingClientRect().x;
+      let value = -x/(w2-w1)*100;
       this.$scale.style.width = `${value}%`;
-    }) */
-
+    })
   }
 }
 

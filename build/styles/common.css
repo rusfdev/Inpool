@@ -5967,9 +5967,14 @@ a {
         bottom: -10px; }
       .conceptions__leaf-message-top {
         bottom: 0; }
+      .conceptions__slider-scroller {
+        overflow: hidden; }
       .conceptions__slider-wrapper {
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
         max-width: 100% !important;
-        padding: 90px 0; }
+        padding: 90px 0 110px 0;
+        margin-bottom: -20px; }
         .conceptions__slider-wrapper .scrollbar-track {
           display: none !important; }
       .conceptions__slides {
@@ -5995,9 +6000,7 @@ a {
         width: 2930px;
         overflow: hidden; }
       .conceptions__slider-wrapper {
-        padding: 70px 0;
-        overflow: scroll;
-        -webkit-overflow-scrolling: touch; }
+        padding: 70px 0 90px 0; }
       .conceptions__scale {
         transform: translate(0);
         left: calc((100vw - 280px) / 2); } }
@@ -6005,7 +6008,7 @@ a {
     .conceptions {
       padding: 60px 0; }
       .conceptions__slider-wrapper {
-        padding: 70px 0 60px 0;
+        padding: 70px 0 80px 0;
         margin-top: -10px; } }
 
 .conceptions-slide {

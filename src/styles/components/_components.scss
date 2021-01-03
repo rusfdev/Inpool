@@ -91,6 +91,16 @@
   display: inline-block;
 }
 
+.leaf-message {
+  display: inline-flex;
+  line-height: 20px;
+  font-size: 0.875rem;
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 6px;
+  }
+}
 
 .pagination {
   &__list {

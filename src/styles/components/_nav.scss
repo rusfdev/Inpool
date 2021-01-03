@@ -104,6 +104,14 @@
       padding: 130px 24px 80px 60px;
     }
   }
+  @include media-breakpoint-between(xl, xxl) {
+    @media (max-height:640px) {
+      &__block {
+        padding-top: 120px;
+        padding-bottom: 60px;
+      }
+    }
+  }
   @include media-breakpoint-down(xl) {
     &__block {
       padding: 130px 24px 60px 60px;

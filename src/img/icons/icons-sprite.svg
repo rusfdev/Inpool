@@ -12,4 +12,7 @@
   <symbol fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 29" id="point">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M8.4 27.034C4.974 22.485 0 15.888 0 10.5 0 5 4 .5 9.5.5c5 0 9.5 4 9.5 10.5 0 5.295-5.565 12.444-9.1 16.985l-.4.515c-.34-.46-.71-.95-1.1-1.466zM9.5 14a3.5 3.5 0 100-7 3.5 3.5 0 000 7z"></path>
   </symbol>
+  <symbol fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 8" id="arrow">
+    <path d="M21.252 4.535a.5.5 0 000-.707L18.07.646a.5.5 0 10-.707.707l2.828 2.829-2.828 2.828a.5.5 0 10.707.707l3.182-3.182zM.898 4.682h20v-1h-20v1z"></path>
+  </symbol>
 </svg>

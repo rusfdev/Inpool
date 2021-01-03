@@ -117,7 +117,7 @@
 }
 
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   .container {
     padding-right: $mobile-container-padding-x;
     padding-left: $mobile-container-padding-x;

@@ -190,9 +190,13 @@ const Pages = {
     init: function() {
       Splitting();
       HomeBanner.init();
+
+      let $dcslider = document.querySelector('.conceptions');
       if(window.innerWidth>=brakepoints.lg) {
-        let $dcslider = document.querySelector('.conceptions');
         this.dcslider = new desktopConceptionsSlider($dcslider);
+        this.dcslider.init();
+      } else {
+        this.dcslider = new mobileConceptionsSlider($dcslider);
         this.dcslider.init();
       }
       //slider
@@ -1675,6 +1679,31 @@ class desktopConceptionsSlider {
 
 }
 
+class mobileConceptionsSlider {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+  init() {
+    this.$slider = this.$parent.querySelector('.conceptions__slider');
+    this.$container = this.$parent.querySelector('.conceptions__slider-container');
+    this.$wrapper = this.$parent.querySelector('.conceptions__slider-wrapper');
+    this.$slides = this.$parent.querySelectorAll('.conceptions-slide');
+    this.$scale = this.$parent.querySelector('.conceptions__scale span');
+    this.slides = {};
+
+    this.scrollbar = Scrollbar.init(this.$wrapper, {
+      damping: 0.1
+    })
+
+    this.$scale.style.width = '0';
+    this.scrollbar.addListener((event)=>{
+      let value = event.offset.x/event.limit.x*100;
+      this.$scale.style.width = `${value}%`;
+    })
+
+  }
+}
+
 class PortfolioSlider {
   constructor($slider) {
     this.$slider = $slider;
@@ -1974,8 +2003,6 @@ const mobileWindow = {
     if($el) $el.style.height = `${this.h}px`;
   }
 }
-
-
 
 //scenes
 class ResourceTracker {

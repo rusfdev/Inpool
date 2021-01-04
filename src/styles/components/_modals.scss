@@ -16,6 +16,7 @@
     height: 100%;
     padding: $container-padding-x;
     display: flex;
+    cursor: pointer;
   }
   &-close {
     position: absolute;

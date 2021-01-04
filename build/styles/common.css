@@ -4371,7 +4371,8 @@ a {
     padding: 70px 120px;
     border-radius: 10px;
     max-width: 920px;
-    width: 100%; }
+    width: 100%;
+    overflow: hidden; }
     .modal-block__close {
       top: 10px;
       right: 10px; }

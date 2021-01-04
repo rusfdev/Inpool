@@ -1379,10 +1379,7 @@ const Modal = {
           $video_open = event.target.closest('[data-modal="video"]'),
           $wrap = event.target.closest('.modal'),
           $block = event.target.closest('.modal-block');
-      
-      $body.insertAdjacentText('afterbegin', `${$block==null}, ${$wrap!==null}`)
-      
-
+    
       //open
       if($open) {
         event.preventDefault();
@@ -1459,8 +1456,7 @@ const Modal = {
         `<div class="modal modal-video">
           <div class="modal__wrapper" data-scroll-lock-scrollable="">
             <div class="modal-block modal-video__wrapper">
-              <button class="modal-close modal-block__close modal-video__close" data-modal="close" aria-label="close"></button>
-              <div class='modal-video__container'>
+             <div class='modal-video__container'>
                 <video class='modal-video__element' src=${href} controls></video>
               </div>
             </div>

@@ -8,17 +8,9 @@ block content
   section.section.home-screen.home-standart
     .home-screen__gradient.home-standart__gradient
     .home-screen__background
-      .video-scene
-        .image.image_cover.video-scene__image(data-parralax='0.35' data-parralax-top)
-          img(data-src="./img/power/home.jpg", alt="bg").lazyload
-        .video-scene__controls.container
-          a(href="javascript:void(0);").video-scene__close
-          .video-scene__timeline
-            span
-        .video-scene__wrapper(data-parralax='0.35' data-parralax-top)
-          video.video-scene__player
-            source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
-    
+      .image.image_cover(data-parralax='0.35' data-parralax-top)
+        img(data-src="./img/power/home.jpg", alt="bg").lazyload
+     
     .container.home-screen__container
       .row.home-standart__content
         .home-standart__left.col-xl-6
@@ -30,9 +22,11 @@ block content
         .home-standart__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
           p INPOOL POWER - ваше персональное место силы
         .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4.col-auto
-          a(href="javascript:void(0);").home-standart__play-btn
-            svg.icon
-              use(xlink:href='./img/icons/icons-sprite.svg#play')
+          //НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.
+          a(href="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" data-modal='video' data-barba-prevent).home-standart__play-btn
+            .icon-wrap
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#play')
             span Посмотрите видео-презентацию<br> об INPOOL POWER
 
       button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')

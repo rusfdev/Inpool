@@ -4136,9 +4136,6 @@ a {
   background-color: var(--color-bg-images);
   position: relative; }
 
-.js-distortion img {
-  display: none; }
-
 .js-distortion canvas {
   position: absolute;
   top: 0;
@@ -4372,7 +4369,8 @@ a {
     background-color: var(--color-bg);
     padding: 70px 120px;
     border-radius: 10px;
-    max-width: 920px; }
+    max-width: 920px;
+    width: 100%; }
     .modal-block__close {
       top: 10px;
       right: 10px; }
@@ -4425,6 +4423,29 @@ a {
   @media (max-width: 575.98px) {
     .modal-form__head {
       margin-bottom: 30px; } }
+
+.modal-video__wrapper {
+  padding: 0; }
+
+.modal-video__container {
+  position: relative; }
+  .modal-video__container::before {
+    content: '';
+    display: block;
+    padding-top: 56.25%; }
+
+.modal-video__close {
+  top: 0;
+  right: 0;
+  background-color: var(--color-bg-transparent); }
+
+.modal-video__element {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0; }
 
 /*========== Helpers ==========*/
 .no-flickr {
@@ -4790,17 +4811,17 @@ a {
     background-color: var(--color-bg-darker);
     overflow: hidden;
     z-index: 1; }
-  .home-screen__scene {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: transparent; }
-    .home-screen__scene .image {
+    .home-screen__background .image {
       height: 100%;
       width: 100%;
       position: absolute;
       top: 0;
       left: 0; }
+  .home-screen__scene {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: transparent; }
   .home-screen__container {
     height: 100%;
     position: relative;
@@ -4964,7 +4985,7 @@ a {
 .home-standart__idx {
   font-size: 314px;
   line-height: 1;
-  color: rgba(133, 133, 133, 0.38);
+  color: rgba(255, 255, 255, 0.2);
   position: absolute;
   left: 0;
   bottom: calc(100% - 120px);
@@ -4998,23 +5019,26 @@ a {
   line-height: inherit;
   cursor: pointer;
   font-size: 15px; }
-  .home-standart__play-btn .icon {
+  .home-standart__play-btn .icon-wrap {
     width: 46px;
     height: 46px;
     border-radius: 46px;
-    overflow: visible;
     border: 1px solid var(--color-darkened);
     color: var(--color-darkened);
     padding: 12px 12px 12px 15px;
     margin-right: 20px;
     transition: border-color 0.25s ease-in-out, color 0.25s ease-in-out;
     flex-shrink: 0; }
+  .home-standart__play-btn .icon {
+    display: block;
+    width: 100%;
+    height: 100%; }
   .home-standart__play-btn span {
     border: none !important; }
-  .home-standart__play-btn[data-touch] .icon, .home-standart__play-btn[data-hover] .icon {
+  .home-standart__play-btn[data-touch] .icon-wrap, .home-standart__play-btn[data-hover] .icon-wrap {
     border-color: var(--color-text);
     color: var(--color-text); }
-  .home-standart__play-btn[data-focus] .icon {
+  .home-standart__play-btn[data-focus] .icon-wrap {
     border-color: var(--color-accent);
     color: var(--color-accent); }
 
@@ -5091,6 +5115,8 @@ a {
       width: 340px; } }
 
 @media (max-width: 575.98px) {
+  .home-standart__gradient {
+    height: 100%; }
   .home-standart__content {
     padding-bottom: 16px; }
   .home-standart__scroll-bottom {
@@ -5109,12 +5135,12 @@ a {
   .home-standart__play-btn {
     font-size: 0.875rem;
     width: 288px; }
-    .home-standart__play-btn .icon {
+    .home-standart__play-btn .icon-wrap {
       width: 32px;
       height: 32px;
       padding: 8px 8px 8px 10px;
       border-radius: 32px;
-      margin-right: 10px; } }
+      margin-right: 14px; } }
 
 .logo {
   display: block;
@@ -5355,8 +5381,6 @@ a {
     z-index: 2;
     opacity: 0;
     visibility: hidden; }
-  .video-scene__image {
-    display: none; }
   .video-scene__controls {
     opacity: 0;
     visibility: hidden;
@@ -5367,7 +5391,7 @@ a {
     transform: translateX(-50%);
     z-index: 3; }
   .video-scene__timeline {
-    width: 100%;
+    width: calc(100vw - 32px);
     max-width: 680px;
     height: 2px;
     border-radius: 2px;
@@ -5405,6 +5429,13 @@ a {
   @media (max-width: 1599.98px) {
     .video-scene__close {
       top: 120px; } }
+  @media (max-width: 767.98px) {
+    .video-scene__close {
+      right: 29px; } }
+  @media (max-width: 575.98px) {
+    .video-scene__close {
+      right: 8px;
+      top: 90px; } }
 
 .conception-items__container {
   margin-bottom: -65px; }

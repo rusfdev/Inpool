@@ -34,13 +34,13 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 //
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
-import Scrollbar, { ScrollbarPlugin } from 'smooth-scrollbar';
+import Scrollbar from 'smooth-scrollbar';
 
 import Inputmask from "inputmask";
 const validate = require("validate.js");
 import Splide from '@splidejs/splide';
 import SwipeListener from 'swipe-listener';
-import { disablePageScroll, enablePageScroll, getScrollState } from 'scroll-lock';
+import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 import SlimSelect from 'slim-select';
 
 const brakepoints = {
@@ -109,7 +109,6 @@ const App = {
     TouchHoverEvents.init();
     Header.init();
     Nav.init();
-    DistortionImages.init();
     Validation.init();
     Modal.init();
     Cursor.init();
@@ -143,6 +142,7 @@ const App = {
       mobileWindow.init();
     } else {
       Parralax.init();
+      DistortionImages.init();
     }
 
     Preloader.finish(()=>{
@@ -191,7 +191,7 @@ const Pages = {
     init: function() {
       Splitting();
       HomeBanner.init();
-      //
+      //slider1
       let $dcslider = document.querySelector('.conceptions');
       if(window.innerWidth>=brakepoints.lg) {
         this.dcslider = new desktopConceptionsSlider($dcslider);
@@ -199,7 +199,7 @@ const Pages = {
         this.dcslider = new mobileConceptionsSlider($dcslider);
       }
       this.dcslider.init();
-      //slider
+      //slider2
       this.tslider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
       this.tslider.init();
     },
@@ -215,13 +215,31 @@ const Pages = {
   },
   conception: {
     init: function() {
-      HomeScreenVideo.init();
-      this.slider = new CSlider(App.$container.querySelector('.conceptions-slider'));
-      this.slider.init();
+      //video
+      if(!mobile()) {
+        let $parent = App.$container.querySelector('.home-screen'),
+            $button = App.$container.querySelector('.home-standart__play-btn');
+        if($parent && $button) {
+          this.video = new HomeScreenVideo($parent);
+          this.video.init();
+        }
+      }
+      //slider
+      let $slider = App.$container.querySelector('.conceptions-slider');
+      if($slider) {
+        this.slider = new CSlider($slider);
+        this.slider.init();
+      }
     },
     destroy: function() {
-      HomeScreenVideo.destroy();
-      this.slider.destroy();
+      if(this.video) {
+        this.video.destroy();
+        delete this.video;
+      }
+      if(this.slider) {
+        this.slider.destroy();
+        delete this.slider;
+      }
     }
   },
   equipment: {
@@ -609,7 +627,6 @@ const Nav = {
       if((event.type=='mouseenter' && !TouchHoverEvents.touched)) {
         this.$toggle_items.forEach(($item, index)=>{
           $item.setAttribute('d', this.button_forms[2]);
-          console.log('kek')
         })
       } 
       else if(event.type=='mouseleave' || event.type=='customTouchend') {
@@ -971,6 +988,7 @@ class BackgroundScene {
   }
   destroy() {
     this.scene.destroy();
+    for(let child in this) delete this[child];
   }
 }
 
@@ -982,6 +1000,7 @@ class BackgroundVideo {
     this.$video = this.$parent.querySelector('video');
     this.$video.volume = 1;
     this.$video.muted = true;
+
     this.resizeEvent = ()=> {
       this.resize();
     }
@@ -1052,28 +1071,57 @@ class BackgroundVideo {
     window.removeEventListener('resize', this.resizeEvent);
     Scroll.removeListener(this.checkPauseEvent)
     document.removeEventListener("visibilitychange", this.checkPauseEvent);
+    for(let child in this) delete this[child];
   }
 
 }
 
-const HomeScreenVideo = {
-  init: function() {
+class HomeScreenVideo {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+  init() {
+    //remove image
+    this.$parent.querySelector('.image').remove();
+
+    this.$open = this.$parent.querySelector('.home-standart__play-btn');
+    this.$bg = this.$parent.querySelector('.home-screen__background');
+
+    //create
+    let video = this.$open.getAttribute('href');
+    this.$bg.insertAdjacentHTML('afterbegin', 
+      `<div class="video-scene">
+        <div class="video-scene__controls container">
+          <button class="video-scene__close" aria-label="close video"></button>
+          <div class="video-scene__timeline"><span></span></div>
+        </div>
+        <div class="video-scene__wrapper" data-parralax="0.35" data-parralax-top>
+          <video class="video-scene__player">
+            <source src=${video} type="video/mp4">
+          </video>
+        </div>
+      </div>`
+    )
+
+    this.$open.removeAttribute('data-modal');
+    this.$open.setAttribute('href', 'javascript:void(0);');
+
     this.state = false;
-    this.$scene = App.$container.querySelector('.video-scene');
-    this.$player = App.$container.querySelector('.video-scene__player');
-    this.$open = App.$container.querySelector('.home-standart__play');
-    this.$close = App.$container.querySelector('.video-scene__close');
-    this.$container = App.$container.querySelector('.home-screen__container');
-    this.$gradient = App.$container.querySelector('.home-standart__gradient');
-    this.controls = App.$container.querySelector('.video-scene__controls');
-    this.timeline = App.$container.querySelector('.video-scene__timeline span');
+    this.$image = this.$parent.querySelector('.image');
+    this.$scene = this.$parent.querySelector('.video-scene');
+    this.$player = this.$parent.querySelector('.video-scene__player');
+    this.$close = this.$parent.querySelector('.video-scene__close');
+    this.$container = this.$parent.querySelector('.home-screen__container');
+    this.$gradient = this.$parent.querySelector('.home-standart__gradient');
+    this.controls = this.$parent.querySelector('.video-scene__controls');
+    this.timeline = this.$parent.querySelector('.video-scene__timeline span');
 
     this.openAnimation = gsap.timeline({paused:true})
       .to([this.$container, this.$gradient], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
       .to(this.controls, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
 
-    this.openEvent = ()=> {
-      this.open();
+    this.openEvent = (event)=> {
+      this.open(event);
     }
     this.closeEvent = ()=> {
       this.close();
@@ -1081,6 +1129,7 @@ const HomeScreenVideo = {
     
     this.$open.addEventListener('click', this.openEvent);
     this.$close.addEventListener('click', this.closeEvent);
+    window.addEventListener('exit', this.closeEvent);
     
     this.video = new BackgroundVideo(this.$scene);
     this.video.init()
@@ -1104,8 +1153,9 @@ const HomeScreenVideo = {
       }
     }
 
-  },
-  open: function() {
+  }
+  open(event) {
+    event.preventDefault();
     this.state = true;
     this.openAnimation.play();
     Scroll.scrollTop(0, speed);
@@ -1118,19 +1168,21 @@ const HomeScreenVideo = {
       this.video.$video.currentTime = 0;
     }, speed*1000)
   
-  },
-  close: function() {
+  }
+  close() {
     this.state = false;
     gsap.to(this.video.$video, {volume:0, duration:2, ease:'power2.none', onComplete:()=>{
       this.video.$video.muted = true;
     }})
     this.openAnimation.reverse();
-  },
-  destroy: function() {
+  }
+  destroy() {
     this.video.destroy();
     clearInterval(this.interval)
     this.$open.removeEventListener('click', this.openEvent);
     this.$close.removeEventListener('click', this.closeEvent);
+    window.removeEventListener('exit', this.closeEvent);
+    for(let child in this) delete this[child];
   }
 }
 
@@ -1324,8 +1376,13 @@ const Modal = {
     document.addEventListener('click', (event)=>{
       let $open = event.target.closest('[data-modal="open"]'),
           $close = event.target.closest('[data-modal="close"]'),
+          $video_open = event.target.closest('[data-modal="video"]'),
           $wrap = event.target.closest('.modal'),
           $block = event.target.closest('.modal-block');
+      
+      $body.insertAdjacentText('afterbegin', `${$block==null}, ${$wrap!==null}`)
+      
+
       //open
       if($open) {
         event.preventDefault();
@@ -1334,7 +1391,14 @@ const Modal = {
       }
       //close 
       else if($close || (!$block && $wrap)) {
+
         this.close(this.$active);
+      } 
+      //video
+      else if($video_open) {
+        event.preventDefault();
+        let href = $video_open.getAttribute('href');
+        this.video(href);
       }
     })
 
@@ -1375,12 +1439,51 @@ const Modal = {
         $header.classList.remove('header_modal-opened');
         delete this.animation;
         enablePageScroll();
+        //video
+        if($modal.classList.contains('modal-video')) {
+          $modal.remove();
+        }
+
+
         if(callback) callback();
       })
       //reset form
       let $form = $modal.querySelector('form');
       if($form) Validation.reset($form);
     }
+  },
+  video: function(href) {
+    let play = ()=> {
+      //create
+      $wrapper.insertAdjacentHTML('beforeEnd', 
+        `<div class="modal modal-video">
+          <div class="modal__wrapper" data-scroll-lock-scrollable="">
+            <div class="modal-block modal-video__wrapper">
+              <button class="modal-close modal-block__close modal-video__close" data-modal="close" aria-label="close"></button>
+              <div class='modal-video__container'>
+                <video class='modal-video__element' src=${href} controls></video>
+              </div>
+            </div>
+          </div>
+        </div>`
+      );
+      //
+      disablePageScroll();
+      $header.classList.add('header_modal-opened');
+      let $modal = document.querySelector('.modal-video'),
+          $content = $modal.querySelector('.modal-block');
+      this.$active = $modal;
+      
+      this.animation = gsap.effects.modal($modal, $content);
+      this.animation.play();
+
+    }
+
+    if(href) {
+      if(this.$active) this.close(this.$active, play);
+      else play();
+    }
+    
   }
 }
 
@@ -1424,6 +1527,7 @@ class Scale {
   }
   destroy() {
     Scroll.removeListener(this.listener);
+    for(let child in this) delete this[child];
   }
 }
 
@@ -1674,6 +1778,7 @@ class desktopConceptionsSlider {
         this.slides[slide_index].scenes[scene_index].destroy();
       }
     }
+    for(let child in this) delete this[child];
   }
 
 }
@@ -1698,7 +1803,8 @@ class mobileConceptionsSlider {
     this.$wrapper.addEventListener('scroll', this.event)
   }
   destroy() {
-    this.$wrapper.removeEventListener('scroll', this.event)
+    this.$wrapper.removeEventListener('scroll', this.event);
+    for(let child in this) delete this[child];
   }
 }
 
@@ -1776,6 +1882,7 @@ class PortfolioSlider {
     this.scene.destroy();
     this.slider.destroy();
     clearInterval(this.interval);
+    for(let child in this) delete this[child];
   }
 }
 
@@ -1842,6 +1949,7 @@ class CSlider {
     this.scene.destroy();
     this.slider.destroy();
     clearInterval(this.interval);
+    for(let child in this) delete this[child];
   }
 
 }
@@ -1933,6 +2041,7 @@ class TechnologiesSlider {
     if(this.scene) this.scene.destroy();
     if(this.interval) clearInterval(this.interval);
     this.slider.destroy();
+    for(let child in this) delete this[child];
   }
 }
 
@@ -1940,24 +2049,23 @@ const DistortionImages = {
   init: function() {
     this.objects = {};
 
-    this.check(App.$container);
-    barba.hooks.enter((data) => {
-      this.check(data.next.container);
-    });
-
-    barba.hooks.leave(() => {
+    window.addEventListener('enter', ()=>{
+      this.check(App.$container);
+    })
+    window.addEventListener('exit', ()=>{
       for(let index in this.objects) {
         document.removeEventListener('lazybeforeunveil', this.objects[index].finded);
         this.objects[index].scene.destroy();
         delete this.objects[index];
       }
-    });
+    })
     
   },
   check: function($page) {
     $page.querySelectorAll('.js-distortion').forEach(($scene, index)=>{
       let $img = $scene.querySelector('img'), 
           texture = $img.getAttribute('data-src');
+      $img.style.display='none';
   
       let obj = this.objects[index] = {};
       let scene = obj.scene = new DistortionScene($scene);
@@ -2023,6 +2131,7 @@ class ResourceTracker {
     this.resources.clear();
   }
 }
+
 class DistortionScene {
   constructor($scene) {
     this.$scene = $scene;
@@ -2200,13 +2309,14 @@ class DistortionScene {
     cancelAnimationFrame(this.animationFrame);
     clearInterval(this.checkVisibleInterval);
     window.removeEventListener('resize', this.resizeEvent);
-    this.scene.remove.apply(this.scene, this.scene.children);
     this.resTracker.dispose();
     this.renderer.dispose();
     this.renderer.domElement.remove();
+    this.scene.remove.apply(this.scene, this.scene.children);
+    for(let child in this) delete this[child];
   }
-
 }
+
 class WaveScene {
   constructor($scene) {
     this.$scene = $scene;
@@ -2394,9 +2504,10 @@ class WaveScene {
     clearInterval(this.checkVisibleInterval);
     window.removeEventListener('resize', this.resizeEvent);
     window.removeEventListener('mousemove', this.mousemoveEvent);
-    this.scene.remove.apply(this.scene, this.scene.children);
     this.resTracker.dispose();
     this.renderer.dispose();
     this.renderer.domElement.remove();
+    this.scene.remove.apply(this.scene, this.scene.children);
+    for(let child in this) delete this[child];
   }
 }

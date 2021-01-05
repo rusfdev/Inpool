@@ -349,6 +349,10 @@
     font-size: 62px;
   }
   @include media-breakpoint-down(md) {
+    font-size: 48px;
+  }
+  @include media-breakpoint-down(sm) {
+    font-size: 24px;
     display: none;
   }
 }

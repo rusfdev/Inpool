@@ -67,7 +67,7 @@ block content
       .row
         .h2.bg-title.col-auto.offset-xxl-6.offset-lg-7(data-parralax='-0.1') Технологии
       .row  
-        .conceptions-slider__d-images.order-lg-2.col-xxl-7.col-lg-6.offset-xl-1
+        .conceptions-slider__d-images.order-lg-2.col-xxl-7.col-lg-6.offset-lg-1
           .scene.slider__scene.conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2
             .image.image_cover
               img(data-src="./img/jet.jpg", alt="image").lazyload
@@ -83,7 +83,7 @@ block content
               img(data-src="./img/decor.jpg", alt="image").lazyload
             .image.image_cover
               img(data-src="./img/led.jpeg", alt="image").lazyload
-        .conceptions-slider__slides.col-xxl-4.col-xl-5.col-lg-6
+        .conceptions-slider__slides.col-xxl-4.col-lg-5
           .leaf-message.conceptions-slider__leaf-message
             span Листайте
             svg.icon
@@ -134,34 +134,36 @@ block content
                   .conceptions-slider__slide-text
                     p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
         
-
   section.section.conceptions-about
     .container
       .row
         .h2.conceptions-about__bg-title.bg-title.offset-xl-1.col-11(data-parralax='-0.1') Вам подойдёт INPOOL<br> ENERGY, если Вы 
       .row.conceptions-about__container
+
         //item
-        .conceptions-about__item.col-xl-4
+        .conceptions-about__item.offset-sm-4.offset-lg-0.col-lg-4.col-sm-8
           .row  
-            .col-xl-9
+            .offset-3.offset-sm-0.col-9
               .image.image_cover.js-distortion
                 img(data-src="./img/energy/1.jpg", alt="image").lazyload
           .conceptions-about__item-index 1
           .conceptions-about__item-text
             p Хотите профессионально заниматься спортом, не выходя из дома
+
         //item
-        .conceptions-about__item.col-xl-4
+        .conceptions-about__item.offset-sm-2.offset-lg-0.col-lg-4.col-sm-8
           .row  
-            .col-xl-9
+            .offset-3.offset-sm-0.col-9
               .image.image_cover.js-distortion
                 img(data-src="./img/energy/2.jpg", alt="image").lazyload
           .conceptions-about__item-index 2
           .conceptions-about__item-text
             p Хотите отточить свою технику плавания и улучшить координацию движений, синхронность и другие показатели
+            
         //item
-        .conceptions-about__item.col-xl-4
+        .conceptions-about__item.offset-sm-4.offset-lg-0.col-lg-4.col-sm-8
           .row  
-            .col-xl-9
+            .offset-3.offset-sm-0.col-9
               .image.image_cover.js-distortion
                 img(data-src="./img/energy/3.jpg", alt="image").lazyload
           .conceptions-about__item-index 3
@@ -172,23 +174,25 @@ block content
     .container
       span.conceptions-final__slogan.conceptions-final__slogan_style-3 INPOOL ENERGY –  помогает побеждать
       .row
-        .h2.bg-title.offset-xl-1.col-11(data-parralax='-0.1') INPOOL ENERGY  – <br>сила вашей энергии
+        .h2.bg-title.offset-xl-1.col-xl-11(data-parralax='-0.1') INPOOL ENERGY  – <br>сила вашей энергии
       .row
-        .conceptions-final__m-image.col-xxl-5.offset-xxl-2.col-xl-6.offset-xl-1
+
+        .conceptions-final__m-image.offset-xxl-2.offset-md-1.col-xxl-5.col-lg-6.col-md-10
           .image.image_cover.js-distortion
             img(data-src="./img/energy/4.jpg", alt="image").lazyload
-        .conceptions-final__content.col-xl-4.offset-xl-1
+
+        .conceptions-final__content.offset-lg-1.offset-lg-1.offset-md-1.offset-sm-0.offset-3.col-xxl-3.col-lg-4.col-md-10.col-sm-12.col-9
           h2.conceptions-final__title От 70 000 €
           p INPOOL ENERGY - вечная молодость, энергия и драйв. Будьте лучшим во всем. 
           a(href='#modal-form' data-modal='open').button.conceptions-final__button
             span Согласен
 
-        .conceptions-final__text.conceptions-final__text_style-2.col-xl-3.offset-xl-6
-          p Плавание - самый приятный и легкий способ прийти в форму. Поддерживайте идеальную спортивную форму с INPOOL ENERGY
-        
-        .conceptions-final__s-image.conceptions-final__s-image_style-2.col-xl-3
+        .conceptions-final__s-image.order-lg-4.conceptions-final__s-image_style-2.col-lg-3.col-sm-5.col-9
           .image.image_cover.js-distortion
             img(data-src="./img/energy/5.jpg", alt="image").lazyload
-        
+
+        .conceptions-final__text.conceptions-final__text_style-2.order-lg-3.offset-xxl-6.offset-xl-5.offset-lg-4.offset-sm-1.offset-3.col-xxl-3.col-xl-4.col-lg-5.col-sm-6.col-9
+          p Плавание - самый приятный и легкий способ прийти в форму. Поддерживайте идеальную спортивную форму с INPOOL ENERGY
+   
 
   include blocks/form-section

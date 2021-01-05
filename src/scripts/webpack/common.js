@@ -754,8 +754,10 @@ const HomeBanner = {
     this.checkVisibleInterval = setInterval(()=>{
       this.checkVisibilityEvent();
     }, 100)
+
+    this.speed = Speed*1.5;
     //DESKTOP
-    if(window.innerWidth >= brakepoints.lg) {
+    if(!mobile()) {
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
@@ -775,6 +777,12 @@ const HomeBanner = {
     }
     //MOBILE
     else {
+      this.animations_img = [];
+      this.$images.forEach(($image, index)=>{
+        this.animations_img[index] = gsap.timeline({paused:true})
+          .fromTo($image, {scale:1.2}, {scale:1, duration:this.speed, ease:'power2.out'})
+          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+      })
       this.start();
     }
     
@@ -788,25 +796,12 @@ const HomeBanner = {
       let $chars = $title.querySelectorAll('.char');
       this.animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{this.inAnimation=false;}})
         .set($title, {autoAlpha:1})
-        .fromTo($chars, {y:20}, {y:0, duration:Speed*0.8, ease:'power2.out', stagger:{amount:Speed*0.2}}) 
-        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:Speed*0.8, ease:'power2.inOut', stagger:{amount:Speed*0.2}}, `-=${Speed}`) 
+        .fromTo($chars, {y:20}, {y:0, duration:(this.speed/2)*0.8, ease:'power2.out', stagger:{amount:(this.speed/2)*0.2}}) 
+        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:(this.speed/2)*0.8, ease:'power2.inOut', stagger:{amount:(this.speed/2)*0.2}}, `-=${(this.speed/2)}`) 
       this.animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{this.inAnimation=true;}})
-        .to($chars, {y:-20, duration:Speed*0.8, ease:'power1.in', stagger:{amount:Speed*0.2}})
-        .to($chars, {autoAlpha:0, duration:Speed*0.8, ease:'power2.inOut', stagger:{amount:Speed*0.2}}, `-=${Speed}`)
+        .to($chars, {y:-20, duration:(this.speed/2)*0.8, ease:'power1.in', stagger:{amount:(this.speed/2)*0.2}})
+        .to($chars, {autoAlpha:0, duration:(this.speed/2)*0.8, ease:'power2.inOut', stagger:{amount:(this.speed/2)*0.2}}, `-=${(this.speed/2)}`)
         .set($title, {autoAlpha:0})
-      //MOBILE
-      if(window.innerWidth < brakepoints.lg) {
-        let $image = this.$images[index];
-        gsap.set($image, {autoAlpha:0});
-        let image_in = gsap.timeline()
-          .fromTo($image, {scale:1.05}, {scale:1.2, duration:Speed, ease:'power2.in'})
-          .fromTo($image, {autoAlpha:1}, {autoAlpha:0, duration:Speed, ease:'power2.inOut'}, `-=${Speed}`)
-        let image_out = gsap.timeline()
-          .fromTo($image, {scale:1.2}, {scale:1.05, duration:Speed, ease:'power2.out'})
-          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:Speed, ease:'power2.inOut'}, `-=${Speed}`)
-        this.animations_enter[index].add(image_out, `>-${Speed}`)
-        this.animations_exit[index].add(image_in, `>-${Speed}`)
-      }
     })
 
     this.getNext = ()=> {
@@ -825,14 +820,22 @@ const HomeBanner = {
         if(!this.initialized) {
           this.initialized = true;
           this.animations_enter[this.index].play(0);
-          if(this.scene) this.scene.show(Speed);
-          this.interval = setInterval(this.autoslide, autoslide_interval*1000);
+          //desktop
+          if(this.scene) this.scene.show(this.speed/2);
+          //mobile
+          if(this.animations_img) this.animations_img[this.index].play();
         } else {
           this.$paginations[this.old].classList.remove('active');
-          if(this.scene) this.scene.change(this.textures[this.index], this.index, Speed*2);
           this.animations_exit[this.old].play(0).eventCallback('onComplete', ()=>{
             this.animations_enter[this.index].play(0);
           })
+          //desktop
+          if(this.scene) this.scene.change(this.textures[this.index], this.index, this.speed);
+          //mobile
+          if(this.animations_img) {
+            this.animations_img[this.old].reverse();
+            this.animations_img[this.index].play();
+          }
         }
         this.$paginations[this.index].classList.add('active');
         this.old = this.index;

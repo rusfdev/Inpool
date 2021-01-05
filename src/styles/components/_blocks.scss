@@ -409,7 +409,7 @@
     }
     &__idx {
       font-size: 150px;
-      bottom: calc(100% - 58px);
+      bottom: calc(100% - 55px);
       left: 30px;
     }
     &__play-btn {
@@ -1026,6 +1026,9 @@
       margin: 0 0 0 auto;
     }
   }
+  &__bg-title {
+    display: block !important;
+  }
   @include media-breakpoint-down(xxl) {
     .image {
       margin-bottom: 30px;
@@ -1039,6 +1042,67 @@
       &-text {
         max-width: 270px;
         margin: 0 0 0 auto;
+      }
+    }
+  }
+  @include media-breakpoint-down(xl) {
+    &__item {
+      &-index {
+        font-size: 108px;
+        top: 230px;
+      }
+      &-text {
+        max-width: 210px;
+      }
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: 90px;
+      }
+      &-index {
+        font-size: 220px;
+        width: 0.7em;
+      }
+      &-text {
+        max-width: calc(100% - 166px);
+      }
+    }
+  }
+  @include media-breakpoint-down(md) {
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: 70px;
+      }
+      &-index {
+        font-size: 140px;
+        top: 180px;
+      }
+      &-text {
+        max-width: calc(100% - 110px);
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__bg-title {
+      color: var(--color-text);
+      line-height: 1.4;
+      margin-bottom: 50px !important;
+    }
+    &__item {
+      &:not(:last-child) {
+        margin-bottom: 50px;
+      }
+      &-index {
+        width: 22%;
+        top: 0;
+        font-size: 100px;
+        line-height: 105px;
+      }
+      &-text {
+        width: calc(75% - 4px);
+        max-width: 100%;
       }
     }
   }
@@ -1063,10 +1127,12 @@
     &_style-2 {
       transform: translateX(calc(-50% + 1.5em)) rotate(-90deg);
       left: $container-padding-x;
+      margin-left: 8.33%;
     }
     &_style-3 {
       transform: translateX(calc(-50% + 0.75em)) rotate(-90deg);
       left: $container-padding-x;
+      margin-left: 8.33%;
     }
     
   }
@@ -1077,67 +1143,179 @@
   }
   &__s-image {
     position: relative;
-    height: 90px;
+    margin-top: -170px;
     .image {
       height: 260px;
-      bottom: 0;
-      position: absolute;
-      width: calc(50vw - 362px);
+      width: calc(100% + #{$xxl-field});
     }
     &_style-1 {
       .image {
-        right: $mobile-container-padding-x/2;
-      }
-    }
-    &_style-2 {
-      .image {
-        left: $mobile-container-padding-x/2;
+        transform: translateX($xxl-field-negative);
       }
     }
   }
-  &__text {
-    margin-top: 70px;
-    padding-left: 44px;
-    p {
-      max-width: 265px;
+  @include media-breakpoint-up(lg) {
+    &__text {
+      margin-top: 60px;
+      &_style-1 {
+        padding-left: 60px;
+      }
+      &_style-2 {
+        padding-right: 60px;
+      }
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    &__text {
+      margin-top: 70px;
+      &_style-1 {
+        padding-left: 44px;
+      }
+      &_style-2 {
+        padding-right: 44px;
+      }
     }
   }
   @include media-breakpoint-down(xxl) {
     &__slogan {
       &_style-1 {
-        margin-right: 0;
+        margin: 0;
+      }
+      &_style-2, &_style-3 {
+        margin: 0;
       }
     }
-    &__text {
-      p {
-        max-width: 100%;
+    
+    &__s-image {
+      margin-top: -40px;
+      .image {
+        height: 240px;
+        width: calc(100% + #{$xl-field});
       }
-      &_style-2 {
-        padding: 0 44px 0 0;
+      &_style-1 {
+        .image {
+          transform: translateX($xl-field-negative);
+        }
+      }
+    }
+  }
+  @include media-breakpoint-down(xl) {
+    &__slogan {
+      top: 380px;
+    }
+    &__m-image {
+      .image {
+        height: 500px;
       }
     }
     &__s-image {
       .image {
-        width: calc(50vw - 314px);
+        width: calc(100% + #{$lg-field});
+      }
+      &_style-1 {
+        .image {
+          transform: translateX($lg-field-negative);
+        }
+      }
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    &__slogan {
+      display: none;
+    }
+    &__text {
+      align-self: flex-end;
+    }
+    &__content {
+      margin-bottom: 90px;
+      margin-top: 0;
+    }
+    &__m-image {
+      margin-bottom: 60px;
+      .image {
+        height: 600px;
+      }
+    }
+    &__s-image {
+      margin: 0;
+      .image {
+        width: calc(100% + #{$md-field});
+        transform: translateX($md-field-negative);
+      }
+    }
+  }
+  @include media-breakpoint-down(md) {
+    &__content {
+      margin-bottom: 80px;
+    }
+    &__s-image {
+      .image {
+        width: calc(100% + #{$sm-field});
+        transform: translateX($sm-field-negative);
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__content {
+      margin-bottom: 70px;
+    }
+    &__m-image {
+      margin-bottom: 45px;
+      .image {
+        transform: translateX(-50%);
+        left: 50%;
+        width: 100vw;
+        height: auto;
+        &::before {
+          content: '';
+          display: block;
+          padding-top: 120%;
+        }
+      }
+    }
+    &__s-image {
+      margin-bottom: 45px;
+      .image {
+        width: calc(100% + #{$mobile-container-padding-x});
+        transform: translateX(-#{$mobile-container-padding-x});
+        height: auto;
+        &::before {
+          content: '';
+          display: block;
+          padding-top: 68%;
+        }
       }
     }
   }
 }
 
 .form-section {
-  padding: 160px 0 80px 0;
+  padding: 120px 0 80px 0;
   background-color: var(--color-bg-dark);
   margin: 0;
-  margin-top: 160px;
   &__title {
     text-align: center;
     margin: 0 0 70px 0;
   }
   @include media-breakpoint-down(xxl) {
     padding: 100px 0 60px 0;
-    margin-top: 0;
     &__title {
       margin: 0 0 60px 0;
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    padding: 90px 0 60px 0;
+    &__title {
+      margin: 0 0 40px 0;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    padding: 80px 0 50px 0;
+  }
+  @include media-breakpoint-down(sm) {
+    padding: 70px 0 40px 0;
+    &__title {
+      margin: 0 0 30px 0;
     }
   }
 }
@@ -1576,6 +1754,9 @@
   }
   @include media-breakpoint-down(sm) {
     text-align: center;
+    &__head {
+      margin-bottom: 30px;
+    }
   }
 }
 

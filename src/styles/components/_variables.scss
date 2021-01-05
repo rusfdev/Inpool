@@ -28,6 +28,12 @@ $xl-field-negative: calc((-100vw + #{map-get($container-max-widths, xl) - $conta
 $lg-field: calc((100vw - #{map-get($container-max-widths, lg) - $container-padding-x * 2})/2);
 $lg-field-negative: calc((-100vw + #{map-get($container-max-widths, lg) - $container-padding-x * 2})/2);
 
+$md-field: calc((100vw - #{map-get($container-max-widths, md) - $container-padding-x * 2})/2);
+$md-field-negative: calc((-100vw + #{map-get($container-max-widths, md) - $container-padding-x * 2})/2);
+
+$sm-field: calc((100vw - #{map-get($container-max-widths, sm) - $container-padding-x * 2})/2);
+$sm-field-negative: calc((-100vw + #{map-get($container-max-widths, sm) - $container-padding-x * 2})/2);
+
 $font1: 'Montserrat', sans-serif;
 $font2: 'Open Sans', sans-serif;
 

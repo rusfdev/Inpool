@@ -17,6 +17,9 @@ body {
   &.disabled {
     overflow: hidden;
   }
+  @include media-breakpoint-down(sm) {
+    font-size: 0.875rem;
+  }
 }
 * {
   box-sizing: border-box;

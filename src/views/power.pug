@@ -8,7 +8,7 @@ block content
   section.section.home-screen.home-standart
     .home-screen__gradient.home-standart__gradient
     .home-screen__background
-      .image.image_cover(data-parralax='0.35' data-parralax-top)
+      .image.image_cover.image_mask(data-parralax='0.35' data-parralax-top)
         img(data-src="./img/power/home.jpg", alt="bg").lazyload
      
     .container.home-screen__container
@@ -37,29 +37,25 @@ block content
       -var bclass = 'home-screen__category-list';
       include blocks/bcategories
     
-  
-
-      
-  
   section.section.conception-items
     .container
       .row.conception-items__container
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/1.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Фильтр с самым<br> высоким КПД
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/2.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Система управления<br> ASM Control
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/3.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Стандартный<br> противоток
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/4.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Водопад 
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/5.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Гидромассаж
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/6.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Аэромассаж
 

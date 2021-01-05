@@ -50,8 +50,8 @@ const brakepoints = {
   xl: 1280,
   xxl: 1600
 }
-const dev = true;
-const speed = 1; //seconds
+const dev = false;
+const Speed = 1; //seconds
 const autoslide_interval = 7; //seconds
 
 const $wrapper = document.querySelector('.wrapper');
@@ -90,7 +90,10 @@ document.addEventListener('click', (event)=>{
       let $target = document.querySelector(target);
       y = $target.getBoundingClientRect().top + Scroll.y;
     }
-    Scroll.scrollTop(y, speed*1.5)
+    if(window.innerWidth<brakepoints.md) {
+      y-=70;
+    }
+    Scroll.scrollTop(y, Speed*1.5)
   }
 });
 
@@ -163,7 +166,7 @@ const Transitions = {
     //animation
     setTimeout(()=>{
       this.animation = gsap.timeline()  
-        .to($container, {duration:speed*1.4 ,autoAlpha:1, ease:'power2.inOut'})
+        .to($container, {duration:Speed*1.4 ,autoAlpha:1, ease:'power2.inOut'})
         .eventCallback('onComplete', ()=>{
           this.active = false;
           window.dispatchEvent(new Event("enter_finish"));
@@ -177,8 +180,8 @@ const Transitions = {
     window.dispatchEvent(new Event("exit"));
     //animation
     this.animation = gsap.timeline()
-      .to($container, {duration:speed ,autoAlpha:0, ease:'power2.inOut'})
-      .to($body, {css:{backgroundColor:bg}, duration:speed, ease:'none'}, `-=${speed}`)
+      .to($container, {duration:Speed ,autoAlpha:0, ease:'power2.inOut'})
+      .to($body, {css:{backgroundColor:bg}, duration:Speed, ease:'none'}, `-=${Speed}`)
       .eventCallback('onComplete', ()=>{
         window.dispatchEvent(new Event("exit_finish"));
         barba.done();
@@ -192,25 +195,34 @@ const Pages = {
       Splitting();
       HomeBanner.init();
       //slider1
-      let $dcslider = document.querySelector('.conceptions');
-      if(window.innerWidth>=brakepoints.lg) {
-        this.dcslider = new desktopConceptionsSlider($dcslider);
-      } else {
-        this.dcslider = new mobileConceptionsSlider($dcslider);
+      let $slider1 = document.querySelector('.conceptions');
+      if($slider1) {
+        if(window.innerWidth>=brakepoints.lg) {
+          this.dcslider = new desktopConceptionsSlider($slider1);
+        } else {
+          this.dcslider = new mobileConceptionsSlider($slider1);
+        }
+        this.dcslider.init();
       }
-      this.dcslider.init();
       //slider2
-      this.tslider = new TechnologiesSlider(App.$container.querySelector('.technologies-slider'));
-      this.tslider.init();
+      let $slider2 = App.$container.querySelector('.technologies-slider');
+      if($slider2) {
+        this.tslider = new Slider($slider2, 'wave');
+        this.tslider.init();
+      }
     },
     destroy: function() {
       HomeBanner.destroy();
       //
-      this.dcslider.destroy();
-      delete this.dcslider;
+      if(this.dcslider) {
+        this.dcslider.destroy();
+        delete this.dcslider;
+      }
       //
-      this.tslider.destroy();
-      delete this.tslider;
+      if(this.tslider) {
+        this.tslider.destroy();
+        delete this.tslider;
+      }
     }
   },
   conception: {
@@ -227,7 +239,7 @@ const Pages = {
       //slider
       let $slider = App.$container.querySelector('.conceptions-slider');
       if($slider) {
-        this.slider = new CSlider($slider);
+        this.slider = new Slider($slider, 'distortion');
         this.slider.init();
       }
     },
@@ -325,7 +337,7 @@ const Select = {
         searchText: 'Совпадений не найдено...',
         searchPlaceholder: 'Поиск по городам',
         showContent: 'down',
-        selectByGroup: true
+        searchFocus: false
       })
 
       let $scroll = document.createElement('div');
@@ -349,8 +361,8 @@ const Select = {
 }
 
 const Preloader = {
-  min_loading_time: speed*2, 
-  finish_speed: speed, 
+  min_loading_time: Speed*2, 
+  finish_speed: Speed, 
   finish: function(callback) {
     if(dev) {
       this.min_loading_time = 0;
@@ -387,7 +399,7 @@ const Scroll = {
     if(mobile()) this.native();
     else this.custom(); 
     window.addEventListener('exit', ()=>{
-      this.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), speed);
+      this.scrollTop(Math.max(Scroll.y-window.innerHeight/2, 0), Speed);
     })
   },
   custom: function() {
@@ -585,14 +597,14 @@ const Nav = {
       }
     })
       .set(this.$nav, {autoAlpha:1})
-      .to(this.$toggle_lines[1], {autoAlpha:0, duration:speed/2, ease:'power2.inOut'})
-      .to(this.$toggle_lines[1], {xPercent:-100, duration:speed/2, ease:'power2.in'}, `-=${speed/2}`)
-      .to(this.$toggle_lines[0], {rotate:45, y:8.5, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
-      .to(this.$toggle_lines[2], {rotate:-45, y:-8.5, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
+      .to(this.$toggle_lines[1], {autoAlpha:0, duration:Speed/2, ease:'power2.inOut'})
+      .to(this.$toggle_lines[1], {xPercent:-100, duration:Speed/2, ease:'power2.in'}, `-=${Speed/2}`)
+      .to(this.$toggle_lines[0], {rotate:45, y:8.5, duration:Speed/2, ease:'power2.out'}, `-=${Speed/2}`)
+      .to(this.$toggle_lines[2], {rotate:-45, y:-8.5, duration:Speed/2, ease:'power2.out'}, `-=${Speed/2}`)
       //
-      .fromTo(this.$bg, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
-      .fromTo(this.$container, {xPercent:100}, {xPercent:0, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)
-      .fromTo(this.$nav_items, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.4, ease:'power2.inOut', stagger:{amount:speed*0.1, from:'random'}}, `-=${speed/2}`)
+      .fromTo(this.$bg, {autoAlpha:0}, {autoAlpha:1, duration:Speed/2, ease:'power2.out'}, `-=${Speed/2}`)
+      .fromTo(this.$container, {xPercent:100}, {xPercent:0, duration:Speed/2, ease:'power2.out'}, `-=${Speed/2}`)
+      .fromTo(this.$nav_items, {autoAlpha:0}, {autoAlpha:1, duration:Speed*0.4, ease:'power2.inOut', stagger:{amount:Speed*0.1, from:'random'}}, `-=${Speed/2}`)
 
     this.$toggle.addEventListener('mouseenter', (event)=>{this.checkToggleButton(event)})
     this.$toggle.addEventListener('mouseleave', (event)=>{this.checkToggleButton(event)})
@@ -776,24 +788,24 @@ const HomeBanner = {
       let $chars = $title.querySelectorAll('.char');
       this.animations_enter[index] = gsap.timeline({paused:true, onComplete:()=>{this.inAnimation=false;}})
         .set($title, {autoAlpha:1})
-        .fromTo($chars, {y:20}, {y:0, duration:speed*0.8, ease:'power2.out', stagger:{amount:speed*0.2}}) 
-        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`) 
+        .fromTo($chars, {y:20}, {y:0, duration:Speed*0.8, ease:'power2.out', stagger:{amount:Speed*0.2}}) 
+        .fromTo($chars, {autoAlpha:0}, {autoAlpha:1, duration:Speed*0.8, ease:'power2.inOut', stagger:{amount:Speed*0.2}}, `-=${Speed}`) 
       this.animations_exit[index] = gsap.timeline({paused:true, onStart:()=>{this.inAnimation=true;}})
-        .to($chars, {y:-20, duration:speed*0.8, ease:'power1.in', stagger:{amount:speed*0.2}})
-        .to($chars, {autoAlpha:0, duration:speed*0.8, ease:'power2.inOut', stagger:{amount:speed*0.2}}, `-=${speed}`)
+        .to($chars, {y:-20, duration:Speed*0.8, ease:'power1.in', stagger:{amount:Speed*0.2}})
+        .to($chars, {autoAlpha:0, duration:Speed*0.8, ease:'power2.inOut', stagger:{amount:Speed*0.2}}, `-=${Speed}`)
         .set($title, {autoAlpha:0})
       //MOBILE
       if(window.innerWidth < brakepoints.lg) {
         let $image = this.$images[index];
         gsap.set($image, {autoAlpha:0});
         let image_in = gsap.timeline()
-          .fromTo($image, {scale:1.05}, {scale:1.2, duration:speed, ease:'power2.in'})
-          .fromTo($image, {autoAlpha:1}, {autoAlpha:0, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+          .fromTo($image, {scale:1.05}, {scale:1.2, duration:Speed, ease:'power2.in'})
+          .fromTo($image, {autoAlpha:1}, {autoAlpha:0, duration:Speed, ease:'power2.inOut'}, `-=${Speed}`)
         let image_out = gsap.timeline()
-          .fromTo($image, {scale:1.2}, {scale:1.05, duration:speed, ease:'power2.out'})
-          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
-        this.animations_enter[index].add(image_out, `>-${speed}`)
-        this.animations_exit[index].add(image_in, `>-${speed}`)
+          .fromTo($image, {scale:1.2}, {scale:1.05, duration:Speed, ease:'power2.out'})
+          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:Speed, ease:'power2.inOut'}, `-=${Speed}`)
+        this.animations_enter[index].add(image_out, `>-${Speed}`)
+        this.animations_exit[index].add(image_in, `>-${Speed}`)
       }
     })
 
@@ -813,11 +825,11 @@ const HomeBanner = {
         if(!this.initialized) {
           this.initialized = true;
           this.animations_enter[this.index].play(0);
-          if(this.scene) this.scene.show(speed);
+          if(this.scene) this.scene.show(Speed);
           this.interval = setInterval(this.autoslide, autoslide_interval*1000);
         } else {
           this.$paginations[this.old].classList.remove('active');
-          if(this.scene) this.scene.change(this.textures[this.index], this.index, speed*2);
+          if(this.scene) this.scene.change(this.textures[this.index], this.index, Speed*2);
           this.animations_exit[this.old].play(0).eventCallback('onComplete', ()=>{
             this.animations_enter[this.index].play(0);
           })
@@ -843,7 +855,7 @@ const HomeBanner = {
     this.$parent.addEventListener('swipe', (event)=> {
       let dir = event.detail.directions;
       if(dir.left) this.change(this.getNext())
-      else this.change(this.getPrev());
+      else if(dir.right) this.change(this.getPrev());
     });
     //start
     this.change(this.index);
@@ -904,7 +916,7 @@ const Cursor = {
         }
         //move
         gsap.timeline()
-          .to(this.$parent, {duration:speed/2,x:x,y:y,ease:'power2.out'})
+          .to(this.$parent, {duration:Speed/2,x:x,y:y,ease:'power2.out'})
       });
       document.addEventListener('mousedown',(event)=>{
         this.$parent.classList.add('focus');
@@ -925,7 +937,7 @@ const Cursor = {
     })
     window.addEventListener('enter', ()=>{
       if(!this.initialized) {
-        if(this.desktop && !dev) gsap.to(this.$parent, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'});
+        if(this.desktop && !dev) gsap.to(this.$parent, {autoAlpha:1, duration:Speed*1.5, ease:'power2.inOut'});
         this.initialized = true;
       } else {
         if(!dev) this.loading_finish();
@@ -942,22 +954,22 @@ const Cursor = {
   loading_start: function() {
     this.$parent.classList.add('loading');
     gsap.timeline()
-      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:speed*0.9, ease:'power2.in'})
-      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:speed*0.9, ease:'power2.in'}, `-=${speed*0.9}`)
-      .to(this.$parent, {autoAlpha:0, duration:speed*0.5, ease:'power2.in'}, `-=${speed*0.5}`)
+      .fromTo(this.$parent, {rotation:0}, {rotation:420, duration:Speed*0.9, ease:'power2.in'})
+      .fromTo(this.$element, {css:{'stroke-dashoffset':0}}, {css:{'stroke-dashoffset':this.circumference*0.9}, duration:Speed*0.9, ease:'power2.in'}, `-=${Speed*0.9}`)
+      .to(this.$parent, {autoAlpha:0, duration:Speed*0.5, ease:'power2.in'}, `-=${Speed*0.5}`)
       .set(this.$element, {css:{'stroke-dashoffset':this.circumference*0.75}})
     
   },
   loading_finish: function() {
     let anim = gsap.timeline()
-      .to(this.$parent, {rotation:1080, duration:speed*1.5, ease:'power2.out'})
-      .to(this.$parent, {autoAlpha:1, duration:speed*0.25, ease:'power2.out'}, `-=${speed*1.5}`)
-      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+      .to(this.$parent, {rotation:1080, duration:Speed*1.5, ease:'power2.out'})
+      .to(this.$parent, {autoAlpha:1, duration:Speed*0.25, ease:'power2.out'}, `-=${Speed*1.5}`)
+      .to(this.$element, {css:{'stroke-dashoffset':0}, duration:Speed, ease:'power2.inOut'}, `-=${Speed}`)
       .set(this.$parent, {rotation:0})
     if(this.mobile) {
       setTimeout(()=>{
         this.$parent.classList.remove('loading');
-      }, speed*1000)
+      }, Speed*1000)
     } else {
       anim.eventCallback('onComplete', ()=>{
         this.$parent.classList.remove('loading');
@@ -981,7 +993,7 @@ class BackgroundScene {
         }
       })
       this.scene.on('started', ()=>{
-        this.scene.show(speed);
+        this.scene.show(Speed);
       })
       this.scene.init();
     } 
@@ -1022,7 +1034,7 @@ class BackgroundVideo {
     this.playEvent = ()=> {
       if(!this.initialized) {
         this.initialized = true;
-        gsap.fromTo(this.$video, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+        gsap.fromTo(this.$video, {autoAlpha:0}, {autoAlpha:1, duration:Speed, ease:'power2.inOut'})
       }
     }
 
@@ -1107,7 +1119,6 @@ class HomeScreenVideo {
     this.$open.setAttribute('href', 'javascript:void(0);');
 
     this.state = false;
-    this.$image = this.$parent.querySelector('.image');
     this.$scene = this.$parent.querySelector('.video-scene');
     this.$player = this.$parent.querySelector('.video-scene__player');
     this.$close = this.$parent.querySelector('.video-scene__close');
@@ -1117,8 +1128,8 @@ class HomeScreenVideo {
     this.timeline = this.$parent.querySelector('.video-scene__timeline span');
 
     this.openAnimation = gsap.timeline({paused:true})
-      .to([this.$container, this.$gradient], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
-      .to(this.controls, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+      .to([this.$container, this.$gradient], {autoAlpha:0, duration:Speed, ease:'power2.inOut'})
+      .to(this.controls, {autoAlpha:1, duration:Speed/2, ease:'power2.inOut'})
 
     this.openEvent = (event)=> {
       this.open(event);
@@ -1158,21 +1169,21 @@ class HomeScreenVideo {
     event.preventDefault();
     this.state = true;
     this.openAnimation.play();
-    Scroll.scrollTop(0, speed);
+    Scroll.scrollTop(0, Speed);
     gsap.timeline()
-      .to(this.$player, {autoAlpha:0, duration:speed, ease:'power2.inOut'})
-      .to(this.$player, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
+      .to(this.$player, {autoAlpha:0, duration:Speed, ease:'power2.inOut'})
+      .to(this.$player, {autoAlpha:1, duration:Speed/2, ease:'power2.inOut'})
     setTimeout(()=>{
       this.video.$video.volume = 1;
       this.video.$video.muted = false;
       this.video.$video.currentTime = 0;
-    }, speed*1000)
+    }, Speed*1000)
   
   }
   close() {
     this.state = false;
     gsap.to(this.video.$video, {volume:0, duration:2, ease:'power2.none', onComplete:()=>{
-      this.video.$video.muted = true;
+      if(this.video) this.video.$video.muted = true;
     }})
     this.openAnimation.reverse();
   }
@@ -1366,8 +1377,8 @@ const Modal = {
       name: "modal",
       effect: ($modal, $content) => {
         let anim = gsap.timeline({paused:true})
-          .fromTo($modal, {autoAlpha:0}, {autoAlpha:1, duration:speed/2, ease:'power2.inOut'})
-          .fromTo($content, {y:20}, {y:0, duration:speed, ease:'power2.out'}, `-=${speed/2}`)
+          .fromTo($modal, {autoAlpha:0}, {autoAlpha:1, duration:Speed/2, ease:'power2.inOut'})
+          .fromTo($content, {y:20}, {y:0, duration:Speed, ease:'power2.out'}, `-=${Speed/2}`)
         return anim;
       },
       extendTimeline: true
@@ -1388,7 +1399,6 @@ const Modal = {
       }
       //close 
       else if($close || (!$block && $wrap)) {
-
         this.close(this.$active);
       } 
       //video
@@ -1418,9 +1428,9 @@ const Modal = {
             w = $icon.getTotalLength();
         gsap.timeline()
           .set($icon, {autoAlpha:0})
-          .set($icon, {css:{'stroke-dasharray':w}}, `+=${speed*0.25}`)
+          .set($icon, {css:{'stroke-dasharray':w}}, `+=${Speed*0.25}`)
           .set($icon, {autoAlpha:1})
-          .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
+          .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:Speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
       }
     }
 
@@ -1510,8 +1520,8 @@ class Scale {
       i.value = 0;
 
       gsap.timeline()
-        .to(this.$line, {css:{width:`${100+this.value}%`}, duration:speed*1.5, ease:'power2.out'})
-        .to(i, {value:this.value, duration:speed*1.5, ease:'power2.out'}, `-=${speed*1.5}`)
+        .to(this.$line, {css:{width:`${100+this.value}%`}, duration:Speed*1.5, ease:'power2.out'})
+        .to(i, {value:this.value, duration:Speed*1.5, ease:'power2.out'}, `-=${Speed*1.5}`)
 
       let iteration = ()=> {
         this.$value.textContent = `- ${Math.abs(Math.floor(i.value))}%`;
@@ -1724,7 +1734,7 @@ class desktopConceptionsSlider {
                 value = (y-scroll) + this.h + (points[index]-1)/this.factor;
               }
             }
-            Scroll.scrollTop(value, speed);
+            Scroll.scrollTop(value, Speed);
           }, 100)
         }
       } else {
@@ -1830,7 +1840,7 @@ class PortfolioSlider {
       arrows: true,
       pagination: false,
       easing: 'ease-in-out',
-      speed: speed*1000,
+      speed: Speed*1000,
       gap: 24,
       autoplay: false,
       start: this.index+1,
@@ -1882,95 +1892,34 @@ class PortfolioSlider {
   }
 }
 
-class CSlider {
-  constructor($slider) {
-    this.$slider = $slider;
-  }
-
-  init() {
-    this.index = 0;
-    this.$scene = this.$slider.querySelector('.conceptions-slider__d-images-container');
-    this.$images = this.$slider.querySelectorAll('img');
-    this.textures = [];
-    this.$images.forEach(($image, index)=>{
-      this.textures[index] = $image.getAttribute('data-src');
-    })
-
-    this.scene = new DistortionScene(this.$scene);
-    this.slider = new Splide(this.$slider.querySelector('.splide'), {
-      type: 'loop',
-      perPage: 1,
-      arrows: false,
-      pagination: true,
-      speed: speed*1000,
-      autoplay: true,
-      perMove: 1,
-      interval: 1000*autoslide_interval
-    })
-    this.interval = setInterval(()=>{
-      if(!this.enabled) {
-        this.slider.State.set(this.slider.STATES.MOVING);
-      } else {
-        this.slider.State.set(this.slider.STATES.IDLE);
-      }
-    }, 10)
-
-    this.scene.on('visible', ()=>{
-      if(!this.initialized) {
-        this.initialized = true;
-        this.scene.start(this.textures[this.index]);
-      }
-    })
-    this.scene.on('started', ()=>{
-      this.scene.show();
-    })
-    this.scene.on('showed', ()=>{
-      this.enabled = true;
-    })
-    this.scene.on('changed', ()=>{
-      this.enabled = true;
-    })
-    
-    this.slider.on('move', (newIndex)=>{
-      this.enabled = false;
-      this.index = newIndex;
-      this.scene.change(this.textures[this.index], this.index);
-    });
-
-    this.slider.mount();
-    this.scene.init();
-  }
-
-  destroy() {
-    this.scene.destroy();
-    this.slider.destroy();
-    clearInterval(this.interval);
-    for(let child in this) delete this[child];
-  }
-
-}
-
-class TechnologiesSlider {
-  constructor($parent) {
+class Slider {
+  constructor($parent, type) {
     this.$parent = $parent;
+    this.type = type;
   }
 
   init() {
     this.index = 0;
-    this.$slider = this.$parent.querySelector('.technologies-slider__slider');
-    this.$images = this.$parent.querySelectorAll('.technologies-slider__image');
-    this.$idx = this.$parent.querySelectorAll('.technologies-slider__idx span');
-    this.$scene = this.$parent.querySelector('.technologies-slider__scene');
-
+    this.$slider = this.$parent.querySelector('.splide');
+    this.$scene = this.$parent.querySelector('.slider__scene');
+    this.$images = this.$scene.querySelectorAll('.image');
+    this.$idx = this.$parent.querySelectorAll('.slider__idx span');
+    
     //desktop
-    if(window.innerWidth >= brakepoints.lg) {
-      this.speed = speed*1000;
+    if(!mobile()) {
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
         $image.style.display = 'none';
       })
-      this.scene = new WaveScene(this.$scene);
+      if(this.type=='distortion') {
+        this.speed = Speed;
+        this.scene = new DistortionScene(this.$scene);
+      } else if(this.type=='wave') {
+        this.speed = Speed*1.5;
+        this.scene = new WaveScene(this.$scene);
+      }
+      
       this.interval = setInterval(()=>{
         if(!this.enabled) {
           this.slider.State.set(this.slider.STATES.MOVING);
@@ -1985,22 +1934,22 @@ class TechnologiesSlider {
         }
       })
       this.scene.on('started', ()=>{
-        this.scene.show(speed);
-        gsap.to(this.$idx[this.index], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
+        this.scene.show();
       })
       this.scene.on('showed', ()=>{
         this.enabled = true;
       })
+      this.scene.on('changed', ()=>{
+        this.enabled = true;
+      })
       this.scene.init();
-    }
-    //mobile 
-    else {
-      this.speed = speed*500;
+    } else {
+      this.speed = Speed;
       this.animations = [];
       this.$images.forEach(($image, index)=>{
         this.animations[index] = gsap.timeline({paused:true})
-          .fromTo($image, {scale:1.2}, {scale:1, duration:speed, ease:'power2.out'})
-          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
+          .fromTo($image, {scale:1.2}, {scale:1, duration:this.speed, ease:'power2.out'})
+          .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
       })
       this.animations[this.index].play();
     }
@@ -2010,24 +1959,37 @@ class TechnologiesSlider {
       perPage: 1,
       arrows: false,
       pagination: true,
-      speed: this.speed,
-      autoplay: true,
+      speed: this.speed*1000,
+      autoplay: false,
       perMove: 1,
       interval: 1000*autoslide_interval
     })
     
     this.slider.on('move', (newIndex)=>{
-      gsap.to(this.$idx[this.index], {autoAlpha:0, duration:speed, ease:'power2.inOut'})
-      gsap.to(this.$idx[newIndex], {autoAlpha:1, duration:speed, ease:'power2.inOut'})
       this.enabled = false;
+      //indexes
+      if(this.$idx.length) {
+        gsap.to(this.$idx[this.index], {autoAlpha:0, duration:this.speed, ease:'power2.inOut'})
+        gsap.to(this.$idx[newIndex], {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
+      }
       //desktop
-      if(this.scene) this.scene.change(this.textures[newIndex], newIndex, speed*1.5);
+      if(this.scene) {
+        this.scene.change(this.textures[newIndex], newIndex, this.speed);
+      }
       //mobile 
       else {
         this.animations[this.index].reverse();
         this.animations[newIndex].play();
       }
       this.index = newIndex;
+    });
+
+    //swipe
+    this.swipes = SwipeListener(this.$scene);
+    this.$scene.addEventListener('swipe', (event)=> {
+      let dir = event.detail.directions;
+      if(dir.left) this.slider.go('+')
+      else if(dir.right) this.slider.go('-')
     });
 
     this.slider.mount();
@@ -2039,6 +2001,7 @@ class TechnologiesSlider {
     this.slider.destroy();
     for(let child in this) delete this[child];
   }
+
 }
 
 const DistortionImages = {
@@ -2249,16 +2212,16 @@ class DistortionScene {
     }))
   }
 
-  show() {
+  show(speed=Speed*1.5) {
     gsap.timeline()
-      .fromTo([this.material.uniforms.progress1, this.material.uniforms.progress2], {value:1}, {value:0, duration:speed*1.5, ease:'power2.out'})
-      .to(this.renderer.domElement, {autoAlpha:1, duration:speed*1.5, ease:'power2.inOut'}, `-=${speed*1.5}`)
+      .fromTo([this.material.uniforms.progress1, this.material.uniforms.progress2], {value:1}, {value:0, duration:speed, ease:'power2.out'})
+      .to(this.renderer.domElement, {autoAlpha:1, duration:speed, ease:'power2.inOut'}, `-=${speed}`)
       .eventCallback('onComplete', ()=>{
         if(this.showed_callback) this.showed_callback();
       })
   }
 
-  change(texture, index) {
+  change(texture, index, speed=Speed) {
 
     let change = ()=> {
       this.texture = this.textures[index];
@@ -2444,7 +2407,7 @@ class WaveScene {
     }))
   }
 
-  show(speed) {
+  show(speed=Speed*1.5) {
     gsap.timeline()
       .to(this.renderer.domElement, {autoAlpha:1, duration:speed, ease:'power1.inOut'}) 
       .fromTo(this.material.uniforms.waveLength, {value:this.wave_max}, {value:this.wave_min, duration:speed, ease:'power1.out'}, `-=${speed}`)
@@ -2454,7 +2417,7 @@ class WaveScene {
       })
   }
 
-  change(texture, index, speed) {
+  change(texture, index, speed=Speed) {
     let animation = gsap.timeline()
       .fromTo(this.material.uniforms.waveLength, {value:this.wave_min}, {immediateRender:false, value:this.wave_max, duration:speed/2, ease:'power1.out'})
       .fromTo(this.renderer.domElement, {autoAlpha:1}, {immediateRender:false, autoAlpha:0, duration:speed/2, ease:'power2.out'}, `-=${speed/2}`)

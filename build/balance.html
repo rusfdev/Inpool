@@ -121,28 +121,22 @@
           <section class="section home-screen home-standart">
             <div class="home-screen__gradient home-standart__gradient"></div>
             <div class="home-screen__background">
-              <div class="video-scene">
-                <div class="image image_cover video-scene__image" data-parralax="0.35" data-parralax-top><img class="lazyload" data-src="./img/balance/home.jpg" alt="bg"></div>
-                <div class="video-scene__controls container"><a class="video-scene__close" href="javascript:void(0);"></a>
-                  <div class="video-scene__timeline"><span></span></div>
-                </div>
-                <div class="video-scene__wrapper" data-parralax="0.35" data-parralax-top>
-                  <video class="video-scene__player">
-                    <source src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4">
-                  </video>
-                </div>
-              </div>
+              <div class="image image_cover image_mask" data-parralax="0.35" data-parralax-top><img class="lazyload" data-src="./img/balance/home.jpg" alt="bg"></div>
             </div>
             <div class="container home-screen__container">
               <div class="row home-standart__content">
                 <div class="home-standart__left col-xl-6"><span class="home-standart__idx" data-parralax="-0.1">04</span>
                   <h1 class="home-standart__title text-uppercase">Inpool BALANCE</h1>
-                  <p class="home-standart__slogan">SPA-бассейн для сохранения вашей молодости и красоты</p>
+                  <h3 class="home-standart__slogan"> <span>–––– </span>SPA-бассейн для сохранения вашей молодости и красоты</h3>
                 </div>
-                <div class="home-standart__play col-xxl-3 offset-xxl-8 offset-xl-7 col-xl-4"><a class="home-standart__play-btn" href="javascript:void(0);">
-                    <svg class="icon">
-                      <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
-                    </svg><span>Посмотрите видео-презентацию<br> об INPOOL BALANCE</span></a></div>
+                <div class="home-standart__play col-xxl-3 offset-xxl-8 offset-xl-7 col-xl-4 col-auto">
+                  <!--НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.--><a class="home-standart__play-btn" href="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" data-modal="video" data-barba-prevent>
+                    <div class="icon-wrap">
+                      <svg class="icon">
+                        <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
+                      </svg>
+                    </div><span>Посмотрите видео-презентацию<br> об INPOOL BALANCE</span></a>
+                </div>
               </div>
               <button class="home-standart__scroll-bottom" aria-label="scroll bottom" data-scroll="bottom">
                 <svg class="icon">
@@ -161,22 +155,22 @@
           <section class="section conception-items">
             <div class="container">
               <div class="row conception-items__container">
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/1.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/1.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Стандартный<br> усиленный фильтр</h2>
                 </div>
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/2.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/2.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Система управления<br> ASM Control</h2>
                 </div>
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/3.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/3.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Стандартный<br> противоток</h2>
                 </div>
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/4.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/4.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Водопад </h2>
                 </div>
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/5.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/5.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Гидромассаж</h2>
                 </div>
-                <div class="conception-item col-xl-2"><img class="conception-item__icon" src="./img/icons/6.svg" alt="ico">
+                <div class="conception-item col-xl-2 col-md-3 col-sm-4 col-6"><img class="conception-item__icon" src="./img/icons/6.svg" alt="ico">
                   <h2 class="h6 conception-item__title">Аэромассаж</h2>
                 </div>
               </div>

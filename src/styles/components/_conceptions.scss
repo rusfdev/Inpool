@@ -24,6 +24,7 @@
   &__bg-title {
     font-size: 110px;
     white-space: nowrap;
+    display: block !important;
   }
   &__head {
     margin-bottom: 30px;
@@ -129,6 +130,7 @@
     padding: 90px 0;
     &__bg-title {
       font-size: 74px;
+      margin-bottom: -0.3em !important;
     }
     &__leaf-message-top, &__leaf-message-bottom {
       display: inline-flex;
@@ -197,11 +199,8 @@
   @include media-breakpoint-down(sm) {
     padding: 60px 0;
     &__slider {
-      &-scroller {
-        margin-top: -10px;
-      }
       &-wrapper {
-        padding: 70px 0 80px 0;
+        padding: 60px 0 80px 0;
       }
     }
   }

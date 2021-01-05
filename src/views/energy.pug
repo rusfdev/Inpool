@@ -8,29 +8,25 @@ block content
   section.section.home-screen.home-standart
     .home-screen__gradient.home-standart__gradient
     .home-screen__background
-      .video-scene
-        .image.image_cover.video-scene__image(data-parralax='0.35' data-parralax-top)
-          img(data-src="./img/energy/home.jpg", alt="bg").lazyload
-        .video-scene__controls.container
-          a(href="javascript:void(0);").video-scene__close
-          .video-scene__timeline
-            span
-        .video-scene__wrapper(data-parralax='0.35' data-parralax-top)
-          video.video-scene__player
-            source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
-    
+      .image.image_cover.image_mask(data-parralax='0.35' data-parralax-top)
+        img(data-src="./img/energy/home.jpg", alt="bg").lazyload
+     
     .container.home-screen__container
       .row.home-standart__content
         .home-standart__left.col-xl-6
           span.home-standart__idx(data-parralax='-0.1') 02
           h1.home-standart__title.text-uppercase Inpool energy
-          p.home-standart__slogan поддерживайте тело<br> в идеальном стостоянии
-        .home-screen__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
-          p Инновационные бассейны INPOOL ENERGY с профессиональным противотоком подарят заряд энергии на целый день.
-        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4
-          a(href="javascript:void(0);").home-standart__play-btn
-            svg.icon
-              use(xlink:href='./img/icons/icons-sprite.svg#play')
+          h3.home-standart__slogan 
+            span –––– 
+            | поддерживайте тело в идеальном стостоянии
+        .home-standart__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
+          p Инновационные бассейны INPOOL ENERGY с профессиональным противотоком подарят заряд энергии на целый день
+        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4.col-auto
+          //НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.
+          a(href="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" data-modal='video' data-barba-prevent).home-standart__play-btn
+            .icon-wrap
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#play')
             span Посмотрите видео-презентацию<br> об INPOOL ENERGY
 
       button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
@@ -40,54 +36,70 @@ block content
       //categories
       -var bclass = 'home-screen__category-list';
       include blocks/bcategories
-    
+
   section.section.conception-items
     .container
       .row.conception-items__container
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/1.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Стандартный<br> усиленный фильтр
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/2.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Система управления<br> ASM Control
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/3s.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Спортивный<br> противоток
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/4.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Водопад 
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/5.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Гидромассаж
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/6.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Аэромассаж
 
-  section.section.conceptions-slider
+  section.section.conceptions-slider.slider
     .container
       .row
-        .h2.bg-title.offset-xxl-6.col-xxl-6.offset-xl-7.col-xl-5(data-parralax='-0.1') Технологии
-      .row
-        .conceptions-slider__slides.col-xxl-4.col-xl-5
+        .h2.bg-title.col-auto.offset-xxl-6.offset-lg-7(data-parralax='-0.1') Технологии
+      .row  
+        .conceptions-slider__d-images.order-lg-2.col-xxl-7.col-lg-6.offset-xl-1
+          .scene.slider__scene.conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2
+            .image.image_cover
+              img(data-src="./img/jet.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/control.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/connect.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/premium_h.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/evo.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/decor.jpg", alt="image").lazyload
+            .image.image_cover
+              img(data-src="./img/led.jpeg", alt="image").lazyload
+        .conceptions-slider__slides.col-xxl-4.col-xl-5.col-lg-6
+          .leaf-message.conceptions-slider__leaf-message
+            span Листайте
+            svg.icon
+              use(xlink:href='./img/icons/icons-sprite.svg#arrow')
           .splide
             .splide__track
               .splide__list
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/jet.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL JET
+                  h3.conceptions-slider__slide-title INPOOL JET
                   .conceptions-slider__slide-text
                     p Технология активного противотока 
                     p Уникальная система противотоков с эффектом плавания в открытом море.
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/control.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL ASM Control
+                  h3.conceptions-slider__slide-title INPOOL ASM Control
                   .conceptions-slider__slide-text
                     p Система интеллектуального управления бассейном.
                     p Позволяет легко создавать сценарии отдыха и температуру бассейна на экране планшета с интуитивным интерфейсом.
@@ -95,45 +107,33 @@ block content
                       span Подробнее
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/connect.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL ASM Connect
+                  h3.conceptions-slider__slide-title INPOOL ASM Connect
                   .conceptions-slider__slide-text
                     p Система удаленного доступа и диспетчеризации.
                     p Позволяет сервисным службам дистанционно наблюдать за основными параметрами и оперативно реагировать на изменения в системе водоподготовки.
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/premium_h.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL Premium
+                  h3.conceptions-slider__slide-title INPOOL Premium
                   .conceptions-slider__slide-text
                     p Технология усиленной фильтрации.
                     p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/evo.jpg", alt="image")
-                  h2.conceptions-slider__slide-title INPOOL EVO
+                  h3.conceptions-slider__slide-title INPOOL EVO
                   .conceptions-slider__slide-text
                     p Технология нагрева бассейна. 
                     p Позволяет достичь самых низких эксплуатационных расходов.
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/decor.jpg", alt="image")
-                  h2.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
+                  h3.conceptions-slider__slide-title Декоративные элементы и бронзовые закладные 
                   .conceptions-slider__slide-text
                     p Декоративные элементы из нержавеющей стали с красивой трехмерной фактурой придадут эстетический и статусный вид вашему бассейну. 
                 //slide
                 .splide__slide.conceptions-slider__slide
-                  .image.image_cover
-                    img(data-src="./img/led.jpeg", alt="image")
-                  h2.conceptions-slider__slide-title LED освещение
+                  h3.conceptions-slider__slide-title LED освещение
                   .conceptions-slider__slide-text
                     p Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. 
-
-        .conceptions-slider__d-images.col-xxl-7.col-xl-6.offset-xl-1
-          .scene.conceptions-slider__d-images-container.conceptions-slider__d-images-container_style-2
+        
 
   section.section.conceptions-about
     .container

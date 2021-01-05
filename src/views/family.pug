@@ -8,29 +8,25 @@ block content
   section.section.home-screen.home-standart
     .home-screen__gradient.home-standart__gradient
     .home-screen__background
-      .video-scene
-        .image.image_cover.video-scene__image(data-parralax='0.35' data-parralax-top)
-          img(data-src="./img/family/home.jpg", alt="bg").lazyload
-        .video-scene__controls.container
-          a(href="javascript:void(0);").video-scene__close
-          .video-scene__timeline
-            span
-        .video-scene__wrapper(data-parralax='0.35' data-parralax-top)
-          video.video-scene__player
-            source(src="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" type="video/mp4")
-    
+      .image.image_cover.image_mask(data-parralax='0.35' data-parralax-top)
+        img(data-src="./img/family/home.jpg", alt="bg").lazyload
+     
     .container.home-screen__container
       .row.home-standart__content
         .home-standart__left.col-xl-6
           span.home-standart__idx(data-parralax='-0.1') 03
           h1.home-standart__title.text-uppercase Inpool FAMILY
-          p.home-standart__slogan дарите близким радость общения и новые эмоции
-        .home-screen__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
+          h3.home-standart__slogan 
+            span –––– 
+            | дарите близким радость общения и новые эмоции
+        .home-standart__right.offset-xxl-2.col-xxl-3.offset-xl-1.col-xl-4
           p Это не просто бассейн, это место силы для всей семьи, где каждый может создавать индивидуальные сценарии отдыха и развлечений
-        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4
-          a(href="javascript:void(0);").home-standart__play-btn
-            svg.icon
-              use(xlink:href='./img/icons/icons-sprite.svg#play')
+        .home-standart__play.col-xxl-3.offset-xxl-8.offset-xl-7.col-xl-4.col-auto
+          //НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.
+          a(href="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" data-modal='video' data-barba-prevent).home-standart__play-btn
+            .icon-wrap
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#play')
             span Посмотрите видео-презентацию<br> об INPOOL FAMILY
 
       button.home-standart__scroll-bottom(aria-label='scroll bottom' data-scroll='bottom')
@@ -41,28 +37,27 @@ block content
       -var bclass = 'home-screen__category-list';
       include blocks/bcategories
 
-
   section.section.conception-items
     .container
       .row.conception-items__container
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/1.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Стандартный<br> усиленный фильтр
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/2.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Система управления<br> ASM Control
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/3.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Стандартный<br> противоток
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/4.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Водопад 
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/5.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Гидромассаж
-        .conception-item.col-xl-2
+        .conception-item.col-xl-2.col-md-3.col-sm-4.col-6
           img(src="./img/icons/optional.svg", alt="ico").conception-item__optional
           img(src="./img/icons/6.svg", alt="ico").conception-item__icon
           h2.h6.conception-item__title Аэромассаж

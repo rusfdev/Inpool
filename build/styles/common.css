@@ -5757,16 +5757,17 @@ a {
     border-radius: 46px;
     border: 1px solid var(--color-darkened);
     color: var(--color-darkened);
-    padding: 12px 12px 12px 15px;
     margin-right: 20px;
     transition: border-color 0.25s ease-in-out, color 0.25s ease-in-out;
     flex-shrink: 0;
-    display: flex; }
+    display: flex;
+    justify-content: center;
+    align-items: center; }
   .home-standart__play-btn .icon {
     display: block;
-    width: 100%;
-    height: 100%;
-    margin: auto; }
+    width: 18px;
+    height: 18px;
+    margin-left: 2px; }
   .home-standart__play-btn span {
     border: none !important; }
   .home-standart__play-btn[data-touch] .icon-wrap, .home-standart__play-btn[data-hover] .icon-wrap {
@@ -5871,9 +5872,11 @@ a {
     .home-standart__play-btn .icon-wrap {
       width: 32px;
       height: 32px;
-      padding: 8px 8px 8px 10px;
       border-radius: 32px;
-      margin-right: 14px; } }
+      margin-right: 14px; }
+      .home-standart__play-btn .icon-wrap .icon {
+        width: 12px;
+        height: 12px; } }
 
 .logo {
   display: block;

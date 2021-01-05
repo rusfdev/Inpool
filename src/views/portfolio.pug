@@ -11,25 +11,38 @@ block content
         h1.portfolio__title Портфолио
         p.portfolio__slogan Работы, проверенные временем
       
-      section.section.portfolio-section
+      section.section.portfolio-section.slider
         //только в первой секции есть атрибут data-parralax-top в элементе ниже
         .h2.bg-title(data-parralax='-0.1' data-parralax-top) INPOOL Family
         .row.section__content
-          h3.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
+          
+          h3.portfolio-section__title.order-lg-1.offset-xxl-8.offset-lg-7.col-xxl-4.col-lg-5
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Никольские озёра
-          .portfolio-section__scene.col-xxl-7.col-xl-6
-            .portfolio-section__scene-container
           
-          .portfolio-section__text.col-xxl-4.col-xl-5.offset-xl-1
-            p Проект выполнен компанией - POOLS BOUTIQUE
-            p Объект находится в КП Никольские озера Московской области.
-            p Размер бассейна 18х6 неправильной формы, с мелкой зоной для детей.
-            p Фильтрация INPOOL OPTIMA с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
-            p Аттракционы - противоток, гидромассаж стеновой на 4 форсунки.
-
-          .portfolio-section__slider.col-12
+          .portfolio-section__scene.order-lg-2.col-xxl-7.col-lg-6
+            .scene.portfolio-section__scene-container.slider__scene
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/1.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/2.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/3.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/4.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/5.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/6.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/ozera/7.jpg", alt="image").lazyload
+          
+          .portfolio-section__slider.order-lg-4.col-12
+            .leaf-message.portfolio-section__leaf-message.d-none.d-sm-inline-flex.d-lg-none
+              span Листайте
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#arrow')
             .splide
               .splide__track
                 .splide__list
@@ -61,33 +74,52 @@ block content
                   .splide__slide.portfolio-section__slide(data-index='6')
                     .image.image_cover.jsTouchHover
                       img(data-src="./img/portfolio/ozera/7.jpg", alt="image").lazyload
+          
+          .portfolio-section__text.order-lg-3.offset-lg-1.col-xxl-4.col-lg-5
+            p Проект выполнен компанией - POOLS BOUTIQUE
+            p Объект находится в КП Никольские озера Московской области.
+            p Размер бассейна 18х6 неправильной формы, с мелкой зоной для детей.
+            p Фильтрация INPOOL OPTIMA с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
+            p Аттракционы - противоток, гидромассаж стеновой на 4 форсунки.
 
-      section.section.portfolio-section
-        .h2.bg-title.text-right(data-parralax='-0.1') INPOOL POWER
+      section.section.portfolio-section.slider
+        .h2.bg-title(data-parralax='-0.1') INPOOL POWER
         .row.section__content
-          h3.portfolio-section__title.col-xxl-4.col-xl-5
+          
+          h3.portfolio-section__title.order-lg-1.offset-xxl-8.offset-lg-7.col-xxl-4.col-lg-5
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Знаменское
-          .portfolio-section__scene.col-xxl-7.col-xl-6.offset-xl-1.order-xl-2
-            .portfolio-section__scene-container
           
-          .portfolio-section__text.col-xxl-4.col-xl-5.order-xl-1
-            p Проект выполнен компанией - Центр Бассейнов
-            p Объект находится в посёлке Знаменское Московской области.
-            p Размер бассейна 10х3
-            p Фильтрация INPOOL WATERCARE с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
-            p Аттракционы - противоток.
-            p Жалюзийное покрытие Rollo Solar в подводном исполнении.
-
-          .portfolio-section__slider.col-12.order-xl-3
+          .portfolio-section__scene.order-lg-2.col-xxl-7.col-lg-6
+            .scene.portfolio-section__scene-container.slider__scene
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/1.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/2.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/3.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/4.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/5.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/6.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/znamenskoe/7.png", alt="image").lazyload
+          
+          .portfolio-section__slider.order-lg-4.col-12
+            .leaf-message.portfolio-section__leaf-message.d-none.d-sm-inline-flex.d-lg-none
+              span Листайте
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#arrow')
             .splide
               .splide__track
                 .splide__list
                   //slide
                   .splide__slide.portfolio-section__slide(data-index='0')
                     .image.image_cover.jsTouchHover
-                      img(data-src="./img/portfolio/znamenskoe/1.jpg", alt="image").lazyload
+                      img(data-src="./img/portfolio/ozera/1.jpg", alt="image").lazyload
                   //slide
                   .splide__slide.portfolio-section__slide(data-index='1')
                     .image.image_cover.jsTouchHover
@@ -112,26 +144,44 @@ block content
                   .splide__slide.portfolio-section__slide(data-index='6')
                     .image.image_cover.jsTouchHover
                       img(data-src="./img/portfolio/znamenskoe/7.png", alt="image").lazyload
+          
+          .portfolio-section__text.order-lg-3.offset-lg-1.col-xxl-4.col-lg-5
+            p Проект выполнен компанией - Центр Бассейнов
+            p Объект находится в посёлке Знаменское Московской области.
+            p Размер бассейна 10х3
+            p Фильтрация INPOOL WATERCARE с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
+            p Аттракционы - противоток.
+            p Жалюзийное покрытие Rollo Solar в подводном исполнении.
 
-      section.section.portfolio-section
+      section.section.portfolio-section.slider
         .h2.bg-title(data-parralax='-0.1') INPOOL BALANCE
         .row.section__content
-          h3.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
+          
+          h3.portfolio-section__title.order-lg-1.offset-xxl-8.offset-lg-7.col-xxl-4.col-lg-5
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Аносино
-          .portfolio-section__scene.col-xxl-7.col-xl-6
-            .portfolio-section__scene-container
           
-          .portfolio-section__text.col-xxl-4.col-xl-5.offset-xl-1
-            p Проект выполнен компанией - Центр Бассейнов
-            p Объект находится в посёлке Аносино Московской области.
-            p Размер бассейна 11х3
-            p Встроенная СПА из бетона диаметром 2,2 метра со встроенной системой аэро и гидромассажа
-            p Фильтрация INPOOL Premium с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
-            p Удаленная система мониторинга за оборудованием бассейна INPOOL ASM Control
-
-          .portfolio-section__slider.col-12
+          .portfolio-section__scene.order-lg-2.col-xxl-7.col-lg-6
+            .scene.portfolio-section__scene-container.slider__scene
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/1.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/2.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/3.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/4.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/5.jpg", alt="image").lazyload
+              .image.image_cover.jsTouchHover
+                img(data-src="./img/portfolio/anosino/6.jpg", alt="image").lazyload
+          
+          .portfolio-section__slider.order-lg-4.col-12
+            .leaf-message.portfolio-section__leaf-message.d-none.d-sm-inline-flex.d-lg-none
+              span Листайте
+              svg.icon
+                use(xlink:href='./img/icons/icons-sprite.svg#arrow')
             .splide
               .splide__track
                 .splide__list
@@ -159,4 +209,15 @@ block content
                   .splide__slide.portfolio-section__slide(data-index='5')
                     .image.image_cover.jsTouchHover
                       img(data-src="./img/portfolio/anosino/6.jpg", alt="image").lazyload
+          
+          .portfolio-section__text.order-lg-3.offset-lg-1.col-xxl-4.col-lg-5
+            p Проект выполнен компанией - Центр Бассейнов
+            p Объект находится в посёлке Аносино Московской области.
+            p Размер бассейна 11х3
+            p Встроенная СПА из бетона диаметром 2,2 метра со встроенной системой аэро и гидромассажа
+            p Фильтрация INPOOL Premium с автоматической промывкой, УФ низкого давления, автоматическая система дозации.
+            p Удаленная система мониторинга за оборудованием бассейна INPOOL ASM Control
 
+
+
+      

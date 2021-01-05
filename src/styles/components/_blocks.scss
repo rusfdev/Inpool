@@ -876,15 +876,8 @@
   &__d-images-container {
     width: calc(100% + #{$xxl-field});
     height: 420px;
-    position: relative;
-    overflow: hidden;
     &_style-1 {
       transform: translateX($xxl-field-negative);
-    }
-    .image {
-      position: absolute;
-      width: 100%;
-      height: 100%;
     }
   }
   &__slides {
@@ -945,7 +938,7 @@
       width: 100vw;
       left: 50%;
       transform: translateX(-50%);
-      height: 400px;
+      height: 500px;
     }
     &__slide {
       height: auto;
@@ -968,10 +961,13 @@
     &__leaf-message {
       right: #{$mobile-grid-gutter-width/2};
     }
+    &__d-images-container {
+      height: 400px;
+    }
   }
   @include media-breakpoint-down(sm) {
     &__d-images-container {
-      height: 280px;
+      height: 260px;
     }
     &__leaf-message {
       top: 19px;
@@ -1081,6 +1077,7 @@
       color: var(--color-text);
       line-height: 1.4;
       margin-bottom: 50px !important;
+      font-size: 1.5rem;
     }
     &__item {
       &:not(:last-child) {
@@ -1138,12 +1135,6 @@
     margin-top: -170px;
     .image {
       height: 260px;
-      width: calc(100% + #{$xxl-field});
-    }
-    &_style-1 {
-      .image {
-        transform: translateX($xxl-field-negative);
-      }
     }
   }
   @include media-breakpoint-up(lg) {
@@ -1182,12 +1173,6 @@
       margin-top: -40px;
       .image {
         height: 240px;
-        width: calc(100% + #{$xl-field});
-      }
-      &_style-1 {
-        .image {
-          transform: translateX($xl-field-negative);
-        }
       }
     }
   }
@@ -1198,16 +1183,6 @@
     &__m-image {
       .image {
         height: 500px;
-      }
-    }
-    &__s-image {
-      .image {
-        width: calc(100% + #{$lg-field});
-      }
-      &_style-1 {
-        .image {
-          transform: translateX($lg-field-negative);
-        }
       }
     }
   }
@@ -1229,22 +1204,12 @@
       }
     }
     &__s-image {
-      margin: 0;
-      .image {
-        width: calc(100% + #{$md-field});
-        transform: translateX($md-field-negative);
-      }
+      margin-top: 0;
     }
   }
   @include media-breakpoint-down(md) {
     &__content {
       margin-bottom: 80px;
-    }
-    &__s-image {
-      .image {
-        width: calc(100% + #{$sm-field});
-        transform: translateX($sm-field-negative);
-      }
     }
   }
   @include media-breakpoint-down(sm) {
@@ -1254,9 +1219,6 @@
     &__m-image {
       margin-bottom: 45px;
       .image {
-        transform: translateX(-50%);
-        left: 50%;
-        width: 100vw;
         height: auto;
         &::before {
           content: '';
@@ -1268,8 +1230,6 @@
     &__s-image {
       margin-bottom: 45px;
       .image {
-        width: calc(100% + #{$mobile-container-padding-x});
-        transform: translateX(-#{$mobile-container-padding-x});
         height: auto;
         &::before {
           content: '';
@@ -1334,7 +1294,7 @@
 
   @include media-breakpoint-down(sm) {
     &__image {
-      margin-bottom: 45px;
+      margin-bottom: 40px;
     }
   }
 }
@@ -1662,16 +1622,36 @@
     justify-content: space-between;
     padding-right: 270px;
   }
-  &__title {
-    margin: 0;
+  @include media-breakpoint-up(lg) {
+    &__title {
+      margin: 0;
+    }
+  }
+  @include media-breakpoint-down(xl) {
+    &__head {
+      padding-right: 100px;
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    &__head {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin: 70px 0 100px 0;
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__head {
+      margin: 40px 0 60px 0;
+    }
   }
 }
 
 .portfolio-section {
   &__title {
-    position: absolute;
-    left: 0;
-    top: 0;
+    position: relative;
     padding-left: calc(35px + #{$grid-gutter-width/2});
     .icon {
       width: 20px;
@@ -1689,6 +1669,7 @@
   }
   &__slider {
     margin-top: 50px;
+    position: relative;
   }
   .splide {
     &__arrows {
@@ -1741,9 +1722,17 @@
     }
   }
   &__text {
-    padding-top: 92px;
+    padding-top: 98px;
   }
   @include media-breakpoint-up(lg) {
+    &__title {
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
     &__slide {
       .image {
         cursor: pointer;
@@ -1755,9 +1744,84 @@
     }
   }
   @include media-breakpoint-down(xxl) {
+    &__text {
+      padding-top: 86px;
+    }
     &__scene {
       &-container {
         height: 480px;
+      }
+    }
+  }
+  @include media-breakpoint-down(xl) {
+    &__text {
+      padding-top: 80px;
+    }
+    &__scene {
+      &-container {
+        height: 350px;
+      }
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    &__leaf-message {
+      position: absolute;
+      right: $grid-gutter-width/2;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &__slider {
+      margin-top: 35px;
+    }
+    &__text {
+      padding-top: 45px;
+    }
+    .splide {
+      &__track {
+        display: none;
+      }
+      &__pagination {
+        position: relative;
+      }
+    }
+    &__scene {
+      &-container {
+        width: 100vw;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 500px;
+      }
+    }
+  }
+  @include media-breakpoint-down(md) {
+    &__scene {
+      &-container {
+        height: 400px;
+      }
+    }
+  }
+  @include media-breakpoint-down(sm) {
+    &__slider {
+      margin-top: 25px;
+    }
+    &__text {
+      padding-top: 25px;
+    }
+    &__title {
+      padding-left: 38px;
+      .icon {
+        width: 16px;
+        left: $mobile-grid-gutter-width/2;
+      }
+    }
+    &__scene {
+      &-container {
+        height: 260px;
+      }
+    }
+    .splide {
+      &__pagination {
+        justify-content: center;
       }
     }
   }
@@ -1818,16 +1882,6 @@
     top: 84px;
     width: 100%;
     left: 0;
-    overflow: hidden;
-  }
-  &__image {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
   }
   &__content {
     background: var(--color-bg-transparent);

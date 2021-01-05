@@ -83,6 +83,14 @@
 .scene {
   background-color: var(--color-bg-images);
   position: relative;
+  overflow: hidden;
+  .image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
 }
 
 .js-distortion {
@@ -352,8 +360,7 @@
     font-size: 48px;
   }
   @include media-breakpoint-down(sm) {
-    font-size: 24px;
-    display: none;
+    font-size: 32px;
   }
 }
 

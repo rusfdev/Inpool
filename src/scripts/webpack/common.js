@@ -318,17 +318,20 @@ const Pages = {
   },
   portfolio: {
     init: function() {
-      this.sliders = [];
-      let $sliders = App.$container.querySelectorAll('.portfolio-section__slider .splide');
-      $sliders.forEach(($slider, index)=>{
-        this.sliders[index] = new PortfolioSlider($slider);
-        this.sliders[index].init();
-      })
-
+      let $sliders = App.$container.querySelectorAll('.portfolio-section');
+      if($sliders.length) {
+        this.sliders = [];
+        $sliders.forEach(($slider, index)=>{
+          this.sliders[index] = new Slider($slider, 'distortion', 'portfolio');
+          this.sliders[index].init();
+        })
+      }
     },
     destroy: function() {
-      for (let slider of this.sliders) {
-        slider.destroy();
+      if(this.sliders) {
+        for (let slider of this.sliders) {
+          slider.destroy();
+        }
       }
     }
   }
@@ -1832,87 +1835,10 @@ class mobileConceptionsSlider {
   }
 }
 
-class PortfolioSlider {
-  constructor($slider) {
-    this.$slider = $slider;
-  }
-
-  init() {
-    this.index = 0;
-    this.$scene = this.$slider.closest('.portfolio-section').querySelector('.portfolio-section__scene-container');
-    this.$images = this.$slider.querySelectorAll('img');
-    this.textures = [];
-    this.$images.forEach(($image, index)=>{
-      this.textures[index] = $image.getAttribute('data-src');
-    })
-
-    this.getPrev = (index)=> {
-      let val = index==0?this.textures.length-1:index-1;
-      return val;
-    }
-
-    this.scene = new DistortionScene(this.$scene);
-    this.slider = new Splide(this.$slider, {
-      type: 'loop',
-      perPage: 6,
-      arrows: true,
-      pagination: false,
-      easing: 'ease-in-out',
-      speed: Speed*1000,
-      gap: 24,
-      autoplay: false,
-      start: this.index+1,
-      perMove: 1,
-      interval: 1000*autoslide_interval
-    });
-    this.interval = setInterval(()=>{
-      if(!this.enabled) {
-        this.slider.State.set(this.slider.STATES.MOVING);
-      } else {
-        this.slider.State.set(this.slider.STATES.IDLE);
-      }
-    }, 10)
-
-    this.scene.on('visible', ()=>{
-      if(!this.initialized) {
-        this.initialized = true;
-        this.scene.start(this.textures[this.index]);
-      }
-    })
-    this.scene.on('started', ()=>{
-      this.scene.show();
-    })
-    this.scene.on('showed', ()=>{
-      this.enabled = true;
-    })
-    this.scene.on('changed', ()=>{
-      this.enabled = true;
-    })
-    
-    this.slider.on('move', (newIndex)=>{
-      this.index = this.getPrev(newIndex);
-      this.scene.change(this.textures[this.index], this.index);
-      this.enabled = false;
-    });
-    this.slider.on('click', ($slide)=>{
-      this.slider.go($slide.index+1);
-    });
-
-    this.slider.mount();
-    this.scene.init();
-  }
-
-  destroy() {
-    this.scene.destroy();
-    this.slider.destroy();
-    clearInterval(this.interval);
-    for(let child in this) delete this[child];
-  }
-}
-
 class Slider {
-  constructor($parent, type) {
+  constructor($parent, animation, type) {
     this.$parent = $parent;
+    this.animation = animation;
     this.type = type;
   }
 
@@ -1930,10 +1856,10 @@ class Slider {
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
         $image.style.display = 'none';
       })
-      if(this.type=='distortion') {
+      if(this.animation=='distortion') {
         this.speed = Speed;
         this.scene = new DistortionScene(this.$scene);
-      } else if(this.type=='wave') {
+      } else if(this.animation=='wave') {
         this.speed = Speed*1.5;
         this.scene = new WaveScene(this.$scene);
       }
@@ -1972,34 +1898,78 @@ class Slider {
       this.animations[this.index].play();
     }
 
-    this.slider = new Splide(this.$slider, {
-      type: 'loop',
-      perPage: 1,
-      arrows: false,
-      pagination: true,
-      speed: this.speed*1000,
-      autoplay: false,
-      perMove: 1,
-      interval: 1000*autoslide_interval
-    })
+    this.getPrev = (index)=> {
+      let val = index==0?this.$images.length-1:index-1;
+      return val;
+    }
+
+    if(this.type=='portfolio') {
+      let start_index = this.index;
+      if(window.innerWidth>=brakepoints.lg) {
+        start_index = this.index+1;
+      }
+      this.slider = new Splide(this.$slider, {
+        type: 'loop',
+        perPage: 6,
+        arrows: true,
+        pagination: false,
+        easing: 'ease-in-out',
+        speed: this.speed*1000,
+        gap: 24,
+        autoplay: false,
+        start: start_index,
+        perMove: 1,
+        interval: 1000*autoslide_interval,
+        breakpoints: {
+          1024: {
+            perPage: 1,
+            pagination: true,
+            arrows: false
+          },
+        }
+      });
+      this.slider.on('click', ($slide)=>{
+        this.slider.go($slide.index+1);
+      });
+    } 
+    
+    else {
+      this.slider = new Splide(this.$slider, {
+        type: 'loop',
+        perPage: 1,
+        arrows: false,
+        pagination: true,
+        speed: this.speed*1000,
+        autoplay: false,
+        autoHeight: true,
+        perMove: 1,
+        interval: 1000*autoslide_interval
+      })
+    }
     
     this.slider.on('move', (newIndex)=>{
       this.enabled = false;
+      let index;
+      if(this.type=='portfolio' && window.innerWidth>=brakepoints.lg) {
+        index = this.getPrev(newIndex);
+      } else {
+        index = newIndex;
+      }
       //indexes
       if(this.$idx.length) {
         gsap.to(this.$idx[this.index], {autoAlpha:0, duration:this.speed, ease:'power2.inOut'})
-        gsap.to(this.$idx[newIndex], {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
+        gsap.to(this.$idx[index], {autoAlpha:1, duration:this.speed, ease:'power2.inOut'})
       }
       //desktop
       if(this.scene) {
-        this.scene.change(this.textures[newIndex], newIndex, this.speed);
+        this.scene.change(this.textures[index], index, this.speed);
       }
       //mobile 
       else {
         this.animations[this.index].reverse();
-        this.animations[newIndex].play();
+        this.animations[index].play();
       }
-      this.index = newIndex;
+      this.index = index;
     });
 
     //swipe

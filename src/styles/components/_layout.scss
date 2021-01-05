@@ -132,4 +132,64 @@
   }
 }
 
+.r-image {
+  @include media-breakpoint-up(sm) {
+    width: calc(100% + #{$sm-field});
+  }
+  @include media-breakpoint-up(md) {
+    width: calc(100% + #{$md-field});
+  }
+  @include media-breakpoint-up(lg) {
+    width: calc(100% + #{$lg-field});
+  }
+  @include media-breakpoint-up(xl) {
+    width: calc(100% + #{$xl-field});
+  }
+  @include media-breakpoint-up(xxl) {
+    width: calc(100% + #{$xxl-field});
+  }
+}
+
+.l-image {
+  @include media-breakpoint-up(sm) {
+    width: calc(100% + #{$sm-field});
+    transform: translateX(#{$sm-field-negative});
+  }
+  @include media-breakpoint-up(md) {
+    width: calc(100% + #{$md-field});
+    transform: translateX(#{$md-field-negative});
+  }
+  @include media-breakpoint-up(lg) {
+    width: calc(100% + #{$lg-field});
+    transform: translateX(#{$lg-field-negative});
+  }
+  @include media-breakpoint-up(xl) {
+    width: calc(100% + #{$xl-field});
+    transform: translateX(#{$xl-field-negative});
+  }
+  @include media-breakpoint-up(xxl) {
+    width: calc(100% + #{$xxl-field});
+    transform: translateX(#{$xxl-field-negative});
+  }
+}
+
+.m-r-image {
+  @include media-breakpoint-down(sm) {
+    width: calc(100% + #{$mobile-container-padding-x});
+  }
+}
+
+.m-l-image {
+  @include media-breakpoint-down(sm) {
+    width: calc(100% + #{$mobile-container-padding-x});
+    transform: translateX(-#{$mobile-container-padding-x});
+  }
+}
+
+.m-w-image {
+  @include media-breakpoint-down(sm) {
+    width: calc(100% + #{$mobile-container-padding-x} + #{$mobile-container-padding-x});
+    transform: translateX(-#{$mobile-container-padding-x});
+  }
+}
 

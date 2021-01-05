@@ -235,6 +235,11 @@ const Pages = {
           this.video = new HomeScreenVideo($parent);
           this.video.init();
         }
+      } else {
+        let $homeimage = App.$container.querySelector('.home-screen__background .image');
+        gsap.timeline()
+          .fromTo($homeimage, {scale:1.2}, {scale:1, duration:Speed*1.5, ease:'power2.out'})
+          .fromTo($homeimage, {autoAlpha:0}, {autoAlpha:1, duration:Speed*1.5, ease:'power2.inOut'}, `-=${Speed*1.5}`)
       }
       //slider
       let $slider = App.$container.querySelector('.conceptions-slider');
@@ -257,8 +262,9 @@ const Pages = {
   equipment: {
     init: function() {
       //scene
-      if(!mobile()) {
-        this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
+      let $scene = App.$container.querySelector('.home-screen__scene');
+      if($scene) {
+        this.scene = new BackgroundScene($scene)
         this.scene.init();
       }
     },
@@ -273,8 +279,9 @@ const Pages = {
   technology: {
     init: function() {
       //scene
-      if(!mobile()) {
-        this.scene = new BackgroundScene(App.$container.querySelector('.home-screen__scene'))
+      let $scene = App.$container.querySelector('.home-screen__scene');
+      if($scene) {
+        this.scene = new BackgroundScene($scene)
         this.scene.init();
       }
       //scales
@@ -821,7 +828,7 @@ const HomeBanner = {
           this.initialized = true;
           this.animations_enter[this.index].play(0);
           //desktop
-          if(this.scene) this.scene.show(this.speed/2);
+          if(this.scene) this.scene.show(this.speed);
           //mobile
           if(this.animations_img) this.animations_img[this.index].play();
         } else {
@@ -986,23 +993,29 @@ class BackgroundScene {
     this.$scene = $scene;
   }
   init() {
+    let $image = this.$scene.querySelector('.image');
     if(!mobile()) {
-      let $image = this.$scene.querySelector('.image');
+      $image.style.display = 'none';
+      let texture = $image.querySelector('img').getAttribute('data-src');
       this.scene = new WaveScene(this.$scene);
       this.scene.on('visible', ()=>{
         if(!this.flag) {
           this.flag = true;
-          this.scene.start($image.querySelector('img').getAttribute('data-src'));
+          this.scene.start(texture);
         }
       })
       this.scene.on('started', ()=>{
         this.scene.show(Speed);
       })
       this.scene.init();
-    } 
+    } else {
+      gsap.timeline()
+        .fromTo($image, {scale:1.2}, {scale:1, duration:Speed*1.5, ease:'power2.out'})
+        .fromTo($image, {autoAlpha:0}, {autoAlpha:1, duration:Speed*1.5, ease:'power2.inOut'}, `-=${Speed*1.5}`)
+    }
   }
   destroy() {
-    this.scene.destroy();
+    if(this.scene) this.scene.destroy();
     for(let child in this) delete this[child];
   }
 }
@@ -1517,6 +1530,7 @@ class Scale {
         h = window.innerHeight;
 
     if(sy+h > ty+sy && !this.flag) {
+      console.log('sss')
       this.flag = true;
 
       let i = {};
@@ -1536,6 +1550,7 @@ class Scale {
   }
   destroy() {
     Scroll.removeListener(this.listener);
+    cancelAnimationFrame(this.animation);
     for(let child in this) delete this[child];
   }
 }
@@ -1628,18 +1643,18 @@ class desktopConceptionsSlider {
         let scene = this.slides[slide_index].scenes[index];
         let timeline_image = gsap.timeline()
           .fromTo([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1}, {value:0, duration:this.speed, ease:'power2.out'})
-          .fromTo(scene.renderer.domElement, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
-          .fromTo(scene.renderer.domElement, {scale:0.9}, {scale:1, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+          .fromTo(scene.renderer.domElement.parentNode, {autoAlpha:0}, {autoAlpha:1, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+          .fromTo(scene.renderer.domElement.parentNode, {scale:0.9}, {immediateRender:false, scale:1, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
     
         timeline_start.add(timeline_image, `>-${this.speed}`)
         //fix1
         if(slide_index==0 && index==0) {
           let timeline_image = gsap.timeline()
-            .fromTo(scene.renderer.domElement, {xPercent:-5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+            .fromTo(scene.renderer.domElement.parentNode, {xPercent:-5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
           timeline_start.add(timeline_image, `>-${this.speed}`)
         } else if(slide_index==2 && index==1) {
           let timeline_image = gsap.timeline()
-            .fromTo(scene.renderer.domElement, {xPercent:5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
+            .fromTo(scene.renderer.domElement.parentNode, {xPercent:5}, {xPercent:0, duration:this.speed, ease:'power2.out'}, `-=${this.speed}`)
           timeline_start.add(timeline_image, `>-${this.speed}`)
         }
       }
@@ -1670,17 +1685,17 @@ class desktopConceptionsSlider {
           let scene = this.slides[slide_index].scenes[index];
           let timeline_image = gsap.timeline()
             .to([scene.material.uniforms.progress1, scene.material.uniforms.progress2], {value:1, duration:this.speed, ease:'power2.in'})
-            .to(scene.renderer.domElement, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
-            .to(scene.renderer.domElement, {scale:0.9, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+            .to(scene.renderer.domElement.parentNode, {autoAlpha:0, duration:this.speed, ease:'power2.inOut'}, `-=${this.speed}`)
+            .to(scene.renderer.domElement.parentNode, {immediateRender:false, scale:0.9, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
           timeline_end.add(timeline_image, `>-${this.speed}`)
           
           if(slide_index==0 && index==0) {
             let timeline_image = gsap.timeline()
-              .to(scene.renderer.domElement, {xPercent:-5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+              .to(scene.renderer.domElement.parentNode, {xPercent:-5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
             timeline_end.add(timeline_image, `>-${this.speed}`)
           } else if(slide_index==2 && index==1) {
             let timeline_image = gsap.timeline()
-              .to(scene.renderer.domElement, {xPercent:5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
+              .to(scene.renderer.domElement.parentNode, {xPercent:5, duration:this.speed, ease:'power2.in'}, `-=${this.speed}`)
               timeline_end.add(timeline_image, `>-${this.speed}`)
           }
         }
@@ -1778,7 +1793,7 @@ class desktopConceptionsSlider {
   }
 
   destroy() {
-    window.removeEventListener('resize', this.sizing)
+    window.removeEventListener('resize', this.sizingListener)
     window.removeEventListener('wheel', this.mouseWheelListener)
     Scroll.removeListener(this.scrollListener);
     clearTimeout(this.autoscroll_timeout);
@@ -2202,9 +2217,9 @@ class DistortionScene {
     this.animationFrame = requestAnimationFrame(()=>{this.render()});
   }
 
-  start(texture) {
+  start(texture, index=0) {
     this.textures = [];
-    this.texture = this.textures[0] = this.track(new THREE.TextureLoader().load(texture, ()=>{
+    this.texture = this.textures[index] = this.track(new THREE.TextureLoader().load(texture, ()=>{
       this.material.uniforms.img1.value = this.texture;
       this.material.uniforms.img2.value = this.texture;
       this.resize(this.texture);
@@ -2397,7 +2412,7 @@ class WaveScene {
     this.animationFrame = requestAnimationFrame(()=>{this.render()});
   }
 
-  start(texture, index) {
+  start(texture, index=0) {
     this.textures = [];
     this.texture = this.textures[index] = this.track(new THREE.TextureLoader().load(texture, ()=>{
       this.material.uniforms.img.value = this.texture;

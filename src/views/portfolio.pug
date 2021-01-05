@@ -12,9 +12,10 @@ block content
         p.portfolio__slogan Работы, проверенные временем
       
       section.section.portfolio-section
-        .h2.bg-title(data-parralax='-0.1') INPOOL Family
+        //только в первой секции есть атрибут data-parralax-top в элементе ниже
+        .h2.bg-title(data-parralax='-0.1' data-parralax-top) INPOOL Family
         .row.section__content
-          h2.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
+          h3.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Никольские озёра
@@ -64,7 +65,7 @@ block content
       section.section.portfolio-section
         .h2.bg-title.text-right(data-parralax='-0.1') INPOOL POWER
         .row.section__content
-          h2.portfolio-section__title.col-xxl-4.col-xl-5
+          h3.portfolio-section__title.col-xxl-4.col-xl-5
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Знаменское
@@ -115,7 +116,7 @@ block content
       section.section.portfolio-section
         .h2.bg-title(data-parralax='-0.1') INPOOL BALANCE
         .row.section__content
-          h2.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
+          h3.portfolio-section__title.col-xxl-4.offset-xxl-8.col-xl-5.offset-xl-7 
             svg.icon
               use(xlink:href='./img/icons/icons-sprite.svg#point')
             | Аносино

@@ -267,7 +267,10 @@
     }
   }
   &__m-image {
-    background-color: transparent;
+    canvas {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
     &_1 {
       width: 448px;
       height: 56%;
@@ -290,7 +293,10 @@
     }
   }
   &__s-image {
-    background-color: transparent;
+    canvas {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
     &_1 {
       position: absolute;
       width: calc(210px + #{$xxl-field});

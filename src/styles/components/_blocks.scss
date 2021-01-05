@@ -458,7 +458,6 @@
     &__title {
       line-height: 1.25;
       margin: 0;
-      letter-spacing: -1px;
       padding-right: 30px;
     }
   }
@@ -918,13 +917,6 @@
   @include media-breakpoint-up(lg) {
     &__leaf-message {
       display: none;
-    }
-  }
-  @include media-breakpoint-up(xxl) {
-    &__slide {
-      &-title {
-        letter-spacing: -1px;
-      }
     }
   }
   @include media-breakpoint-down(xxl) {
@@ -1729,8 +1721,10 @@
   &__head {
     margin-bottom: 50px;
   }
-  @include media-breakpoint-up(xxl) {
-    letter-spacing: -1px;
+  @include media-breakpoint-up(lg) {
+    .form__submit {
+      margin-top: 0;
+    }
   }
   @include media-breakpoint-up(xl) {
     &__title {
@@ -1741,11 +1735,12 @@
       margin-top: 14px;
     }
   }
-  @include media-breakpoint-up(lg) {
-    .form__submit {
-      margin-top: 0;
+  @include media-breakpoint-up(xxl) {
+    &__title {
+      letter-spacing: -1px;
     }
   }
+  
   @include media-breakpoint-down(lg) {
     padding: 0;
     &__head {

@@ -4333,7 +4333,8 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   margin-bottom: 2.5rem;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
-  line-height: 1.4; }
+  line-height: 1.4;
+  letter-spacing: -0.05em; }
   h1:first-child, .h1:first-child, h2:first-child, .h2:first-child, h3:first-child, .h3:first-child, h4:first-child, .h4:first-child, h5:first-child, .h5:first-child, h6:first-child, .h6:first-child {
     margin-top: 0; }
   h1:last-child, .h1:last-child, h2:last-child, .h2:last-child, h3:last-child, .h3:last-child, h4:last-child, .h4:last-child, h5:last-child, .h5:last-child, h6:last-child, .h6:last-child {
@@ -5831,7 +5832,6 @@ a {
   .home-about__title {
     line-height: 1.25;
     margin: 0;
-    letter-spacing: -1px;
     padding-right: 30px; } }
 
 @media (max-width: 575.98px) {
@@ -6188,10 +6188,6 @@ a {
 @media (min-width: 1024px) {
   .conceptions-slider__leaf-message {
     display: none; } }
-
-@media (min-width: 1600px) {
-  .conceptions-slider__slide-title {
-    letter-spacing: -1px; } }
 
 @media (max-width: 1599.98px) {
   .conceptions-slider__d-images-container {
@@ -6741,18 +6737,18 @@ a {
   padding: 60px 0 90px 0; }
   .personal-form__head {
     margin-bottom: 50px; }
-  @media (min-width: 1600px) {
-    .personal-form {
-      letter-spacing: -1px; } }
+  @media (min-width: 1024px) {
+    .personal-form .form__submit {
+      margin-top: 0; } }
   @media (min-width: 1280px) {
     .personal-form__title {
       margin-bottom: 0;
       line-height: 1.2; }
     .personal-form__head-text {
       margin-top: 14px; } }
-  @media (min-width: 1024px) {
-    .personal-form .form__submit {
-      margin-top: 0; } }
+  @media (min-width: 1600px) {
+    .personal-form__title {
+      letter-spacing: -1px; } }
   @media (max-width: 1023.98px) {
     .personal-form {
       padding: 0; }
@@ -7053,39 +7049,41 @@ a {
       right: 1184px;
       top: calc(35% - 1.25em);
       width: 260px; }
-  .conceptions-slide__m-image {
-    background-color: transparent; }
-    .conceptions-slide__m-image_1 {
-      width: 448px;
-      height: 56%;
-      left: 710px; }
-    .conceptions-slide__m-image_2 {
-      width: 684px;
-      height: 65%;
-      left: 590px; }
-    .conceptions-slide__m-image_3 {
-      width: 530px;
-      height: 50%;
-      left: 356px; }
-    .conceptions-slide__m-image_4 {
-      width: 684px;
-      height: 70%;
-      left: 236px; }
-  .conceptions-slide__s-image {
-    background-color: transparent; }
-    .conceptions-slide__s-image_1 {
-      position: absolute;
-      width: calc(210px + calc((100vw - 1392px)/2));
-      transform: translateX(calc((-100vw + 1392px)/2));
-      left: 0;
-      bottom: 0;
-      height: 40%; }
-    .conceptions-slide__s-image_3 {
-      position: absolute;
-      width: calc(172px + calc((100vw - 1392px)/2));
-      left: 1220px;
-      bottom: 142px;
-      height: 45%; }
+  .conceptions-slide__m-image canvas {
+    visibility: visible !important;
+    opacity: 1 !important; }
+  .conceptions-slide__m-image_1 {
+    width: 448px;
+    height: 56%;
+    left: 710px; }
+  .conceptions-slide__m-image_2 {
+    width: 684px;
+    height: 65%;
+    left: 590px; }
+  .conceptions-slide__m-image_3 {
+    width: 530px;
+    height: 50%;
+    left: 356px; }
+  .conceptions-slide__m-image_4 {
+    width: 684px;
+    height: 70%;
+    left: 236px; }
+  .conceptions-slide__s-image canvas {
+    visibility: visible !important;
+    opacity: 1 !important; }
+  .conceptions-slide__s-image_1 {
+    position: absolute;
+    width: calc(210px + calc((100vw - 1392px)/2));
+    transform: translateX(calc((-100vw + 1392px)/2));
+    left: 0;
+    bottom: 0;
+    height: 40%; }
+  .conceptions-slide__s-image_3 {
+    position: absolute;
+    width: calc(172px + calc((100vw - 1392px)/2));
+    left: 1220px;
+    bottom: 142px;
+    height: 45%; }
   .conceptions-slide__text {
     display: block;
     position: absolute;

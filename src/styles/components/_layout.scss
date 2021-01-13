@@ -11,6 +11,9 @@
 }
 
 .content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   & > .scroll-content {
     min-height: 100vh;
     display: flex;
@@ -190,6 +193,13 @@
   @include media-breakpoint-down(sm) {
     width: calc(100% + #{$mobile-container-padding-x} + #{$mobile-container-padding-x});
     transform: translateX(-#{$mobile-container-padding-x});
+  }
+}
+
+.page-title:first-child {
+  margin: 40px 0 60px 0;
+  @include media-breakpoint-down(sm) {
+    margin: 20px 0 40px 0;
   }
 }
 

@@ -141,9 +141,15 @@
               </div>
               <div class="pagination home-banner__pagination">
                 <ul class="pagination__list">
-                  <li class="pagination__item"><a class="pagination__button" href="javascript:void(0);"></a></li>
-                  <li class="pagination__item"><a class="pagination__button" href="javascript:void(0);"></a></li>
-                  <li class="pagination__item"><a class="pagination__button" href="javascript:void(0);"></a></li>
+                  <li class="pagination__item">
+                    <button class="pagination__button" aria-label="slide 1"></button>
+                  </li>
+                  <li class="pagination__item">
+                    <button class="pagination__button" aria-label="slide 2"></button>
+                  </li>
+                  <li class="pagination__item">
+                    <button class="pagination__button" aria-label="slide 3"></button>
+                  </li>
                 </ul>
               </div>
               <ul class="category-list home-screen__category-list">
@@ -344,23 +350,23 @@
                 <h2 class="personal-form__title col-xxl-8 offset-xxl-1 col-xl-9">Получите персональное предложение</h2>
                 <p class="personal-form__head-text col-xl-3">Оставьте контакты и мы свяжемся с вами в удобное время</p>
               </div>
-              <form class="form js-validation">
-                <div class="row align-items-end justify-content-center justify-content-sm-start">
-                  <div class="form__group col-xl-8 col-lg offset-xxl-1">
+              <form class="form">
+                <div class="row justify-content-center justify-content-sm-start">
+                  <div class="form__group personal-form__group col-lg-8 offset-xxl-1">
                     <div class="row">
                       <div class="form__item col-sm-6">
                         <label class="input contacts__animate-item">Ваше имя
-                          <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                          <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name" data-required>
                         </label>
                       </div>
                       <div class="form__item col-sm-6">
                         <label class="input contacts__animate-item">Номер вашего телефона
-                          <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                          <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone" data-required>
                         </label>
                       </div>
                     </div>
                   </div>
-                  <div class="form__submit col-auto offset-xxl-0 offset-xl-1">
+                  <div class="form__submit personal-form__submit col-sm-6 col-lg-4 col-xl-3 offset-xxl-0 offset-xl-1">
                     <button class="button button_submit" type="submit"><span>Отправить</span>
                       <svg viewBox="0 0 120 30" fill="currentColor">
                         <circle cx="15" cy="15" r="15">
@@ -377,6 +383,7 @@
                         </circle>
                       </svg>
                     </button>
+                    <p class="form__message personal-form__message">Нажимая кнопку «Отправить» вы соглашаетесь с условиями <a href="./privacy.html" rel="noopener" target="_blank">Политики конфиденциальности</a></p>
                   </div>
                 </div>
               </form>
@@ -452,7 +459,7 @@
                           <div class="contacts-block__item">WATER ELEMENTS</div>
                           <div class="contacts-block__item"> <a href="tel:+74953746744">+7 495 374-67-44</a></div>
                           <div class="contacts-block__item">115419, Москва, ул. Шаболовка, 34с5. БЦ Матрикс</div>
-                          <div class="contacts-block__item"> <a href="https://waterelements.ru/" rel="nofollow" target="_blank">waterelements.ru</a></div>
+                          <div class="contacts-block__item"> <a href="https://waterelements.ru/" rel="noopener" target="_blank">waterelements.ru</a></div>
                         </div>
                       </div>
                     </div>
@@ -529,20 +536,19 @@
           <button class="modal-close modal-block__close" data-modal="close" aria-label="close"></button>
           <div class="modal-form__head">
             <h2 class="modal__title">Получите персональное предложение!</h2>
-            <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
           </div>
           <div class="row justify-content-center">
-            <form class="form modal-form__form js-validation col-lg-8 col-md-10">
+            <form class="form modal-form__form col-lg-8 col-md-10">
               <div class="row">
                 <div class="form__group col-12">
                   <div class="form__item">
                     <label class="input">
-                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name" data-required>
                     </label>
                   </div>
                   <div class="form__item">
                     <label class="input">
-                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone" data-required>
                     </label>
                   </div>
                 </div>
@@ -563,6 +569,7 @@
                       </circle>
                     </svg>
                   </button>
+                  <p class="form__message">Нажимая кнопку «Отправить» вы соглашаетесь с условиями <a href="./privacy.html" rel="noopener" target="_blank">Политики конфиденциальности</a></p>
                 </div>
               </div>
             </form>
@@ -595,7 +602,7 @@
         </div>
         <!--section-->
         <div class="helper__section"><span class="helper__section-title">Техническое:</span>
-          <div class="helper__section-content"><a class="helper__section-button" href="./grid.html">Сетка</a><a class="helper__section-button" href="./components.html">Компоненты</a></div>
+          <div class="helper__section-content"><a class="helper__section-button" href="./privacy.html">Политика конфиденциальности</a></div>
         </div>
       </div>
     </div>

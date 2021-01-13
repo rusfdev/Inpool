@@ -4629,13 +4629,16 @@ a {
     .wrapper.disabled .content > .scrollbar-track-y.show {
       opacity: 0; }
 
-.content > .scroll-content {
+.content {
   min-height: 100vh;
   display: flex;
   flex-direction: column; }
-
-.content > .scrollbar-track-y {
-  z-index: 10000; }
+  .content > .scroll-content {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; }
+  .content > .scrollbar-track-y {
+    z-index: 10000; }
 
 .scrollbar-track-y {
   background-color: transparent;
@@ -4781,6 +4784,12 @@ a {
   .m-w-image {
     width: calc(100% + 16px + 16px);
     transform: translateX(-16px); } }
+
+.page-title:first-child {
+  margin: 40px 0 60px 0; }
+  @media (max-width: 575.98px) {
+    .page-title:first-child {
+      margin: 20px 0 40px 0; } }
 
 /*========== Components ==========*/
 .background {
@@ -5104,7 +5113,8 @@ a {
       top: 10px;
       right: 10px; }
   .modal__title {
-    margin-top: 0; }
+    margin-top: 0;
+    line-height: 1.2; }
   @media (max-width: 1599.98px) {
     .modal-block {
       max-width: 800px;
@@ -5340,6 +5350,10 @@ a {
     max-width: 168px;
     margin: 0 auto; }
 
+.form__message {
+  margin-top: 30px;
+  font-size: 0.875rem; }
+
 .form.loading .form__item {
   opacity: 0.5;
   pointer-events: none; }
@@ -5358,7 +5372,10 @@ a {
   .form__item {
     margin-bottom: 24px; }
   .form__submit {
-    margin-top: 40px; } }
+    margin-top: 40px; }
+  .form__message {
+    font-size: 0.75rem;
+    margin-top: 20px; } }
 
 /*========== Nav ==========*/
 .nav {
@@ -6902,18 +6919,27 @@ a {
     justify-content: center; } }
 
 .personal-form {
-  padding: 60px 0 90px 0; }
+  padding: 60px 0 40px 0; }
   .personal-form__head {
     margin-bottom: 50px; }
+  @media (min-width: 576px) {
+    .personal-form__message {
+      text-align: left; }
+    .personal-form__submit {
+      text-align: left; } }
   @media (min-width: 1024px) {
-    .personal-form .form__submit {
-      margin-top: 0; } }
+    .personal-form__submit {
+      margin-top: 0; }
+    .personal-form__group {
+      padding-top: 5px; } }
   @media (min-width: 1280px) {
     .personal-form__title {
       margin-bottom: 0;
       line-height: 1.2; }
     .personal-form__head-text {
-      margin-top: 14px; } }
+      margin-top: 14px; }
+    .personal-form__submit {
+      margin-top: 0; } }
   @media (min-width: 1600px) {
     .personal-form__title {
       letter-spacing: -1px; } }

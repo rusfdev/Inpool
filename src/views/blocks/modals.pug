@@ -32,17 +32,16 @@
       button.modal-close.modal-block__close(data-modal='close' aria-label='close')
       .modal-form__head
         h2.modal__title Получите персональное предложение!
-        p INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных 
       .row.justify-content-center
-        form.form.modal-form__form.js-validation.col-lg-8.col-md-10
+        form.form.modal-form__form.col-lg-8.col-md-10
           .row
             .form__group.col-12
               .form__item
                 label.input
-                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name').input__element
+                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name' data-required).input__element
               .form__item
                 label.input
-                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone').input__element
+                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone' data-required).input__element
             .form__submit.col-12
               button.button.button_submit(type='submit')
                 span Отправить
@@ -56,4 +55,5 @@
                   circle(cx='105' cy='15' r='15')
                     animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
                     animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
-      
+              p.form__message Нажимая кнопку “Отправить” вы соглашаетесь с условиями 
+                a(href="./privacy.html" rel='noopener' target='_blank') Политики конфиденциальности

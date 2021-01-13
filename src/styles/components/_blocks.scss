@@ -1832,13 +1832,24 @@
 }
 
 .personal-form {
-  padding: 60px 0 90px 0;
+  padding: 60px 0 40px 0;
   &__head {
     margin-bottom: 50px;
   }
+  @include media-breakpoint-up(sm) {
+    &__message {
+      text-align: left;
+    }
+    &__submit {
+      text-align: left;
+    }
+  }
   @include media-breakpoint-up(lg) {
-    .form__submit {
+    &__submit {
       margin-top: 0;
+    }
+    &__group {
+      padding-top: 5px;
     }
   }
   @include media-breakpoint-up(xl) {
@@ -1848,6 +1859,9 @@
     }
     &__head-text {
       margin-top: 14px;
+    }
+    &__submit {
+      margin-top: 0;
     }
   }
   @include media-breakpoint-up(xxl) {

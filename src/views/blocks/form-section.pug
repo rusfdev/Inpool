@@ -3,17 +3,17 @@ section.section.form-section
     h2.form-section__title Получите персональную<br> консультацию по INPOOL POWER
     .row.justify-content-center
       .col-xxl-4.col-lg-5.col-md-6.col-sm-8
-        form.form.form-section__form.js-validation
+        form.form.form-section__form
           .row
             .form__group.col-12
               .form__item
                 label.input.contacts__animate-item
                   | Ваше имя
-                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name').input__element
+                  input(type="text" name='name' placeholder="Ваше имя" data-validate='name' data-required).input__element
               .form__item
                 label.input.contacts__animate-item
                   | Номер вашего телефона
-                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone').input__element
+                  input(type="text" name='phone' placeholder="Номер вашего телефона" data-validate='phone' data-required).input__element
 
             .form__submit.col-12
               button.button.button_submit(type='submit')
@@ -28,3 +28,5 @@ section.section.form-section
                   circle(cx='105' cy='15' r='15')
                     animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
                     animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
+              p.form__message Нажимая кнопку “Отправить” вы соглашаетесь с условиями 
+                a(href="./privacy.html" rel='noopener' target='_blank') Политики конфиденциальности

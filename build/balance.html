@@ -130,7 +130,7 @@
                   <h3 class="home-standart__slogan"> <span>–––– </span>SPA-бассейн для сохранения вашей молодости и красоты</h3>
                 </div>
                 <div class="home-standart__play col-xxl-3 offset-xxl-8 offset-xl-7 col-xl-4 col-auto">
-                  <!--НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.--><a class="home-standart__play-btn" href="./video/mixkit-swimmer-practicing-in-the-pool-33192-medium_1.mp4.mp4" data-modal="video" data-barba-prevent>
+                  <!--НУЖНО СДЕЛАТЬ ПРОВЕРКУ, ЕСЛИ ВИДЕО ФАЙЛА НЕ СУЩЕСТВУЕТ - НЕ ВЫВОДИТЬ ЭТУ КНОПКУ. НА ФРОНТЕ Я ОПИРАЮСЬ НА НАЛИЧИЕ ЭТОЙ КНОПКИ.--><a class="home-standart__play-btn" href="./video/Balance.mp4" data-modal="video" data-barba-prevent>
                     <div class="icon-wrap">
                       <svg class="icon">
                         <use xlink:href="./img/icons/icons-sprite.svg#play"></use>
@@ -220,10 +220,9 @@
                         </div>
                         <!--slide-->
                         <div class="splide__slide conceptions-slider__slide">
-                          <h3 class="conceptions-slider__slide-title">INPOOL Premium</h3>
+                          <h3 class="conceptions-slider__slide-title">INPOOL Deep filtration</h3>
                           <div class="conceptions-slider__slide-text">
-                            <p>Технология усиленной фильтрации.</p>
-                            <p>Инновационная система самоочистки фильтров бассейна позволяет поддерживать природную чистоту воды без участия человека. </p>
+                            <p>DEEP FILTRATION — самые высокотехнологические фильтра в Европе, диаметром от 600-1200 мм и высоте 1800 мм, именно при таких диаметрах и высоте эффект фильтрации достигает максимально высокого качества воды.</p>
                           </div>
                         </div>
                         <!--slide-->
@@ -335,17 +334,17 @@
               <h2 class="form-section__title">Получите персональную<br> консультацию по INPOOL POWER</h2>
               <div class="row justify-content-center">
                 <div class="col-xxl-4 col-lg-5 col-md-6 col-sm-8">
-                  <form class="form form-section__form js-validation">
+                  <form class="form form-section__form">
                     <div class="row">
                       <div class="form__group col-12">
                         <div class="form__item">
                           <label class="input contacts__animate-item">Ваше имя
-                            <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                            <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name" data-required>
                           </label>
                         </div>
                         <div class="form__item">
                           <label class="input contacts__animate-item">Номер вашего телефона
-                            <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                            <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone" data-required>
                           </label>
                         </div>
                       </div>
@@ -366,6 +365,7 @@
                             </circle>
                           </svg>
                         </button>
+                        <p class="form__message">Нажимая кнопку «Отправить» вы соглашаетесь с условиями <a href="./privacy.html" rel="noopener" target="_blank">Политики конфиденциальности</a></p>
                       </div>
                     </div>
                   </form>
@@ -440,20 +440,19 @@
           <button class="modal-close modal-block__close" data-modal="close" aria-label="close"></button>
           <div class="modal-form__head">
             <h2 class="modal__title">Получите персональное предложение!</h2>
-            <p>INPOOL CONCEPT- это совокупность лучших технологий мировых производителей, сгрупированных </p>
           </div>
           <div class="row justify-content-center">
-            <form class="form modal-form__form js-validation col-lg-8 col-md-10">
+            <form class="form modal-form__form col-lg-8 col-md-10">
               <div class="row">
                 <div class="form__group col-12">
                   <div class="form__item">
                     <label class="input">
-                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name">
+                      <input class="input__element" type="text" name="name" placeholder="Ваше имя" data-validate="name" data-required>
                     </label>
                   </div>
                   <div class="form__item">
                     <label class="input">
-                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone">
+                      <input class="input__element" type="text" name="phone" placeholder="Номер вашего телефона" data-validate="phone" data-required>
                     </label>
                   </div>
                 </div>
@@ -474,6 +473,7 @@
                       </circle>
                     </svg>
                   </button>
+                  <p class="form__message">Нажимая кнопку «Отправить» вы соглашаетесь с условиями <a href="./privacy.html" rel="noopener" target="_blank">Политики конфиденциальности</a></p>
                 </div>
               </div>
             </form>
@@ -506,7 +506,7 @@
         </div>
         <!--section-->
         <div class="helper__section"><span class="helper__section-title">Техническое:</span>
-          <div class="helper__section-content"><a class="helper__section-button" href="./grid.html">Сетка</a><a class="helper__section-button" href="./components.html">Компоненты</a></div>
+          <div class="helper__section-content"><a class="helper__section-button" href="./privacy.html">Политика конфиденциальности</a></div>
         </div>
       </div>
     </div>

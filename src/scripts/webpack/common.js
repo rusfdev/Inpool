@@ -418,6 +418,7 @@ const Scroll = {
     $body.style.height = '100%';
     $wrapper.style.height = '100%';
     $content.style.height = '100%';
+    $content.style.display = 'block';
     this.scrollbar = Scrollbar.init($content, {
       damping: 0.1,
       thumbMinSize: 150
@@ -1216,7 +1217,7 @@ class HomeScreenVideo {
   }
 }
 
-const Validation = {
+/* const Validation = {
   init: function() {
     //validation
     this.namspaces = {
@@ -1388,6 +1389,188 @@ const Validation = {
       }
     })
   }
+} */
+const Validation = {
+  init: function () {
+    this.namspaces = {
+      name: 'name',
+      phone: 'phone',
+      email: 'email',
+      message: 'message'
+    }
+    this.constraints = {
+      name: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваше имя'
+        },
+        format: {
+          pattern: /[A-zА-яЁё ]+/,
+          message: '^Введите корректное имя'
+        },
+        length: {
+          minimum: 2,
+          tooShort: "^Имя слишком короткое (минимум %{count} символа)",
+          maximum: 20,
+          tooLong: "^Имя слишком длинное (максимум %{count} символов)"
+        }
+      },
+      phone: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваш номер телефона'
+        },
+        format: {
+          pattern: /^\+7 \d{3}\ \d{3}\-\d{4}$/,
+          message: '^Введите корректный номер телефона'
+        }
+      },
+      email: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваш email'
+        },
+        email: {
+          message: '^Неправильный формат email-адреса'
+        }
+      },
+      message: {
+        presence: {
+          allowEmpty: false,
+          message: '^Введите ваше сообщение'
+        },
+        length: {
+          minimum: 2,
+          tooShort: "^Сообщение слишком короткое (минимум %{count} символа)",
+          maximum: 100,
+          tooLong: "^Сообщение слишком длинное (максимум %{count} символов)"
+        }
+      }
+    };
+    this.mask = Inputmask({
+      mask: "+7 999 999-9999",
+      showMaskOnHover: false,
+      clearIncomplete: false
+    }).mask("[data-validate='phone']");
+
+    gsap.registerEffect({
+      name: "fadeMessages",
+      effect: ($message) => {
+        return gsap.timeline({
+          paused: true
+        }).fromTo($message, {
+          autoAlpha: 0
+        }, {
+          autoAlpha: 1,
+          duration: 0.3,
+          ease: 'power2.inOut'
+        })
+      }
+    });
+
+    document.addEventListener('submit', (event) => {
+      let $form = event.target,
+        $inputs = $form.querySelectorAll('input, textarea'),
+        l = $inputs.length,
+        i = 0;
+      while (i < l) {
+        if ($inputs[i].getAttribute('data-validate')) {
+          event.preventDefault();
+          let flag = 0;
+          $inputs.forEach(($input) => {
+            if (!this.validInput($input)) flag++;
+          })
+          if (!flag) this.submitEvent($form);
+          break;
+        } else i++
+      }
+    })
+
+    document.addEventListener('input', (event) => {
+      let $input = event.target,
+        $parent = $input.parentNode;
+      if ($parent.classList.contains('error')) {
+        this.validInput($input);
+      }
+    })
+
+  },
+  validInput: function ($input) {
+    let $parent = $input.parentNode,
+      type = $input.getAttribute('data-validate'),
+      required = $input.getAttribute('data-required') !== null,
+      value = $input.value,
+      empty = validate.single(value, {
+        presence: {
+          allowEmpty: false
+        }
+      }) !== undefined,
+      resault;
+
+    for (let key in this.namspaces) {
+      if (type == key && (required || !empty)) {
+        resault = validate.single(value, this.constraints[key]);
+        break;
+      }
+    }
+    //если есть ошибки
+    if (resault) {
+      if (!$parent.classList.contains('error')) {
+        $parent.classList.add('error');
+        $parent.insertAdjacentHTML('beforeend', `<span class="input__message">${resault[0]}</span>`);
+        let $message = $parent.querySelector('.input__message');
+        gsap.effects.fadeMessages($message).play();
+      } else {
+        $parent.querySelector('.input__message').textContent = `${resault[0]}`;
+      }
+      return false;
+    }
+    //если нет ошибок
+    else {
+      if ($parent.classList.contains('error')) {
+        $parent.classList.remove('error');
+        let $message = $parent.querySelector('.input__message');
+        gsap.effects.fadeMessages($message).reverse(1).eventCallback('onReverseComplete', () => {
+          $message.remove();
+        });
+      }
+      return true;
+    }
+  },
+  reset: function ($form) {
+    let $inputs = $form.querySelectorAll('input, textarea');
+    $inputs.forEach(($input) => {
+      $input.value = '';
+
+      let $parent = $input.parentNode;
+      if ($parent.classList.contains('focused')) {
+        $parent.classList.remove('focused');
+      }
+      if ($parent.classList.contains('error')) {
+        $parent.classList.remove('error');
+        let $message = $parent.querySelector('.input__message');
+        gsap.effects.fadeMessages($message).reverse(1).eventCallback('onReverseComplete', () => {
+          $message.remove();
+        });
+      }
+    })
+  },
+  submitEvent: function ($form) {
+    let $submit = $form.querySelector('.button_submit');
+    $form.classList.add('loading');
+    $submit.classList.add('loading');
+    //test
+    setTimeout(()=>{
+      $form.classList.remove('loading');
+      $submit.classList.remove('loading');
+      this.reset($form);
+      let modal = document.querySelector('#succes');
+      Modal.open(modal);
+      setTimeout(()=>{
+        Modal.close();
+      }, 3000)
+    }, 2000)
+  }
 }
 
 const Modal = {
@@ -1416,20 +1599,20 @@ const Modal = {
         let $modal = document.querySelector(`${$open.getAttribute('href')}`);
         this.open($modal);
       }
-      //close 
-      else if($close || (!$block && $wrap)) {
-        this.close(this.$active);
-      } 
       //video
       else if($video_open) {
         event.preventDefault();
         let href = $video_open.getAttribute('href');
         this.video(href);
       }
+      //close 
+      else if($close || (!$block && $wrap)) {
+        this.close();
+      } 
     })
 
     window.addEventListener('exit', ()=>{
-      if(this.$active) this.close(this.$active);
+      if(this.$active) this.close();
     })
 
   }, 
@@ -1454,27 +1637,24 @@ const Modal = {
     }
 
     if($modal) {
-      if(this.$active) this.close(this.$active, play);
+      if(this.$active) this.close(play);
       else play();
     }
   }, 
-  close: function($modal, callback) {
-    if($modal && this.$active) {
-      delete this.$active;
+  close: function(callback) {
+    if(this.$active) {
       this.animation.timeScale(2).reverse().eventCallback('onReverseComplete', ()=>{
-        $header.classList.remove('header_modal-opened');
         delete this.animation;
         enablePageScroll();
+        $header.classList.remove('header_modal-opened');
         //video
-        if($modal.classList.contains('modal-video')) {
-          $modal.remove();
-        }
-
-
+        if(this.$active.classList.contains('modal-video')) this.$active.remove();
+        //callback
+        delete this.$active;
         if(callback) callback();
       })
       //reset form
-      let $form = $modal.querySelector('form');
+      let $form = this.$active.querySelector('form');
       if($form) Validation.reset($form);
     }
   },

@@ -35,7 +35,6 @@ import fragment_distortion from './shaders/distortion/fragment.glsl'
 import { PerspectiveCamera } from 'three';
 import Splitting from "splitting";
 import Scrollbar from 'smooth-scrollbar';
-
 import Inputmask from "inputmask";
 const validate = require("validate.js");
 import Splide from '@splidejs/splide';
@@ -75,6 +74,24 @@ function mobile() {
   } else {
     return false;
   }
+}
+//request
+function httpGetAsync(url, callback) {
+  let req = new XMLHttpRequest();
+  req.onreadystatechange = function() { 
+    if (req.readyState == 4 && req.status == 200) callback(req);       
+  }
+  req.open("GET", url, true);
+  req.send(null);
+}
+//url clean
+function cleanUp(url) {
+  var url = $.trim(url);
+  if(url.search(/^https?\:\/\//) != -1)
+      url = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i, "");
+  else
+      url = url.match(/^([^\/?#]+)(?:[\/?#]|$)/i, "");
+  return url[1];
 }
 
 //scroll btn
@@ -120,7 +137,7 @@ const App = {
       if(Pages[this.namespace]) Pages[this.namespace].init();
       Select.init();
       Inputmask({
-        mask: "+7 999 999-9999",
+        mask: "+7 999 999-99-99",
         showMaskOnHover: false,
         clearIncomplete: false
       }).mask("[data-validate='phone']");
@@ -210,18 +227,26 @@ const Pages = {
         this.tslider = new Slider($slider2, 'wave');
         this.tslider.init();
       }
+      //map
+      let $map = App.$container.querySelector('.contacts ');
+      if($map) {
+        this.$map = new Map($map);
+        this.$map.init();
+      }
     },
     destroy: function() {
       HomeBanner.destroy();
-      //
       if(this.dcslider) {
         this.dcslider.destroy();
         delete this.dcslider;
       }
-      //
       if(this.tslider) {
         this.tslider.destroy();
         delete this.tslider;
+      }
+      if(this.$map) {
+        this.$map.destroy();
+        delete this.$map;
       }
     }
   },
@@ -333,6 +358,18 @@ const Pages = {
           slider.destroy();
         }
       }
+    }
+  },
+  contacts: {
+    init: function() {
+      let $map = App.$container.querySelector('.contacts ');
+      if($map) {
+        this.$map = new Map($map);
+        this.$map.init();
+      }
+    },
+    destroy: function() {
+      if(this.$map) this.$map.destroy();
     }
   }
 }
@@ -1217,179 +1254,6 @@ class HomeScreenVideo {
   }
 }
 
-/* const Validation = {
-  init: function() {
-    //validation
-    this.namspaces = {
-      name: 'name',
-      phone: 'phone',
-      email: 'email',
-      message: 'message'
-    }
-    this.constraints = {
-      name: {
-        presence: {
-          allowEmpty: false,
-          message: '^Введите ваше имя'
-        },
-        format: {
-          pattern: /[A-zА-яЁё ]+/,
-          message: '^Введите корректное имя'
-        },
-        length: {
-          minimum: 2,
-          tooShort: "^Имя слишком короткое (минимум %{count} символа)",
-          maximum: 20,
-          tooLong: "^Имя слишком длинное (максимум %{count} символов)"
-        }
-      },
-      phone: {
-        presence: {
-          allowEmpty: false,
-          message: '^Введите ваш номер телефона'
-        },
-        format: {
-          pattern: /^\+7 \d{3}\ \d{3}\-\d{4}$/,
-          message: '^Введите корректный номер телефона'
-        }
-      },
-      email: {
-        presence: {
-          allowEmpty: false,
-          message: '^Введите ваш email'
-        },
-        email: {
-          message: '^Неправильный формат email-адреса' 
-        }
-      },
-      message: {
-        presence: {
-          allowEmpty: false,
-          message: '^Введите ваше сообщение'
-        },
-        length: {
-          minimum: 5,
-          tooShort: "^Сообщение слишком короткое (минимум %{count} символов)",
-          maximum: 100,
-          tooLong: "^Сообщение слишком длинное (максимум %{count} символов)"
-        }
-      }
-    };
-
-    document.addEventListener('submit', (event)=>{
-      event.preventDefault();
-      let $form = event.target;
-      if($form.classList.contains('js-validation') && this.checkValid($form)) {
-        let $submit = $form.querySelector('.button_submit');
-        $form.classList.add('loading');
-        $submit.classList.add('loading');
-        //test
-        setTimeout(()=>{
-          $form.classList.remove('loading');
-          $submit.classList.remove('loading');
-          this.reset($form);
-          let modal = document.querySelector('#succes');
-          Modal.open(modal);
-          setTimeout(()=>{
-            Modal.close(modal);
-          }, 3000)
-        }, 2000)
-      }
-    })
-    document.addEventListener('input', (event)=>{
-      let $input = event.target,
-          $form = $input.closest('form');
-      if($form && $form.classList.contains('js-validation')) {
-        this.checkValid($form, $input);
-      }
-    })
-
-  },
-  checkValid: function($form, $input) {
-    let $inputs = $form.querySelectorAll('input, textarea'),
-        values = {},
-        constraints = {},
-        resault;
-
-    $inputs.forEach(($input)=>{
-      let name = $input.getAttribute('name');
-      for(let key in this.namspaces) {
-        if($input.getAttribute('data-validate')==this.namspaces[key]) {
-          values[name] = $input.value;
-          constraints[name] = this.constraints[key];
-        }
-      }
-    })
-
-    resault = validate(values, constraints);
-
-    if(resault!==undefined) {
-      if($input!==undefined) {
-        let flag = true,
-            name = $input.getAttribute('name');
-        for(let key in resault) {
-          if(name==key) {
-            flag=false;
-          }
-        }
-        if(flag && $input.parentNode.classList.contains('error')) {
-          $input.parentNode.classList.remove('error');
-          let $msg = $input.parentNode.querySelector('.input__message');
-          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
-            $msg.remove();
-          })
-        }
-      } 
-      else {
-        $inputs.forEach(($input)=>{
-          let name = $input.getAttribute('name');
-          for(let key in resault) {
-            if(name==key) {
-              if(!$input.parentNode.classList.contains('error')) {
-                $input.parentNode.classList.add('error');
-                $input.parentNode.insertAdjacentHTML('beforeend', `<span class="input__message">${resault[key][0]}</span>`);
-                gsap.to($input.parentNode.querySelector('.input__message'), {autoAlpha:1, duration:0.3, ease:'power2.inOut'})
-              } else {
-                $input.parentNode.querySelector('.input__message').textContent = `${resault[key][0]}`;
-              }
-            }
-          }
-        })
-      }
-      return false;
-    } else {
-      $inputs.forEach(($input)=>{
-        $input.parentNode.classList.remove('error');
-        let $msg = $input.parentNode.querySelector('.input__message');
-        if($msg) {
-          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
-            $msg.remove();
-          })
-        }
-      })
-      return true;
-    }
-  },
-  reset: function($form) {
-    let $inputs = $form.querySelectorAll('input, textarea');
-    $inputs.forEach(($input)=>{
-      $input.value = '';
-      let $parent = $input.parentNode;
-      if($parent.classList.contains('focused')) {
-        $parent.classList.remove('focused');
-      }
-      if($parent.classList.contains('error')) {
-        $parent.classList.remove('error');
-        let $msg = $input.parentNode.querySelector('.input__message');
-        if($msg) {
-          gsap.to($msg, {autoAlpha:0, duration:0.3, ease:'power2.inOut'}).eventCallback('onComplete', ()=>{
-            $msg.remove();
-          })
-        }
-      }
-    })
-  }
-} */
 const Validation = {
   init: function () {
     this.namspaces = {
@@ -1421,7 +1285,7 @@ const Validation = {
           message: '^Введите ваш номер телефона'
         },
         format: {
-          pattern: /^\+7 \d{3}\ \d{3}\-\d{4}$/,
+          pattern: /^\+7 \d{3}\ \d{3}\-\d{2}-\d{2}$/,
           message: '^Введите корректный номер телефона'
         }
       },
@@ -1559,17 +1423,18 @@ const Validation = {
     let $submit = $form.querySelector('.button_submit');
     $form.classList.add('loading');
     $submit.classList.add('loading');
-    //test
-    setTimeout(()=>{
-      $form.classList.remove('loading');
-      $submit.classList.remove('loading');
-      this.reset($form);
-      let modal = document.querySelector('#succes');
-      Modal.open(modal);
-      setTimeout(()=>{
-        Modal.close();
-      }, 3000)
-    }, 2000)
+    $($form).request('onSend', {
+      success: ()=>{
+        $form.classList.remove('loading');
+        $submit.classList.remove('loading');
+        this.reset($form);
+        let modal = document.querySelector('#succes');
+        Modal.open(modal);
+        setTimeout(()=>{
+          Modal.close();
+        }, 3000)
+      }
+    })
   }
 }
 
@@ -1596,8 +1461,9 @@ const Modal = {
       //open
       if($open) {
         event.preventDefault();
-        let $modal = document.querySelector(`${$open.getAttribute('href')}`);
-        this.open($modal);
+        let $modal = document.querySelector(`${$open.getAttribute('href')}`),
+            value = $open.getAttribute('data-modal-value');
+        this.open($modal, value);
       }
       //video
       else if($video_open) {
@@ -1616,7 +1482,7 @@ const Modal = {
     })
 
   }, 
-  open: function($modal) {
+  open: function($modal, value) {
     let play = ()=> {
       this.$active = $modal;
       disablePageScroll();
@@ -1633,6 +1499,14 @@ const Modal = {
           .set($icon, {css:{'stroke-dasharray':w}}, `+=${Speed*0.25}`)
           .set($icon, {autoAlpha:1})
           .fromTo($icon, {css:{'stroke-dashoffset':w}}, {duration:Speed, css:{'stroke-dashoffset':0}, ease:'power2.out'})
+      }
+
+      //значение формы
+      if(value) {
+        let $hidden_input = $modal.querySelector('.form__hidden');
+        if($hidden_input) {
+          $hidden_input.value = value;
+        }
       }
     }
 
@@ -1713,7 +1587,6 @@ class Scale {
         h = window.innerHeight;
 
     if(sy+h > ty+sy && !this.flag) {
-      console.log('sss')
       this.flag = true;
 
       let i = {};
@@ -2096,7 +1969,7 @@ class Slider {
         easing: 'ease-in-out',
         speed: this.speed*1000,
         gap: 24,
-        autoplay: false,
+        autoplay: true,
         start: start_index,
         perMove: 1,
         interval: 1000*autoslide_interval,
@@ -2120,7 +1993,7 @@ class Slider {
         arrows: false,
         pagination: true,
         speed: this.speed*1000,
-        autoplay: false,
+        autoplay: true,
         autoHeight: true,
         perMove: 1,
         interval: 1000*autoslide_interval
@@ -2638,3 +2511,306 @@ class WaveScene {
     for(let child in this) delete this[child];
   }
 }
+
+class Map {
+  constructor($parent) {
+    this.$parent = $parent;
+  }
+
+  init() {
+    this.$checkbox = this.$parent.querySelector('.select');
+    this.$scontainer = this.$parent.querySelector('.contacts__select');
+    this.$contents = this.$parent.querySelector('.contacts-block__contents');
+    this.$contents__inner = this.$parent.querySelector('.contacts-block__contents-inner');
+    this.$block = this.$parent.querySelector('.contacts-block');
+    this.$map_container = this.$parent.querySelector('#map');
+    this.apiKey = '4db33d7a-110f-4ffa-8835-327389c45d9d';
+    this.$items = [];
+
+    //map
+    let mapCallback = function(){};
+
+    let loadMap = ()=> {
+      if(typeof ymaps === 'undefined') {
+        let callback = ()=> {
+          ymaps.ready(createMap);
+        }
+        let script = document.createElement("script");
+        script.type = 'text/javascript';
+        script.onload = callback;
+        script.src = `https://api-maps.yandex.ru/2.1/?apikey=${this.apiKey}&lang=ru_RU`;
+        $body.appendChild(script);
+      } else {
+        createMap();
+      }
+    }
+    
+    let createMap = ()=> {
+      this.map = new ymaps.Map(this.$map_container, {
+        center: [55.76, 37.64],
+        controls: ['zoomControl'],
+        zoom: 9
+      });
+      this.map.behaviors.disable(['scrollZoom', 'drag']);
+      this.placemarks = [];
+      this.$map = this.map.container._element;
+      this.$map.classList.add('contacts__map-element');
+      gsap.set(this.$map, {autoAlpha:0})
+      mapCallback();
+    }
+
+    let setMapPoints = (data)=> {
+      let points = {},
+          center = [],
+          p1 = [], p2 = [];
+
+      for(let i in data) {
+        let point = data[i].point;
+        if(point) {
+          points[i] = point;
+          p1.push(point[0]);
+          p2.push(point[1]);
+        }
+      }
+      center[0] = p1.reduce((a, b) => a + b, 0)/p1.length;
+      center[1] = p2.reduce((a, b) => a + b, 0)/p2.length;
+
+      if(this.placemarks.length) {
+        for(let placemark of this.placemarks) {
+          this.map.geoObjects.remove(placemark);
+        }
+      } 
+
+
+      let placemarks = [];
+      for(let i in data) {
+        if(points[i]) {
+          let placemark = new ymaps.Placemark(points[i], {
+            balloonContent: data[i].address
+          }, 
+          {
+            iconLayout: 'default#image',
+            iconImageHref: 'https://inpoolconcept.ru/themes/inpool/assets/build/img/icons/mappoint.svg',
+            iconImageSize: [30, 30],
+            iconImageOffset: [-15, -30],
+            hideIconOnBalloonOpen: false
+          });
+          this.map.geoObjects.add(placemark);
+          placemarks.push(placemark);
+        }
+
+        setTimeout(()=>{
+          this.map.setCenter(center, 9, {duration: Speed*1000});
+          this.placemarks = placemarks;
+        }, 500)
+      }
+    }
+
+    //data
+    let getData = ()=> {
+      return new Promise((resolve, reject)=>{
+        if(dev) {
+          let val = this.$checkbox.value,
+              data;
+          if(val=='Москва') {
+            data = [{
+              address: 'Новорижское шоссе, 27 км владение 1, Садовый центр "Балтия Гарден" "Центр Бассейнов"',
+              name: 'Центр Бассейнов',
+              phones: ['+79252656059', '+79252656059']
+            },{
+              address: '115419, Москва, ул.Шаболовка 34с БЦ Матрикс офис',
+              email: 'info@waterelements.ru',
+              name: 'Water Elements',
+              phones: ['+79252656059'],
+              site: 'https://waterelements.ru/'
+            }]
+          } else {
+            data = [{
+              address: '115419, Москва, ул.Шаболовка 34с БЦ Матрикс офис',
+              name: 'Центр Бассейнов',
+              phones: ['+79252656059', '+79252656059']
+            }]
+          }
+          resolve(data)
+        } 
+        else {
+          $(this.$checkbox).request('onSelect', {
+            success: function(data) {
+              resolve(data)
+            }
+          })
+        }
+      })
+      .then((data)=>{
+        return new Promise((resolve, reject)=>{
+          let promises = [];
+          data.forEach((place, index)=>{
+            let address = place.address.replace(/ /g,"+");
+            promises[index] = new Promise((resolve, reject)=>{
+              httpGetAsync(`https://geocode-maps.yandex.ru/1.x/?apikey=${this.apiKey}&format=json&geocode=${address}`, (req)=>{
+                let members = JSON.parse(req.response).response.GeoObjectCollection.featureMember;
+                if(members.length) {
+                  let pos = members[0].GeoObject.Point.pos.split(' ').reverse(),
+                      array = [];
+                  for(let i in pos) {
+                    array[i] = parseFloat(pos[i]);
+                  }
+                  place.point = array;
+                }
+                resolve();
+              })
+            })
+          })
+          Promise.all(promises).then(()=>{
+            resolve(data);
+          });
+        })  
+      })
+    }
+
+    //html
+    let deleteInfo = ()=> {
+      gsap.to(this.$contents, {css:{'height':'0px'}, duration:Speed/2, ease:'power2.inOut', onComplete:()=>{
+        this.$contents.style.height = 'auto';
+      }})
+      if(this.$items.length) {
+        for(let $item of this.$items) {
+          gsap.to($item, {autoAlpha:0, duration:Speed/2, ease:'power2.inOut', onComplete:()=>{
+            $item.remove();
+          }})
+        }
+        this.$items = [];
+      }
+    }
+    let createInfo = (data)=> {
+      this.$contents.style.height = '0px';
+
+      for(let index in data) {
+        let item = data[index];
+        let $block = document.createElement('div'),
+            $left = document.createElement('div'),
+            $right = document.createElement('div');
+        $block.classList.add('contacts-block__content');
+        $left.classList.add('contacts-block__content-left');
+        $right.classList.add('contacts-block__content-right');
+        $block.insertAdjacentElement('afterbegin', $left);
+        $block.insertAdjacentElement('beforeend', $right);
+
+        //name
+        for(let key in item) {
+          if(key=='name') {
+            let $item = `<div class="contacts-block__item">${item[key]}</div>`
+            $left.insertAdjacentHTML('afterbegin', $item);
+          }
+        }
+        //address
+        for(let key in item) {
+          if(key=='address') {
+            let $item = `<div class="contacts-block__item">${item[key]}</div>`
+            $left.insertAdjacentHTML('beforeend', $item);
+          }
+        }
+        //site
+        for(let key in item) {
+          if(key=='site') {
+            let $item = 
+              `<div class="contacts-block__item"> 
+                <a href="${item[key]}" rel="noopener" target="_blank">${cleanUp(item[key])}</a>
+              </div>`
+            $right.insertAdjacentHTML('afterbegin', $item);
+          }
+        }
+        //email
+        for(let key in item) {
+          if(key=='email') {
+            let $item = 
+              `<div class="contacts-block__item"> 
+                <a href="mailto:${item[key]}">${item[key]}</a>
+              </div>`
+            $right.insertAdjacentHTML('beforeend', $item);
+          }
+        }
+        //phones
+        for(let key in item) {
+          if(key=='phones') {
+            for(let phone of item[key]) {
+              let re = /(?:([\d]{1,}?))??(?:([\d]{1,3}?))??(?:([\d]{1,3}?))??(?:([\d]{2}))??([\d]{2})$/;
+              let fp = phone.replace( re, function( all, a, b, c, d, e ){
+                return ( a ? a + " " : "" ) + ( b ? b + " " : "" ) + ( c ? c + "-" : "" ) + ( d ? d + "-" : "" ) + e;
+              });
+              let $item = 
+                `<div class="contacts-block__item"> 
+                  <a href="tel:${phone}">${fp}</a>
+                </div>`
+              $right.insertAdjacentHTML('beforeend', $item);
+            }
+          }
+        }
+
+        this.$items[index] = $block;
+        this.$contents__inner.insertAdjacentElement('beforeend', $block);
+      }
+
+
+      let height = this.$contents__inner.getBoundingClientRect().height;
+      gsap.to(this.$contents, {css:{'height':`${height}px`}, duration:Speed/2, ease:'power2.inOut', onComplete:()=>{
+        this.$contents.style.height = 'auto';
+      }})
+      gsap.to(this.$items, {autoAlpha:1, duration:Speed/2, ease:'power2.inOut'})
+    }
+
+    let changeEvents = (data)=> {
+      let animation = gsap.timeline({paused:true})
+        .to(this.$map, {autoAlpha:1, duration:Speed/2, ease:'power2.inOut'})
+      
+      setTimeout(()=>{
+        createInfo(data);
+        animation.play();
+        this.inAnimation = false;
+        this.$block.classList.remove('disabled');
+      }, Speed*1000)
+      
+      setMapPoints(data);
+    }
+
+    let change = ()=> {
+      this.$block.classList.add('disabled');
+      this.inAnimation = true;
+      let Data, promises = [];
+      promises[0] = new Promise((resolve, reject)=>{
+        if(!this.initialized) {
+          this.initialized = true;
+          resolve();
+        } else {
+          deleteInfo();
+          gsap.to(this.$map, {autoAlpha:0, duration:Speed/2, ease:'power2.inOut', onComplete:()=>{
+            resolve();
+          }})
+        }
+      })
+      promises[1] = new Promise((resolve, reject)=>{
+        getData().then((data)=>{
+          Data = data;
+          if(this.map) resolve();
+          else mapCallback = ()=> {resolve()};
+        })
+      })
+      Promise.all(promises).then(()=>{
+        changeEvents(Data);
+      });
+    }
+
+    loadMap();
+    change();
+    this.$checkbox.addEventListener('change', ()=>{
+      if(!this.inAnimation) change();
+    });
+  }
+
+  destroy() {
+    for(let child in this) delete this[child];
+  }
+}
+
+
+

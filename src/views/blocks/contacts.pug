@@ -1,6 +1,15 @@
 section.section.contacts  
-  .contacts__map
-    iframe.contacts__map(data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d577325.347800229!2d36.82511018697867!3d55.58152438542563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b54afc73d4b0c9%3A0x3d44d6cc5757cf4c!2z0JzQvtGB0LrQstCwLCDQoNC-0YHRgdC40Y8!5e0!3m2!1sru!2sua!4v1605699083673!5m2!1sru!2sua").lazyload
+  #map.contacts__map
+    svg.contacts__map-loader(viewBox='0 0 120 30' fill='currentColor')
+      circle(cx='15' cy='15' r='15')
+        animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+        animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
+      circle(cx='60' cy='15' r='9' fill-opacity='0.3')
+        animate(attributeName='r' from='9' to='9' begin='0s' dur='0.8s' values='9;15;9' calcMode='linear' repeatCount='indefinite')
+        animate(attributeName='fill-opacity' from='0.5' to='0.5' begin='0s' dur='0.8s' values='.5;1;.5' calcMode='linear' repeatCount='indefinite')
+      circle(cx='105' cy='15' r='15')
+        animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+        animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
   .container.contacts__container
     .row.justify-content-center
       .col-xl-6.col-md-10
@@ -8,7 +17,6 @@ section.section.contacts
           .container  
             h6.contacts-block__title Наши контакты
             .contacts__select
-              //h2.contacts-block__value Москва
               select.select 
                 option(value='Москва' selected) Москва
                 option(value='Санкт-Петербург') Санкт-Петербург
@@ -19,16 +27,39 @@ section.section.contacts
                 option(value='Орёл') Орёл
                 option(value='Казань') Казань
                 option(value='Екатеринбург') Екатеринбург
+              svg.contacts-block__loader(viewBox='0 0 120 30' fill='currentColor')
+                circle(cx='15' cy='15' r='15')
+                  animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+                  animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
+                circle(cx='60' cy='15' r='9' fill-opacity='0.3')
+                  animate(attributeName='r' from='9' to='9' begin='0s' dur='0.8s' values='9;15;9' calcMode='linear' repeatCount='indefinite')
+                  animate(attributeName='fill-opacity' from='0.5' to='0.5' begin='0s' dur='0.8s' values='.5;1;.5' calcMode='linear' repeatCount='indefinite')
+                circle(cx='105' cy='15' r='15')
+                  animate(attributeName='r' from='15' to='15' begin='0s' dur='0.8s' values='15;9;15' calcMode='linear' repeatCount='indefinite')
+                  animate(attributeName='fill-opacity' from='1' to='1' begin='0s' dur='0.8s' values='1;.5;1' calcMode='linear' repeatCount='indefinite')
                 
             .contacts-block__contents
-              //content
-              .contacts-block__content
-                .contacts-block__item WATER ELEMENTS
-                .contacts-block__item 
-                  a(href="tel:+74953746744") +7 495 374 67 44
-                .contacts-block__item 115419, Москва, ул.Шаболовка, 34с5. БЦ Матрикс
-                .contacts-block__item 
-                  a(href="https://waterelements.ru/" rel='noopener' target='_blank') waterelements.ru
+              .contacts-block__contents-inner
+                //content
+                //.contacts-block__content
+                  .contacts-block__content-left
+                    .contacts-block__item WATER ELEMENTS
+                    .contacts-block__item 115419, Москва, ул.Шаболовка, 34с5. БЦ Матрикс
+                  .contacts-block__content-right
+                    .contacts-block__item 
+                      a(href="https://waterelements.ru/" rel='noopener' target='_blank') waterelements.ru
+                    .contacts-block__item 
+                      a(href="tel:+74953746744") +7 495 374 67 44
+                    .contacts-block__item 
+                      a(href="mailto:waterelements@gmail.com") waterelements@gmail.com
+                
+                //
+                  .contacts-block__item WATER ELEMENTS
+                  .contacts-block__item 
+                    a(href="tel:+74953746744") +7 495 374 67 44
+                  .contacts-block__item 115419, Москва, ул.Шаболовка, 34с5. БЦ Матрикс
+                  .contacts-block__item 
+                    a(href="https://waterelements.ru/" rel='noopener' target='_blank') waterelements.ru
 
     .contacts__button
       a(href="#modal-form" data-modal='open').button

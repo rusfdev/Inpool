@@ -13,9 +13,9 @@ var gulp = require("gulp"),
     watch = require("gulp-watch"),
     clean = require("gulp-clean"),
     uglify = require("gulp-uglify"),
-    rsync = require('gulp-rsync'),
     webpack = require('webpack'),
-    webpackStream = require('webpack-stream');
+    webpackStream = require('webpack-stream'),
+    ftp = require('vinyl-ftp');
 
 let $images = ["./src/img/**/*.{jpg,jpeg,png,gif}", "!./src/img/favicons/*.{jpg,jpeg,png,gif}"],
     $images_watch = $images,
@@ -240,14 +240,13 @@ gulp.task("production",
   )
 );
 
-gulp.task("transfer", function () {
-  return gulp.src('./build/**')
-    .pipe(rsync({
-      root: './build/',
-      hostname: 'user@00.000.000.000',
-      destination: 'www/domain.com/',
-      archive: true,
-      silent: false,
-      chmod : "Du=rwx,Dgo=rx,Fu=rw,Fog=r" 
-    }));
+gulp.task('transfer', function () {
+  return gulp.src(['./build/**/*', '!./build/fonts/**', '!./build/img/**', '!./build/fonts/**', '!./build/video/**', '!./build/*.html'], {buffer:false} )
+    .pipe(ftp.create({
+      host: '92.53.97.22',
+      user: 'arctica',
+      password: '7M2l7F0n',
+      parallel: 3
+    })
+    .dest('/www/inpoolconcept.ru/themes/inpool/assets/build/'));
 });

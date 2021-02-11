@@ -1902,9 +1902,11 @@ class Slider {
     this.$scene = this.$parent.querySelector('.slider__scene');
     this.$images = this.$scene.querySelectorAll('.image');
     this.$idx = this.$parent.querySelectorAll('.slider__idx span');
+
     
     //desktop
     if(!mobile()) {
+      this.wait = true;
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
@@ -1942,6 +1944,7 @@ class Slider {
       })
       this.scene.init();
     } else {
+      this.wait = false;
       this.speed = Speed*0.5;
       this.animations = [];
       this.$images.forEach(($image, index)=>{
@@ -1969,6 +1972,7 @@ class Slider {
         pagination: false,
         easing: 'ease-in-out',
         speed: this.speed*1000,
+        waitForTransition: this.wait,
         gap: 24,
         autoplay: true,
         start: start_index,
@@ -1995,6 +1999,7 @@ class Slider {
         pagination: true,
         speed: this.speed*1000,
         autoplay: true,
+        waitForTransition: this.wait,
         autoHeight: true,
         perMove: 1,
         interval: 1000*autoslide_interval

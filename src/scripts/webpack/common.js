@@ -803,9 +803,9 @@ const HomeBanner = {
       this.checkVisibilityEvent();
     }, 100)
 
-    this.speed = Speed*1.5;
     //DESKTOP
     if(!mobile()) {
+      this.speed = Speed*1.5;
       this.textures = [];
       this.$images.forEach(($image, index)=>{
         this.textures[index] = $image.querySelector('img').getAttribute('data-src');
@@ -825,6 +825,7 @@ const HomeBanner = {
     }
     //MOBILE
     else {
+      this.speed = Speed;
       this.animations_img = [];
       this.$images.forEach(($image, index)=>{
         this.animations_img[index] = gsap.timeline({paused:true})
@@ -1941,7 +1942,7 @@ class Slider {
       })
       this.scene.init();
     } else {
-      this.speed = Speed;
+      this.speed = Speed*0.5;
       this.animations = [];
       this.$images.forEach(($image, index)=>{
         this.animations[index] = gsap.timeline({paused:true})
@@ -2551,7 +2552,7 @@ class Map {
         controls: ['zoomControl'],
         zoom: 9
       });
-      this.map.behaviors.disable(['scrollZoom', 'drag']);
+      this.map.behaviors.disable(['scrollZoom']);
       this.placemarks = [];
       this.$map = this.map.container._element;
       this.$map.classList.add('contacts__map-element');

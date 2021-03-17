@@ -6,6 +6,9 @@
   z-index: 100;
   width: 100%;
   transition: background-color $trs2, transform $trs2, opacity $trs2;
+  &_overlay {
+    background-color: var(--color-bg-transparent);
+  }
   &_fixed {
     background-color: var(--color-bg-transparent);
     &:not(.header_nav-opened) {

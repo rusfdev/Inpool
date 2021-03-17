@@ -141,6 +141,9 @@ const App = {
         showMaskOnHover: false,
         clearIncomplete: false
       }).mask("[data-validate='phone']");
+      if(App.namespace=='contacts') {
+        $header.classList.add('header_overlay');
+      }
     })
 
     window.addEventListener('enter_finish', ()=>{
@@ -150,6 +153,9 @@ const App = {
     window.addEventListener('exit', ()=>{
       $wrapper.classList.add('disabled');
       $header.classList.remove('header_fixed', 'header_hidden');
+      if(App.namespace=='contacts') {
+        $header.classList.remove('header_overlay');
+      }
     })
 
     window.addEventListener('exit_finish', ()=>{
@@ -195,6 +201,7 @@ const Transitions = {
     this.active = true;
     //event
     window.dispatchEvent(new Event("exit"));
+
     //animation
     this.animation = gsap.timeline()
       .to($container, {duration:Speed ,autoAlpha:0, ease:'power2.inOut'})

@@ -5674,7 +5674,8 @@ a {
     line-height: 1.2;
     margin: 0;
     opacity: 0;
-    visibility: hidden; }
+    visibility: hidden;
+    letter-spacing: normal; }
   .home-banner__slide-content {
     display: flex;
     flex-direction: column;
@@ -7658,6 +7659,8 @@ a {
   z-index: 100;
   width: 100%;
   transition: background-color 0.5s ease-in-out, transform 0.5s ease-in-out, opacity 0.5s ease-in-out; }
+  .header_overlay {
+    background-color: var(--color-bg-transparent); }
   .header_fixed {
     background-color: var(--color-bg-transparent); }
     .header_fixed:not(.header_nav-opened) .header__container {

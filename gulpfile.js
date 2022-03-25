@@ -239,14 +239,3 @@ gulp.task("production",
     "clean", gulp.parallel("pug", "styles", "styles_production", "scripts", "scripts_production", "webpack_scripts", "webpack_scripts_production", "images", "favicons", "other")
   )
 );
-
-gulp.task('transfer', function () {
-  return gulp.src(['./build/**/*', '!./build/fonts/**', '!./build/img/**', '!./build/fonts/**', '!./build/video/**', '!./build/*.html'], {buffer:false} )
-    .pipe(ftp.create({
-      host: '92.53.97.22',
-      user: 'arctica',
-      password: '7M2l7F0n',
-      parallel: 3
-    })
-    .dest('/www/inpoolconcept.ru/themes/inpool/assets/build/'));
-});

@@ -2594,7 +2594,6 @@ class Map {
         }
       } 
 
-
       let placemarks = [];
       for(let i in data) {
         if(points[i]) {
